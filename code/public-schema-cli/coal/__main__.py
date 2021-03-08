@@ -3,10 +3,8 @@ from pathlib import Path
 import click
 from prompt_toolkit import PromptSession
 
-from coal_public_api_client.coal_public_api_client import Client
-
 from .config import load_config
-
+from .runners import MetaRunner
 
 session = PromptSession()
 
@@ -29,11 +27,16 @@ session = PromptSession()
 def main(config, profile):
     config = load_config(config, profile)
     print(f"Config: {config}")
-    client = Client(config.url)
 
+    m = MetaRunner(config)
     while True:
         cmd = session.prompt("> ")
         print(f"COMMAND: |{cmd}|")
+        if cmd.startswith('/'):
+            m.run(cmd[1:])
+        else:
+            print("UNHANDLED")
+            
 
 
 if __name__ == "__main__":

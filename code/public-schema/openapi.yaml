@@ -57,6 +57,14 @@ paths:
       responses:
         '200':
           description: Newly created game
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Game'
+        '400':
+          description: Badly-formed request
+        '500':
+          description: Server error
   /game/{id}:
     put:
       summary: Update game parameters

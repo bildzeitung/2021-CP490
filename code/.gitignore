@@ -9,4 +9,4 @@ dist/
 venv
 
 # Code generation
-coal_public_api_client
+public-schema-client
