@@ -1,47 +1,11 @@
 openapi: 3.0.3
 info:
     version: 1.0.0
-    title: Concurrent Online Adventure Land, or MUD
-    description: An API for playing multi-user text adventures
+    title: COAL Game Server
+    description: An API for COAL Game Server
 servers:
 - url: /v1
 paths:
-  /turn/{game}/{player}:
-    post:
-      summary: Submit player turn
-      parameters:
-        - name: game
-          in: path
-          required: true
-          description: The id of the game
-          schema:
-            type: string
-        - name: player
-          in: path
-          required: true
-          description: The id of the player
-          schema:
-            type: string
-      requestBody:
-        description: Command text for server to process
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameTurnSubmission'
-      responses:
-        '200':
-          description: Turn submitted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GameTurnResponse'
-        '404':
-          description: Cannot find game or player in game
-        '400':
-          description: Badly-formed request
-        '500':
-          description: Server error
   /game:
     get:
       summary: Retrieve a list of games
@@ -85,23 +49,6 @@ paths:
           description: Updated game
 components:
   schemas:
-    TurnResponseStatus:
-      type: string
-      enum:
-        - OK
-        - ERROR
-    GameTurnResponse:
-      type: object
-      properties:
-        status: 
-          $ref: '#/components/schemas/TurnResponseStatus'
-        text:
-          type: string
-    GameTurnSubmission:
-      type: object
-      properties:
-        command:
-          type: string
     Game:
       type: object
       properties:

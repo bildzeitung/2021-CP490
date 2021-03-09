@@ -1,33 +1,35 @@
-from flask import make_response, abort
-from ..config import db
-from ..models import Game, GameSchema
+from typing import Text
+import requests
+from flask import abort
+
 
 def search():
   pass
 
 def post(body):
-  if body.get("id") != "":
-    abort(
-      409, "Please pass and empty id"
-    )
-  del body["id"]
+  body["id"] = ""
 
+  # get a list of games
+  try:
+    rv = requests.get("http://localhost:8100/v1/game")
+    rv.raise_for_status()
+  except Exception as e:
+    abort(500, f"Could not contact game server: {str(e)}")
+
+  # check for duplicate titles
   title = body.get("title")
-  existing_game = (
-    Game.query.filter(Game.title == title).one_or_none()
-  )
-
-  if existing_game is not None:
-    abort(409, f"A game with this title: '{title}' already exists.")
-
-  schema = GameSchema()
-  new_game = schema.load(body, session=db.session)
-  db.session.add(new_game)
-  db.session.commit()
-
-  data = schema.dump(new_game)
-
-  return data, 200
+  for g in rv.json():
+    if g["title"] == title:
+      abort(409, f"Already have a game with the title |{title}|")
+  
+  # submit request to game server
+  try:
+    rv = requests.post("http://localhost:8100/v1/game", json=body)
+    rv.raise_for_status()
+  except Exception as e:
+    abort(500, f"Bad POST: {str(e)}")
+  
+  return rv.json(), 200
 
 
 def put():

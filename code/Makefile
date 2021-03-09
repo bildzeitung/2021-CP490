@@ -3,11 +3,12 @@
 #
 include mk/venv.mk
 include mk/client.mk
+include mk/server.mk
 
-all:
+all: client servers
 	@echo "All done."
 
-clean:
+clean::
 	rm -fr $(CLIENT)
 
 realclean: clean
