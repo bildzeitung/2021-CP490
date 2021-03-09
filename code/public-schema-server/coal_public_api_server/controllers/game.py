@@ -1,10 +1,16 @@
-from typing import Text
 import requests
-from flask import abort
+from flask import abort, make_response
 
 
 def search():
-  pass
+  try:
+    rv = requests.get("http://localhost:8100/v1/game")
+    rv.raise_for_status()
+  except Exception as e:
+    abort(500, f"Could not contact game server: {str(e)}")
+
+  return rv.json(), 200
+
 
 def post(body):
   body["id"] = ""
@@ -34,3 +40,13 @@ def post(body):
 
 def put():
   pass
+
+
+def delete(id):
+  try:
+    rv = requests.delete(f"http://localhost:8100/v1/game/{id}")
+    rv.raise_for_status()
+  except Exception as e:
+    abort(500, f"Game server problem: {str(e)}")
+
+  return make_response(rv.content, 200)

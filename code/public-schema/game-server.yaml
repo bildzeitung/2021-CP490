@@ -18,11 +18,10 @@ paths:
                 $ref: '#/components/schemas/ArrayOfGames'
     post:
       summary: Create a new game
-      x-codegen-request-body-name: body
       requestBody:
           $ref: '#/components/requestBodies/GameBody'
       responses:
-        '200':
+        '201':
           description: Newly created game
           content:
             application/json:
@@ -47,6 +46,18 @@ paths:
       responses:
         '200':
           description: Updated game
+    delete:
+      summary: Remove game
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the game to remove
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Game deleted
 components:
   schemas:
     Game:

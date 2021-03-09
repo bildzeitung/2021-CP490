@@ -34,3 +34,14 @@ def post(body):
 
 def put():
   pass
+
+
+def delete(id):
+  game = Game.query.filter(Game.id == id).one_or_none()
+  if not game:
+    abort(404, f"Could not find game {id}")
+  
+  db.session.delete(game)
+  db.session.commit()
+
+  return make_response(f"Deleted {id}", 200)
