@@ -1,0 +1,246 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: Concurrent Online Adventure Land, or MUD
+    description: An API for playing multi-user text adventures
+servers:
+- url: /v1
+paths:
+  /turn/{game}/{player}:
+    post:
+      summary: Submit player turn
+      parameters:
+        - name: game
+          in: path
+          required: true
+          description: The id of the game
+          schema:
+            type: string
+        - name: player
+          in: path
+          required: true
+          description: The id of the player
+          schema:
+            type: string
+      requestBody:
+        description: Command text for server to process
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameTurnSubmission'
+      responses:
+        '200':
+          description: Turn submitted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameTurnResponse'
+        '404':
+          description: Cannot find game or player in game
+        '400':
+          description: Badly-formed request
+        '500':
+          description: Server error
+  /game:
+    get:
+      summary: Retrieve a list of games
+      responses:
+        '200':
+          description: List of games
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfGames'
+    post:
+      summary: Create a new game
+      requestBody:
+          $ref: '#/components/requestBodies/GameBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/GameDetailResponse'
+  /game/{game_id}:
+    put:
+      summary: Update game parameters
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      requestBody:
+        $ref: '#/components/requestBodies/GameBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/GameDetailResponse'
+    delete:
+      summary: Remove game
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      responses:
+        '204':
+          description: Game deleted
+  /game/{game_id}/room:
+    get:
+      summary: Retrieve all rooms in the game
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      responses:
+        '200':
+          description: List of game rooms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfRooms'
+    post:
+      summary: Add a new room to a game
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      requestBody:
+        $ref: '#/components/requestBodies/RoomBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/RoomDetailResponse'
+  /game/{game_id}/room/{room_id}:
+    get:
+      summary: Retrieve room details
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RoomDetailResponse'
+    put:
+      summary: Update room details
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+      requestBody:
+        $ref: '#/components/requestBodies/RoomBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/RoomDetailResponse'
+    delete:
+      summary: Remove room
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+      responses:
+        '201':
+          description: Room deleted
+components:
+  schemas:
+    TurnResponseStatus:
+      type: string
+      enum:
+        - OK
+        - ERROR
+    GameTurnResponse:
+      type: object
+      properties:
+        status: 
+          $ref: '#/components/schemas/TurnResponseStatus'
+        text:
+          type: string
+    GameTurnSubmission:
+      type: object
+      properties:
+        command:
+          type: string
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    GameDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+    GameSubmit:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+    ArrayOfGames:
+      type: array
+      items:
+        $ref: '#/components/schemas/Game'
+    Room:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    RoomDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        exits:
+          type: string
+    RoomSubmit:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        exits:
+          type: string
+    ArrayOfRooms:
+      type: array
+      items:
+        $ref: '#/components/schemas/Room'
+  parameters:
+    gameId:
+      name: game_id
+      in: path
+      required: true
+      description: The id of the game to edit
+      schema:
+        type: string
+    roomId:
+      name: room_id
+      in: path
+      required: true
+      description: The id of the room to edit
+      schema:
+        type: string
+  requestBodies:
+    GameBody:
+      description: Settable Game properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GameSubmit'
+    RoomBody:
+      description: Settable Room properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoomSubmit'
+  responses:
+    GameDetailResponse:
+      description: Game detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GameDetail'
+    RoomDetailResponse:
+      description: Room detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoomDetail'
