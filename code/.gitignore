@@ -8,5 +8,8 @@ dist/
 # Python virtual env
 venv
 
+# DBs
+*.db
+
 # Code generation
 public-schema-client
