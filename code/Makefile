@@ -13,6 +13,8 @@ clean::
 
 realclean: clean
 		rm -fr $(VENV_DIR)
+		find . -name '*.db' -exec rm {} \;
+
 
 
 .PHONY: all clean realclean

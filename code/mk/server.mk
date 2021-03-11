@@ -15,9 +15,9 @@ $(GAME_SERVER): $(VENV)
 servers: $(PUBLIC_API_SERVER) $(GAME_SERVER)
 
 clean::
-	for i in "build dist" ; do \
-		find $(PUBLIC_API_SERVER_DIR) -name "{$i}" -exec rm -fr {} \; ; \
-		find $(GAME_SERVER_DIR) -name "${i}" -exec rm -fr {} \; ; \
+	for i in build dist *.egg-info ; do \
+		find $(PUBLIC_API_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; ; \
+		find $(GAME_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; ; \
 	done
 
 .PHONY: servers

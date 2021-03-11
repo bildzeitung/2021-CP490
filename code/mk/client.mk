@@ -9,7 +9,7 @@ $(CLIENT_SETUP): $(VENV)
 	docker run --rm -v "$$(pwd):/local" -u "$$(id -u):$$(id -g)" \
 		openapitools/openapi-generator-cli \
 		generate \
-    --input-spec /local/public-schema/openapi.yaml \
+    --input-spec /local/openapi/public-schema-server.yaml \
     --generator-name python \
     --output /local/public-schema-client \
 		--additional-properties=packageName=coal_public_api_client
