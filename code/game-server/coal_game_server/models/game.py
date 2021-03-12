@@ -14,4 +14,16 @@ class GameSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Game
         load_instance = True
+        exclude=('timestamp', 'description')
+
+class GameSubmitSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Game
+        load_instance = True
+        exclude=('timestamp', 'id')
+
+class GameDetailSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Game
+        load_instance = True
         exclude=('timestamp',)

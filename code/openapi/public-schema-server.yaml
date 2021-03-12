@@ -60,6 +60,13 @@ paths:
         '201':
           $ref: '#/components/responses/GameDetailResponse'
   /game/{game_id}:
+    get:
+      summary: Retrieve game details
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      responses:
+        '200':
+          $ref: '#/components/responses/GameDetailResponse'
     put:
       summary: Update game parameters
       parameters:

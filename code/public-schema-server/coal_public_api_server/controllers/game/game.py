@@ -12,9 +12,17 @@ def search():
     return rv.json(), 200
 
 
-def post(body):
-    body["id"] = ""
+def get(game_id):
+    try:
+        rv = requests.get(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}")
+        rv.raise_for_status()
+    except Exception:
+        abort(rv.status_code, rv.json()['detail'])
 
+    return rv.json(), 200
+
+
+def post(body):
     # get a list of games
     try:
         rv = requests.get(f"{current_app.config['GAME_SERVER_URL']}/game")
@@ -22,18 +30,12 @@ def post(body):
     except Exception as e:
         abort(500, f"Could not contact game server: {str(e)}")
 
-    # check for duplicate titles
-    title = body.get("title")
-    for g in rv.json():
-        if g["title"] == title:
-            abort(409, f"Already have a game with the title |{title}|")
-
     # submit request to game server
     try:
         rv = requests.post(f"{current_app.config['GAME_SERVER_URL']}/game", json=body)
         rv.raise_for_status()
-    except Exception as e:
-        abort(500, f"Bad POST: {str(e)}")
+    except Exception:
+        abort(rv.status_code, rv.json()['detail'])
 
     return rv.json(), 200
 
@@ -42,11 +44,11 @@ def put():
     pass
 
 
-def delete(id):
+def delete(game_id):
     try:
-        rv = requests.delete(f"{current_app.config['GAME_SERVER_URL']}/game/{id}")
+        rv = requests.delete(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}")
         rv.raise_for_status()
-    except Exception as e:
-        abort(500, f"Game server problem: {str(e)}")
+    except Exception:
+        abort(rv.status_code, rv.json()['detail'])
 
     return make_response(rv.content, 200)
