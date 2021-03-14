@@ -10,6 +10,7 @@ from .config import connex_app
 @attr.s(auto_attribs=True)
 class Config:
     GAME_SERVER_URL: str
+    CONTENT_SERVER_URL: str
 
 
 def load_config(config_path, profile):
