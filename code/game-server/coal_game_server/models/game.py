@@ -1,5 +1,6 @@
 import uuid
 from datetime import datetime
+from marshmallow_sqlalchemy import field_for
 from sqlalchemy_utils import UUIDType
 from ..config import db, ma
 
@@ -25,7 +26,8 @@ class GameSubmitSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Game
         load_instance = True
-        exclude = ("timestamp", "id")
+        exclude = ("timestamp",)
+        id = field_for(Game, "id", dump_only=True)
 
 
 class GameDetailSchema(ma.SQLAlchemyAutoSchema):
