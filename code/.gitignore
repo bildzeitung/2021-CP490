@@ -4,6 +4,7 @@ build/
 dist/
 *.egg-info/
 .pytest_cache/
+.tox
 
 # Python virtual env
 venv
