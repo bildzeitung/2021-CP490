@@ -1,0 +1,189 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: COAL Content Server
+    description: An API for COAL Content Server
+servers:
+- url: /v1
+paths:
+  /room:
+    get:
+      summary: Retrieve all rooms
+      responses:
+        '200':
+          description: List of rooms
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfRooms'
+    post:
+      summary: Add a new room to a game
+      requestBody:
+        $ref: '#/components/requestBodies/RoomBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/RoomDetailResponse'
+  /room/{room_id}:
+    get:
+      summary: Retrieve room details
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RoomDetailResponse'
+    put:
+      summary: Update room details
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+      requestBody:
+        $ref: '#/components/requestBodies/RoomBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/RoomDetailResponse'
+    delete:
+      summary: Remove room
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+      responses:
+        '204':
+          description: Room deleted
+  /room/{room_id}/exit:
+    get:
+      summary: Retrieve exits for a given room
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+      responses:
+        '200':
+          description: List of exits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfExits'
+    post:
+      summary: Add a new exit to a room
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+      requestBody:
+        $ref: '#/components/requestBodies/ExitBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/RoomExitDetailResponse'
+  /room/{room_id}/exit/{exit_id}:
+    get:
+      summary: Retrieve details for a specific exit
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+        - $ref: '#/components/parameters/exitId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RoomExitDetailResponse'
+    delete:
+      summary: Remove exit from room
+      parameters:
+        - $ref: '#/components/parameters/roomId'
+        - $ref: '#/components/parameters/exitId'
+      responses:
+        '204':
+          description: Exit deleted
+components:
+  schemas:
+    Room:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    RoomDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        game_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        exits:
+          $ref: '#/components/schemas/ArrayOfExits'
+    Exit:
+      type: object
+      properties:
+        id:
+          type: string
+        to_room_id:
+          type: string
+        direction:
+          type: string
+    ExitSubmit:
+      type: object
+      properties:
+        to_room_id:
+          type: string
+        direction:
+          type: string
+    RoomSubmit:
+      type: object
+      properties:
+        game_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        exits:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExitSubmit'
+    ArrayOfRooms:
+      type: array
+      items:
+        $ref: '#/components/schemas/Room'
+    ArrayOfExits:
+      type: array
+      items:
+        $ref: '#/components/schemas/Exit'
+  parameters:
+    roomId:
+      name: room_id
+      in: path
+      required: true
+      description: UUID of a room
+      schema:
+        type: string
+    exitId:
+      name: exit_id
+      in: path
+      required: true
+      description: UUID of an exit
+      schema:
+        type: string
+  requestBodies:
+    RoomBody:
+      description: Settable Room properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoomSubmit'
+    ExitBody:
+      description: Settable Exit properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExitSubmit'
+  responses:
+    RoomDetailResponse:
+      description: Room detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/RoomDetail'
+    RoomExitDetailResponse:
+      description: Exit detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Exit'

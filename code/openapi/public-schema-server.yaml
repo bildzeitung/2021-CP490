@@ -189,21 +189,29 @@ components:
       properties:
         id:
           type: string
+        game_id:
+          type: string
         title:
           type: string
         description:
           type: string
         exits:
-          type: string
+          type: array
+          items:
+            type: string
     RoomSubmit:
       type: object
       properties:
+        game_id:
+          type: string
         title:
           type: string
         description:
           type: string
         exits:
-          type: string
+          type: array
+          items:
+            type: string
     ArrayOfRooms:
       type: array
       items:

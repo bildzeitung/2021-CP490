@@ -12,12 +12,20 @@ $(GAME_SERVER): $(VENV)
 	. $(VENV) && pip install -e $(GAME_SERVER_DIR)
 
 
-servers: $(PUBLIC_API_SERVER) $(GAME_SERVER)
+CONTENT_SERVER_DIR:=content-server
+CONTENT_SERVER:=$(CONTENT_SERVER_DIR)/bin/coal_content_server
+
+$(CONTENT_SERVER): $(VENV)
+	. $(VENV) && pip install -e $(CONTENT_SERVER_DIR)
+
+
+servers: $(PUBLIC_API_SERVER) $(GAME_SERVER) $(CONTENT_SERVER)
 
 clean::
 	for i in build dist *.egg-info ; do \
 		find $(PUBLIC_API_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; ; \
 		find $(GAME_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; ; \
+		find $(CONTENT_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; ; \
 	done
 
-.PHONY: servers
+.PHONY: servers clean
