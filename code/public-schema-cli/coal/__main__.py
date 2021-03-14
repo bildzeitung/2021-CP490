@@ -29,7 +29,7 @@ def main(config, profile):
     state = {}
     print(f"Config: {config}")
 
-    mr = MetaRunner(config, state)
+    mr = MetaRunner.from_config(config, state)
     cr = ContentRunner(config, state)
     while True:
         cmd = session.prompt("> ")
