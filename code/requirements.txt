@@ -1,4 +1,6 @@
 black
 build
 flake8
+pytest
+pytest-flask
 tox
