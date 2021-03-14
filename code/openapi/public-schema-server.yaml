@@ -85,12 +85,12 @@ paths:
           description: Game deleted
   /game/{game_id}/room:
     get:
-      summary: Retrieve all rooms in the game
+      summary: Retrieve all rooms
       parameters:
         - $ref: '#/components/parameters/gameId'
       responses:
         '200':
-          description: List of game rooms
+          description: List of rooms
           content:
             application/json:
               schema:
@@ -129,8 +129,50 @@ paths:
         - $ref: '#/components/parameters/gameId'
         - $ref: '#/components/parameters/roomId'
       responses:
-        '201':
+        '204':
           description: Room deleted
+  /game/{game_id}/room/{room_id}/exit:
+    get:
+      summary: Retrieve exits for a given room
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+      responses:
+        '200':
+          description: List of exits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfExits'
+    post:
+      summary: Add a new exit to a room
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+      requestBody:
+        $ref: '#/components/requestBodies/ExitBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/RoomExitDetailResponse'
+  /game/{game_id}/room/{room_id}/exit/{exit_id}:
+    get:
+      summary: Retrieve details for a specific exit
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+        - $ref: '#/components/parameters/exitId'
+      responses:
+        '200':
+          $ref: '#/components/responses/RoomExitDetailResponse'
+    delete:
+      summary: Remove exit from room
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/roomId'
+        - $ref: '#/components/parameters/exitId'
+      responses:
+        '204':
+          description: Exit deleted
 components:
   schemas:
     TurnResponseStatus:
@@ -196,9 +238,23 @@ components:
         description:
           type: string
         exits:
-          type: array
-          items:
-            type: string
+          $ref: '#/components/schemas/ArrayOfExits'
+    Exit:
+      type: object
+      properties:
+        id:
+          type: string
+        to_room_id:
+          type: string
+        direction:
+          type: string
+    ExitSubmit:
+      type: object
+      properties:
+        to_room_id:
+          type: string
+        direction:
+          type: string
     RoomSubmit:
       type: object
       properties:
@@ -211,11 +267,15 @@ components:
         exits:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/ExitSubmit'
     ArrayOfRooms:
       type: array
       items:
         $ref: '#/components/schemas/Room'
+    ArrayOfExits:
+      type: array
+      items:
+        $ref: '#/components/schemas/Exit'
   parameters:
     gameId:
       name: game_id
@@ -228,7 +288,14 @@ components:
       name: room_id
       in: path
       required: true
-      description: The id of the room to edit
+      description: UUID of a room
+      schema:
+        type: string
+    exitId:
+      name: exit_id
+      in: path
+      required: true
+      description: UUID of an exit
       schema:
         type: string
   requestBodies:
@@ -246,6 +313,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RoomSubmit'
+    ExitBody:
+      description: Settable Exit properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ExitSubmit'
   responses:
     GameDetailResponse:
       description: Game detail
@@ -259,3 +333,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/RoomDetail'
+    RoomExitDetailResponse:
+      description: Exit detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Exit'
