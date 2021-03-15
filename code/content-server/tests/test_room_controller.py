@@ -12,7 +12,7 @@ def test_post_of_two_rooms(testapp):
         "game_id": "00000000-0000-0000-0000-000000000000",
     }
     rv1 = testapp.post("/v1/room", json=room1)
-    assert rv1.status_code == 200
+    assert rv1.status_code == 201
     assert rv1.json["id"]
 
     room2 = {
@@ -22,7 +22,7 @@ def test_post_of_two_rooms(testapp):
         "game_id": "00000000-0000-0000-0000-000000000000",
     }
     rv = testapp.post("/v1/room", json=room2)
-    assert rv.status_code == 200
+    assert rv.status_code == 201
     assert len(rv.json["exits"]) == 1
     assert rv.json["exits"][0]["to_room_id"] == rv1.json["id"]
 
@@ -37,7 +37,7 @@ def room(testapp):
             "game_id": "00000000-0000-0000-0000-000000000000",
         }
         rv = testapp.post("/v1/room", json=room)
-        assert rv.status_code == 200
+        assert rv.status_code == 201
         assert rv.json["id"]
         return rv.json
 
@@ -56,12 +56,12 @@ def test_delete_of_room_with_exits(testapp, room):
 
     exit = {"to_room_id": r2["id"], "direction": "north"}
     rv = testapp.post(f'/v1/room/{r1["id"]}/exit', json=exit)
-    assert rv.status_code == 200
+    assert rv.status_code == 201
     assert rv.json["id"]
 
     exit = {"to_room_id": r1["id"], "direction": "south"}
     rv = testapp.post(f'/v1/room/{r2["id"]}/exit', json=exit)
-    assert rv.status_code == 200
+    assert rv.status_code == 201
     assert rv.json["id"]
 
     # only 2 room exits were added, so validate
