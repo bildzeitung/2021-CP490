@@ -4,7 +4,7 @@ import click
 from prompt_toolkit import PromptSession
 
 from .config import load_config
-from .runners import MetaRunner, ContentRunner
+from .runners import MetaRunner, ContentRunner, Api
 
 session = PromptSession()
 
@@ -29,17 +29,17 @@ def main(config, profile):
     state = {}
     print(f"Config: {config}")
 
-    mr = MetaRunner.from_config(config, state)
-    cr = ContentRunner(config, state)
+    api = Api.from_config(config)
+    mr = MetaRunner(api, state)
+    cr = ContentRunner(api, state)
     while True:
         cmd = session.prompt("> ")
-        if cmd.startswith('/'):
+        if cmd.startswith("/"):
             mr.run(cmd[1:])
         elif cmd.startswith(";"):
             cr.run(cmd[1:])
         else:
             print("UNHANDLED")
-            
 
 
 if __name__ == "__main__":
