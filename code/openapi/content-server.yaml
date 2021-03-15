@@ -9,6 +9,8 @@ paths:
   /room:
     get:
       summary: Retrieve all rooms
+      parameters:
+        - $ref: '#/components/parameters/gameId'
       responses:
         '200':
           description: List of rooms
@@ -157,6 +159,13 @@ components:
       in: path
       required: true
       description: UUID of an exit
+      schema:
+        type: string
+    gameId:
+      name: game_id
+      in: query
+      required: false
+      description: Game ID
       schema:
         type: string
   requestBodies:

@@ -53,7 +53,7 @@ class RoomSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Room
         load_instance = True
-        exclude = ("timestamp", "description", "game_id")
+        exclude = ("timestamp", "description", "game_id", "exit_to_me")
 
 
 class RoomSubmitSchema(SQLAlchemyAutoSchema):
@@ -71,6 +71,6 @@ class RoomDetailSchema(SQLAlchemyAutoSchema):
         model = Room
         load_instance = True
         include_relationships = True
-        exclude = ("timestamp",)
+        exclude = ("timestamp", "exit_to_me")
 
     exits = fields.Nested(ExitSchema, many=True)

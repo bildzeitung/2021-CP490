@@ -3,8 +3,11 @@ from ...db import db
 from ...models import Room, RoomSchema, RoomDetailSchema, RoomSubmitSchema, RoomExit
 
 
-def search():
-    rooms = Room.query.all()
+def search(game_id=None):
+    if game_id:
+        rooms = Room.query.filter(Room.game_id == game_id).all()
+    else:
+        rooms = Room.query.all()
     return RoomSchema(many=True).dump(rooms)
 
 
@@ -18,7 +21,8 @@ def get(room_id):
 
 def post(body):
     title = body.get("title")
-    existing = Room.query.filter(Room.title == title).one_or_none()
+    game_id = body.get("game_id")
+    existing = Room.query.filter(Room.title == title).filter(Room.game_id == game_id).one_or_none()
 
     if existing is not None:
         abort(409, f"A room with this title: '{title}' already exists.")

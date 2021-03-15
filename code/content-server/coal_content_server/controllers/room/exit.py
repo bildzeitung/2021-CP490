@@ -1,6 +1,6 @@
 from flask import abort
 from ...db import db
-from ...models import Room, ExitSubmitSchema
+from ...models import Room, ExitSubmitSchema, ExitSchema
 
 
 def search():
@@ -18,7 +18,7 @@ def post(room_id, body):
     db.session.add(new)
     db.session.commit()
 
-    return schema.dump(new), 200
+    return ExitSchema().dump(new), 201
 
 
 def get():
