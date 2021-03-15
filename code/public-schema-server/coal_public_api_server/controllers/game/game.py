@@ -51,4 +51,4 @@ def delete(game_id):
     except Exception:
         abort(rv.status_code, rv.json()['detail'])
 
-    return make_response(rv.content, 200)
+    return make_response(rv.content, 204)

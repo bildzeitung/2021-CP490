@@ -84,6 +84,17 @@ class MetaRunner:
                     print(f"|{title}| is deleted.")
                     return
             print(f"Game {title} not found!")
+    
+    def _cmd_join(self):
+      """Join the game in your configuration"""
+      with self.api.api() as api:
+        rv = api.game_get()
+        for game in rv.value:
+          if game.title == self.api.game:
+            self.state.game = game.id
+            print(f"Joined {game.title}")
+            return
+        print(f"Could not find '{self.game}' on server")
 
     def run(self, command):
         (cmd, *args) = command.split()
@@ -94,14 +105,3 @@ class MetaRunner:
         else:
             print("I don't know that command")
             return
-        """
-    if cmd == "join":  # join a game on the server with the player
-      with self.api.api() as api:
-        rv = api.game_get()
-        for game in rv.value:
-          if game.title == self.api.game:
-            self.state['game_id'] = game.id
-            print(f"Joined {game.title}")
-            return
-        print(f"Could not find '{self.game}' on server")
-    """

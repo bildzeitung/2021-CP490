@@ -5,6 +5,7 @@ from prompt_toolkit import PromptSession
 
 from .config import load_config
 from .runners import MetaRunner, ContentRunner, Api
+from .state import State
 
 session = PromptSession()
 
@@ -26,7 +27,7 @@ session = PromptSession()
 )
 def main(config, profile):
     config = load_config(config, profile)
-    state = {}
+    state = State()
     print(f"Config: {config}")
 
     api = Api.from_config(config)
