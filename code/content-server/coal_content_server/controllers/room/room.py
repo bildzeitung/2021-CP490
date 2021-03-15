@@ -39,7 +39,7 @@ def post(body):
         new.exits.append(RoomExit(direction=e["direction"], to_room_id=e["to_room_id"]))
     db.session.commit()
 
-    return schema.dump(new), 200
+    return schema.dump(new), 201
 
 
 def put():

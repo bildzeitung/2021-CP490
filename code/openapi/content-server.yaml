@@ -87,6 +87,49 @@ paths:
       responses:
         '204':
           description: Exit deleted
+  /item:
+    get:
+      summary: Retrieve all items
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      responses:
+        '200':
+          description: List of items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfItems'
+    post:
+      summary: Add a new item to a game
+      requestBody:
+        $ref: '#/components/requestBodies/ItemBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/ItemDetailResponse'
+  /item/{item_id}:
+    get:
+      summary: Retrieve item details
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      responses:
+        '200':
+          $ref: '#/components/responses/ItemDetailResponse'
+    put:
+      summary: Update item details
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      requestBody:
+        $ref: '#/components/requestBodies/ItemBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/ItemDetailResponse'
+    delete:
+      summary: Remove item
+      parameters:
+        - $ref: '#/components/parameters/itemId'
+      responses:
+        '204':
+          description: Item deleted
 components:
   schemas:
     Room:
@@ -146,6 +189,60 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Exit'
+  
+    Item:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    ItemDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        game_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        aliases:
+          type: array
+          items:
+            type: string
+        attack:
+          type: integer
+        defense:
+          type: integer
+        location:
+          type: string
+          nullable: true
+    ItemSubmit:
+      type: object
+      properties:
+        game_id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        aliases:
+          type: array
+          items:
+            type: string
+        attack:
+          type: integer
+        defense:
+          type: integer
+        location:
+          type: string
+          nullable: true
+    ArrayOfItems:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item'
   parameters:
     roomId:
       name: room_id
@@ -168,6 +265,13 @@ components:
       description: Game ID
       schema:
         type: string
+    itemId:
+      name: item_id
+      in: path
+      required: true
+      description: Item ID
+      schema:
+        type: string        
   requestBodies:
     RoomBody:
       description: Settable Room properties
@@ -183,6 +287,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ExitSubmit'
+    ItemBody:
+      description: Settable Item properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemSubmit'
   responses:
     RoomDetailResponse:
       description: Room detail
@@ -196,3 +307,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Exit'
+    ItemDetailResponse:
+      description: Item detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ItemDetail'
