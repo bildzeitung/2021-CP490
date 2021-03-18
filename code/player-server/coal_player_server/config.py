@@ -4,14 +4,12 @@ import connexion
 from connexion.resolver import RestyResolver
 from .db import db
 
-dbpath = Path(__file__).parent / "coal-content.db"
+dbpath = Path(__file__).parent / "coal-player.db"
 
 
 class DefaultConfig:
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:////" + str(
-        dbpath
-    )
+    SQLALCHEMY_DATABASE_URI = "sqlite:////" + str(dbpath)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
@@ -21,7 +19,7 @@ def create_app(config_object):  # Create the Connexion application instance
         __name__,
         specification_dir="./openapi",
         options=connex_options,
-        resolver=RestyResolver("coal_content_server.controllers"),
+        resolver=RestyResolver("coal_player_server.controllers"),
     )
 
     # Get & configure the underlying Flask app instance

@@ -1,5 +1,5 @@
 from .config import db, dbpath, create_app, DefaultConfig
-from .models import Room
+from .models import Player
 
 
 def build_database():

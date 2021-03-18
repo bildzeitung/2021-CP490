@@ -12,6 +12,7 @@ class Config:
 
     url: str
     game: str
+    player: str
     character: str
 
 

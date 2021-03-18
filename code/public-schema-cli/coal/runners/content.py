@@ -1,4 +1,5 @@
 import attr
+from tabulate import tabulate
 
 from coal_public_api_client.models import RoomSubmit, ExitSubmit
 from coal_public_api_client.exceptions import ApiException, ServiceException
@@ -14,8 +15,7 @@ class ContentRunner:
         with self.api.api() as api:
             try:
                 rv = api.game_game_id_room_get(self.state.game)
-                for r in rv.value:
-                    print(f"{r.id}: {r.title}")
+                print(tabulate([r.id, r.title] for r in rv.value))
             except ServiceException:
                 print("Problem with API server (is the content server up?)")
 
@@ -32,9 +32,9 @@ class ContentRunner:
             try:
                 room = RoomSubmit(title=title, description=desc)
                 api.game_game_id_room_post(self.state.game, room)
-                print(f"Created |{title}|")
+                print(f"Created '{title}'")
             except ApiException as e:
-                print(f"Cannot create |{title}|: {e.body}")
+                print(f"Cannot create '{title}': {e.body}")
 
     def _get_room_id_from_title(self, title):
         with self.api.api() as api:
@@ -53,18 +53,19 @@ class ContentRunner:
 
         room_id = self._get_room_id_from_title(title)
         if not room_id:
-            print(f"Cannot find room: |title|")
+            print(f"Cannot find room: 'title'")
             return
         with self.api.api() as api:
             try:
                 rv = api.game_game_id_room_room_id_get(self.state.game, room_id)
-                print(f"{rv.title}: {rv.description} {rv.exits}")
+                print(tabulate([k, v] for k, v in rv.to_dict().items()))
             except ApiException as e:
                 print(f"Cannot get room details: {e.body}")
 
     def _cmd_add_exit(self, *args):
         if not args or len(args) < 4:
             print("Need: <direction> <from> -> <to>")
+            return
         d, from_room, _, to_room = args
         from_rid = self._get_room_id_from_title(from_room)
         to_rid = self._get_room_id_from_title(to_room)

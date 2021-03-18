@@ -9,7 +9,7 @@ def search():
     except Exception as e:
         abort(500, f"Could not contact game server: {str(e)}")
 
-    return rv.json(), 200
+    return rv.json(), rv.status_code
 
 
 def get(game_id):
@@ -19,29 +19,29 @@ def get(game_id):
     except Exception:
         abort(rv.status_code, rv.json()['detail'])
 
-    return rv.json(), 200
+    return rv.json(), rv.status_code
 
 
 def post(body):
-    # get a list of games
-    try:
-        rv = requests.get(f"{current_app.config['GAME_SERVER_URL']}/game")
-        rv.raise_for_status()
-    except Exception as e:
-        abort(500, f"Could not contact game server: {str(e)}")
-
-    # submit request to game server
     try:
         rv = requests.post(f"{current_app.config['GAME_SERVER_URL']}/game", json=body)
         rv.raise_for_status()
     except Exception:
         abort(rv.status_code, rv.json()['detail'])
 
-    return rv.json(), 200
+    return rv.json(), rv.status_code
 
 
-def put():
-    pass
+def put(game_id, body):
+    # submit request to game server
+    try:
+        rv = requests.put(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}", json=body)
+        rv.raise_for_status()
+    except Exception:
+        abort(rv.status_code, rv.json()['detail'])
+
+    return rv.json(), rv.status_code
+    
 
 
 def delete(game_id):
@@ -51,4 +51,4 @@ def delete(game_id):
     except Exception:
         abort(rv.status_code, rv.json()['detail'])
 
-    return make_response(rv.content, 204)
+    return make_response(rv.content, rv.status_code)

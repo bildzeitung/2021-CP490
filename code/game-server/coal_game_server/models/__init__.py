@@ -1,1 +1,1 @@
-from .game import Game, GameSchema, GameSubmitSchema, GameDetailSchema
+from .game import Game, GameSchema, GameSubmitSchema, GameDetailSchema, GameProperty

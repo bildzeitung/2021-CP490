@@ -1,6 +1,6 @@
 from flask import make_response, abort
-from ..config import db
-from ..models import Game, GameSchema, GameSubmitSchema, GameDetailSchema
+from ...config import db
+from ...models import Game, GameSchema, GameSubmitSchema, GameDetailSchema, GameProperty
 
 
 def search():
@@ -33,8 +33,20 @@ def post(body):
     return data, 200
 
 
-def put():
-    pass
+def put(game_id, body):
+    game = Game.query.filter(Game.id == game_id).one_or_none()
+    if not game:
+        abort(404, f"Could not find game {game_id}")
+
+    props = body.get("properties")
+    if props is not None:
+        # delete existing properties
+        game.properties.clear()
+        # replace with incoming
+        game.properties.extend(GameProperty(title=k, value=v, game_id=game_id) for k, v in props.items())
+        db.session.commit()
+
+    return GameDetailSchema().dump(game), 200
 
 
 def delete(game_id):
@@ -45,4 +57,4 @@ def delete(game_id):
     db.session.delete(game)
     db.session.commit()
 
-    return make_response(f"Deleted {game_id}", 200)
+    return make_response(f"Deleted {game_id}", 204)

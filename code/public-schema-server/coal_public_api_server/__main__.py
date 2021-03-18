@@ -11,6 +11,7 @@ from .config import connex_app
 class Config:
     GAME_SERVER_URL: str
     CONTENT_SERVER_URL: str
+    PLAYER_SERVER_URL: str
 
 
 def load_config(config_path, profile):

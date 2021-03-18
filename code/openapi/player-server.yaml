@@ -1,0 +1,195 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: COAL Player Server
+    description: An API for players and their characters
+servers:
+- url: /v1
+paths:
+  /player:
+    get:
+      summary: Retrieve a list of players
+      responses:
+        '200':
+          description: List of players
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfPlayers'
+    post:
+      summary: Create a new player
+      requestBody:
+          $ref: '#/components/requestBodies/PlayerBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/PlayerDetailResponse'
+  /player/{player_id}:
+    get:
+      summary: Retrieve player details
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PlayerDetailResponse'
+    put:
+      summary: Update player parameters
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+      requestBody:
+        $ref: '#/components/requestBodies/PlayerBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/PlayerDetailResponse'
+    delete:
+      summary: Remove player
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+      responses:
+        '204':
+          description: Player deleted
+  /player/{player_id}/character:
+    get:
+      summary: Retrieve a list of player characters
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+      responses:
+        '200':
+          description: List of player characters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ArrayOfCharacters'
+    post:
+      summary: Create a new player character
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+      requestBody:
+          $ref: '#/components/requestBodies/CharacterBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/CharacterDetailResponse'
+  /player/{player_id}/character/{character_id}:
+    get:
+      summary: Retrieve player character details
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+        - $ref: '#/components/parameters/characterId'
+      responses:
+        '200':
+          $ref: '#/components/responses/CharacterDetailResponse'
+    delete:
+      summary: Remove player character
+      parameters:
+        - $ref: '#/components/parameters/playerId'
+        - $ref: '#/components/parameters/characterId'
+      responses:
+        '204':
+          description: Player deleted
+components:
+  schemas:
+    Player:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    PlayerSubmit:
+      type: object
+      properties:
+        title:
+          type: string
+    PlayerDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        characters:
+          $ref: '#/components/schemas/ArrayOfCharacters'
+    ArrayOfPlayers:
+      type: array
+      items:
+        $ref: '#/components/schemas/Player'
+
+    Character:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+    CharacterSubmit:
+      type: object
+      properties:
+        title:
+          type: string
+    CharacterDetail:
+      type: object
+      properties:
+        id:
+          type: string
+        game_id:
+          type: string
+        player_id:
+          type: string
+        title:
+          type: string
+        location:
+          type: string
+    ArrayOfCharacters:
+      type: array
+      items:
+        $ref: '#/components/schemas/Character'
+  
+  parameters:
+    gameId:
+      name: game_id
+      in: path
+      required: true
+      description: The id of the game to edit
+      schema:
+        type: string
+    playerId:
+      name: player_id
+      in: path
+      required: true
+      description: Player ID
+      schema:
+        type: string
+    characterId:
+      name: character_id
+      in: path
+      required: true
+      description: Player Character ID
+      schema:
+        type: string
+  requestBodies:
+    PlayerBody:
+      description: Settable Player properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PlayerSubmit'
+    CharacterBody:
+      description: Settable Player Character properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterSubmit'
+  responses:
+    PlayerDetailResponse:
+      description: Player detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PlayerDetail'
+    CharacterDetailResponse:
+      description: Character detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterDetail'

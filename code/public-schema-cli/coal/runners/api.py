@@ -10,6 +10,8 @@ from coal_public_api_client.api.default_api import DefaultApi
 class Api:
     config = attr.ib()
     game = attr.ib()
+    player = attr.ib()
+    character = attr.ib()
 
     @contextmanager
     def api(self):
@@ -20,4 +22,6 @@ class Api:
     def from_config(cls, incoming_config):
         config = Configuration(incoming_config.url)
         game = incoming_config.game
-        return cls(config, game)
+        player = incoming_config.player
+        character = incoming_config.character
+        return cls(config, game, player, character)
