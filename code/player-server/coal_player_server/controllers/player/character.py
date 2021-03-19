@@ -16,7 +16,11 @@ def get():
 
 def post(player_id, body):
     title = body.get("title")
-    existing = Character.query.filter(Character.player_id == player_id).filter(Character.title == title).one_or_none()
+    existing = (
+        Character.query.filter(Character.player_id == player_id)
+        .filter(Character.title == title)
+        .one_or_none()
+    )
 
     if existing is not None:
         abort(409, f"A player with this title: '{title}' already exists.")
@@ -42,4 +46,3 @@ def delete(player_id, character_id):
     db.session.commit()
 
     return make_response(f"Deleted {character_id}", 204)
-

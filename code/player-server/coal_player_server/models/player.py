@@ -8,7 +8,9 @@ from ..db import db
 class Item(db.Model):
     __tablename__ = "character_items"
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    character_id = db.Column(UUIDType(binary=False), db.ForeignKey("player_characters.id"))
+    character_id = db.Column(
+        UUIDType(binary=False), db.ForeignKey("player_characters.id")
+    )
     item_id = db.Column(UUIDType(binary=False), default=uuid.uuid4)
     timestamp = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
@@ -72,6 +74,10 @@ class CharacterSubmitSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Character
         load_instance = True
-        exclude = ("timestamp", "items",)
+        exclude = (
+            "timestamp",
+            "items",
+        )
         include_fk = True
+
     id = field_for(Character, "id", dump_only=True)

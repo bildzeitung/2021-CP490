@@ -27,6 +27,7 @@ def post(body):
 
     return schema.dump(new), 201
 
+
 def put():
     pass
 
