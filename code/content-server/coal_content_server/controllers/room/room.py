@@ -22,7 +22,11 @@ def get(room_id):
 def post(body):
     title = body.get("title")
     game_id = body.get("game_id")
-    existing = Room.query.filter(Room.title == title).filter(Room.game_id == game_id).one_or_none()
+    existing = (
+        Room.query.filter(Room.title == title)
+        .filter(Room.game_id == game_id)
+        .one_or_none()
+    )
 
     if existing is not None:
         abort(409, f"A room with this title: '{title}' already exists.")

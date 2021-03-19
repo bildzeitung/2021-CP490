@@ -46,7 +46,7 @@ class ExitSubmitSchema(SQLAlchemyAutoSchema):
         model = RoomExit
         load_instance = True
         include_fk = True
-        exclude = ("timestamp", )
+        exclude = ("timestamp",)
 
 
 class RoomSchema(SQLAlchemyAutoSchema):

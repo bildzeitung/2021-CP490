@@ -1,14 +1,18 @@
 def search():
-  pass
+    pass
+
 
 def get():
-  pass
+    pass
+
 
 def post():
-  pass
+    pass
+
 
 def put():
-  pass
+    pass
+
 
 def delete():
-  pass
+    pass

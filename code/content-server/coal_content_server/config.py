@@ -9,9 +9,7 @@ dbpath = Path(__file__).parent / "coal-content.db"
 
 class DefaultConfig:
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:////" + str(
-        dbpath
-    )
+    SQLALCHEMY_DATABASE_URI = "sqlite:////" + str(dbpath)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
