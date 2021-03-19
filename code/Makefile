@@ -4,6 +4,7 @@
 include mk/venv.mk
 include mk/client.mk
 include mk/server.mk
+include mk/qol.mk
 
 all: client servers
 	@echo "All done."
