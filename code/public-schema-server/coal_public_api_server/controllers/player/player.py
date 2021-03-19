@@ -22,19 +22,23 @@ def post(body):
 
     # submit request to game server
     try:
-        rv = requests.post(f"{current_app.config['PLAYER_SERVER_URL']}/player", json=body)
+        rv = requests.post(
+            f"{current_app.config['PLAYER_SERVER_URL']}/player", json=body
+        )
         rv.raise_for_status()
     except Exception:
-        abort(rv.status_code, rv.json()['detail'])
+        abort(rv.status_code, rv.json()["detail"])
 
     return rv.json(), 200
 
 
 def get():
-  pass
+    pass
+
 
 def put():
-  pass
+    pass
+
 
 def delete():
-  pass
+    pass

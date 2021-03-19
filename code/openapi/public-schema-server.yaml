@@ -6,37 +6,17 @@ info:
 servers:
 - url: /v1
 paths:
-  /turn/{game_id}/{player}:
+  /game/{game_id}/character/{character_id}/turn:
     post:
       summary: Submit player turn
       parameters:
         - $ref: '#/components/parameters/gameId'
-        - name: player
-          in: path
-          required: true
-          description: The id of the player
-          schema:
-            type: string
+        - $ref: '#/components/parameters/characterId'
       requestBody:
-        description: Command text for server to process
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GameTurnSubmission'
+        $ref: '#/components/requestBodies/TurnBody'
       responses:
-        '200':
-          description: Turn submitted successfully
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GameTurnResponse'
-        '404':
-          description: Cannot find game or player in game
-        '400':
-          description: Badly-formed request
-        '500':
-          description: Server error
+        '201':
+          $ref: '#/components/responses/TurnDetailResponse'
   /game:
     get:
       summary: Retrieve a list of games
@@ -304,14 +284,14 @@ components:
       enum:
         - OK
         - ERROR
-    GameTurnResponse:
+    TurnDetail:
       type: object
       properties:
         status: 
           $ref: '#/components/schemas/TurnResponseStatus'
         text:
           type: string
-    GameTurnSubmission:
+    TurnSubmit:
       type: object
       properties:
         command:
@@ -520,7 +500,6 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Character'
-  
   parameters:
     gameId:
       name: game_id
@@ -565,6 +544,13 @@ components:
       schema:
         type: string
   requestBodies:
+    TurnBody:
+      description: Turn submission
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TurnSubmit'
     GameBody:
       description: Settable Game properties
       required: true
@@ -608,6 +594,12 @@ components:
           schema:
             $ref: '#/components/schemas/CharacterSubmit'
   responses:
+    TurnDetailResponse:
+      description: Turn submission response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TurnDetail'
     GameDetailResponse:
       description: Game detail
       content:

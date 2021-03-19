@@ -3,19 +3,24 @@ from flask import current_app, abort
 
 
 def search():
-  pass
+    pass
+
 
 def get():
-  pass
+    pass
+
 
 def delete():
-  pass
+    pass
+
 
 def post(game_id, room_id, body):
-  try:
-      rv = requests.post(f"{current_app.config['CONTENT_SERVER_URL']}/room/{room_id}/exit", json=body)
-      rv.raise_for_status()
-  except Exception:
-      abort(rv.status_code, rv.json()['detail'])
+    try:
+        rv = requests.post(
+            f"{current_app.config['CONTENT_SERVER_URL']}/room/{room_id}/exit", json=body
+        )
+        rv.raise_for_status()
+    except Exception:
+        abort(rv.status_code, rv.json()["detail"])
 
-  return rv.json(), 201
+    return rv.json(), 201

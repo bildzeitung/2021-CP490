@@ -17,7 +17,7 @@ def get(game_id):
         rv = requests.get(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}")
         rv.raise_for_status()
     except Exception:
-        abort(rv.status_code, rv.json()['detail'])
+        abort(rv.status_code, rv.json()["detail"])
 
     return rv.json(), rv.status_code
 
@@ -27,7 +27,7 @@ def post(body):
         rv = requests.post(f"{current_app.config['GAME_SERVER_URL']}/game", json=body)
         rv.raise_for_status()
     except Exception:
-        abort(rv.status_code, rv.json()['detail'])
+        abort(rv.status_code, rv.json()["detail"])
 
     return rv.json(), rv.status_code
 
@@ -35,13 +35,14 @@ def post(body):
 def put(game_id, body):
     # submit request to game server
     try:
-        rv = requests.put(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}", json=body)
+        rv = requests.put(
+            f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}", json=body
+        )
         rv.raise_for_status()
     except Exception:
-        abort(rv.status_code, rv.json()['detail'])
+        abort(rv.status_code, rv.json()["detail"])
 
     return rv.json(), rv.status_code
-    
 
 
 def delete(game_id):
@@ -49,6 +50,6 @@ def delete(game_id):
         rv = requests.delete(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}")
         rv.raise_for_status()
     except Exception:
-        abort(rv.status_code, rv.json()['detail'])
+        abort(rv.status_code, rv.json()["detail"])
 
     return make_response(rv.content, rv.status_code)
