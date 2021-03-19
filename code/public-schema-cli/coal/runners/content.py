@@ -4,10 +4,11 @@ from tabulate import tabulate
 from coal_public_api_client.models import RoomSubmit, ExitSubmit
 from coal_public_api_client.exceptions import ApiException, ServiceException
 
+
 @attr.s
 class ContentRunner:
-    """ Prefix commands to add content to the game
-    """
+    """Prefix commands to add content to the game"""
+
     api = attr.ib()
     state = attr.ib()
 
@@ -73,7 +74,9 @@ class ContentRunner:
         with self.api.api() as api:
             try:
                 es = ExitSubmit(to_room_id=to_rid, direction=d)
-                rv = api.game_game_id_room_room_id_exit_post(self.state.game, from_rid, es)
+                rv = api.game_game_id_room_room_id_exit_post(
+                    self.state.game, from_rid, es
+                )
                 print(rv)
             except ApiException as e:
                 print(f"Cannot add exit: {e.body}")

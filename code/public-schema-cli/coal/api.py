@@ -8,6 +8,12 @@ from coal_public_api_client.api.default_api import DefaultApi
 
 @attr.s
 class Api:
+    """Wrapper for using the API Client
+
+    - contains configuration
+    - makes use a little easier with a contextmanager
+    """
+
     config = attr.ib()
     game = attr.ib()
     player = attr.ib()

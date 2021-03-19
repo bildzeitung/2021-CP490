@@ -4,7 +4,8 @@ import click
 from prompt_toolkit import PromptSession
 
 from .config import load_config
-from .runners import MetaRunner, ContentRunner, Api
+from .runners import MetaRunner, ContentRunner, GameRunner
+from .api import Api
 from .state import State
 
 session = PromptSession()
@@ -33,14 +34,15 @@ def main(config, profile):
     api = Api.from_config(config)
     mr = MetaRunner(api, state)
     cr = ContentRunner(api, state)
+    gr = GameRunner(api, state)
     while True:
         cmd = session.prompt("> ")
         if cmd.startswith("/"):
             mr.run(cmd[1:])
         elif cmd.startswith(";"):
             cr.run(cmd[1:])
-        else:
-            print("UNHANDLED")
+        else:  # tell the game engine!
+            gr.run(cmd.strip())
 
 
 if __name__ == "__main__":

@@ -19,6 +19,7 @@ def load_config(config_path, profile):
         config = toml.load(f)
     return Config(**{k.upper(): v for k, v in config[profile].items()})
 
+
 @click.command()
 @click.option(
     "--config",

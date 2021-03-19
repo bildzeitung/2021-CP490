@@ -43,7 +43,9 @@ def put(game_id, body):
         # delete existing properties
         game.properties.clear()
         # replace with incoming
-        game.properties.extend(GameProperty(title=k, value=v, game_id=game_id) for k, v in props.items())
+        game.properties.extend(
+            GameProperty(title=k, value=v, game_id=game_id) for k, v in props.items()
+        )
         db.session.commit()
 
     return GameDetailSchema().dump(game), 200

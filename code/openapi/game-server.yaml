@@ -57,6 +57,17 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/CharacterDetailResponse'
+  /game/{game_id}/character/{character_id}/turn:
+    post:
+      summary: Submit player turn
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/characterId'
+      requestBody:
+        $ref: '#/components/requestBodies/TurnBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/TurnDetailResponse'
 components:
   schemas:
     Game:
@@ -114,12 +125,36 @@ components:
           type: string
         location:
           type: string
+    TurnResponseStatus:
+      type: string
+      enum:
+        - OK
+        - ERROR
+    TurnDetail:
+      type: object
+      properties:
+        status: 
+          $ref: '#/components/schemas/TurnResponseStatus'
+        text:
+          type: string
+    TurnSubmit:
+      type: object
+      properties:
+        command:
+          type: string
   parameters:
     gameId:
       name: game_id
       in: path
       required: true
       description: The id of the game to edit
+      schema:
+        type: string
+    characterId:
+      name: character_id
+      in: path
+      required: true
+      description: Player Character ID
       schema:
         type: string
   requestBodies:
@@ -136,7 +171,14 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/CharacterSubmit'    
+            $ref: '#/components/schemas/CharacterSubmit'
+    TurnBody:
+      description: Turn submission
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TurnSubmit'
   responses:
     GameDetailResponse:
       description: Game detail
@@ -150,3 +192,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CharacterDetail'
+    TurnDetailResponse:
+      description: Turn submission response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TurnDetail'

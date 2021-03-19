@@ -93,70 +93,77 @@ class MetaRunner:
                     print(f"'{title}'' is deleted.")
                     return
             print(f"Game {title} not found!")
-    
+
     def _get_game_id(self):
-      with self.api.api() as api:
-        rv = api.game_get()
-        for game in rv.value:
-          if game.title == self.api.game:
-            return game.id
+        with self.api.api() as api:
+            rv = api.game_get()
+            for game in rv.value:
+                if game.title == self.api.game:
+                    return game.id
 
     def _get_player_id(self):
-      with self.api.api() as api:
-        rv = api.player_get()
-        for p in rv.value:
-          if p.title == self.api.player:
-            return p.id
+        with self.api.api() as api:
+            rv = api.player_get()
+            for p in rv.value:
+                if p.title == self.api.player:
+                    return p.id
 
     def _get_character_id(self):
-      with self.api.api() as api:
-        rv = api.player_player_id_character_get(self.state.player)
-        for c in rv.value:
-          if c.title == self.api.character:
-            return c.id
+        with self.api.api() as api:
+            rv = api.player_player_id_character_get(self.state.player)
+            for c in rv.value:
+                if c.title == self.api.character:
+                    return c.id
 
     def _create_character(self):
         with self.api.api() as api:
             c = CharacterSubmit(title=self.api.character)
-            rv = api.game_game_id_player_player_id_character_post(self.state.game, self.state.player, c)
+            rv = api.game_game_id_player_player_id_character_post(
+                self.state.game, self.state.player, c
+            )
             return rv.id
 
     def _cmd_join(self):
-      """Join the game in your configuration"""
+        """Join the game in your configuration"""
 
-      # get game id from server
-      gid = self._get_game_id()
-      if gid:
-        self.state.game = gid
-        print(f"Found game '{self.api.game}' [{gid}]")
-      else:
-        print(f"Could not find '{self.api.game}' on server")
+        # get game id from server
+        try:
+            gid = self._get_game_id()
+            if gid:
+                self.state.game = gid
+                print(f"Found game '{self.api.game}' [{gid}]")
+            else:
+                print(f"Could not find '{self.api.game}' on server")
 
-      # get player id from server
-      pid = self._get_player_id()
-      if pid:
-        self.state.player = pid
-        print(f"Found player '{self.api.player}' [{pid}]")
-      else:
-        print(f"Could not find '{self.api.player}' on server")
-        return
+            # get player id from server
+            pid = self._get_player_id()
+            if pid:
+                self.state.player = pid
+                print(f"Found player '{self.api.player}' [{pid}]")
+            else:
+                print(f"Could not find '{self.api.player}' on server")
+                return
 
-      # get character id from server
-      cid = self._get_character_id()
-      if not cid:
-          print(f"Could not find '{self.api.character}' on server; gonna create it..")
-          cid = self._create_character()
-      print(f"Found character '{self.api.character}' [{cid}]")
-      self.state.character = cid
+            # get character id from server
+            cid = self._get_character_id()
+            if not cid:
+                print(f"Could not find '{self.api.character}' on server; gonna create it..")
+                cid = self._create_character()
+            print(f"Found character '{self.api.character}' [{cid}]")
+            self.state.character = cid
+        except Exception as e:
+            print(f"Cannot join :(\n\t{e}")
 
     def _cmd_kill(self):
         """Delete current character from game"""
         if not self.state.character:
             print("Please /join first")
             return
-        
+
         with self.api.api() as api:
-            api.player_player_id_character_character_id_delete(self.state.player, self.state.character)
+            api.player_player_id_character_character_id_delete(
+                self.state.player, self.state.character
+            )
             print("Character is deleted.")
 
     def _cmd_newprop(self, *args):
@@ -173,7 +180,7 @@ class MetaRunner:
             props = api.game_game_id_get(self.state.game)
             props.properties[args[0]] = args[1]
             props = props.to_dict()
-            del props['id']
+            del props["id"]
             api.game_game_id_put(self.state.game, GameSubmit(**props))
 
     def _cmd_delprop(self, *args):
@@ -188,9 +195,9 @@ class MetaRunner:
 
         with self.api.api() as api:
             props = api.game_game_id_get(self.state.game).to_dict()
-            del props['id']
-            if args[0] in props['properties']:
-                del props['properties'][args[0]]
+            del props["id"]
+            if args[0] in props["properties"]:
+                del props["properties"][args[0]]
             else:
                 print(f"Cannot find property '{args[0]}'")
                 return
