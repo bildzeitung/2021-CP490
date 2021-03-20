@@ -17,11 +17,23 @@ class Item(db.Model):
     )
 
 
+class CharacterProperty(db.Model):
+    __tablename__ = "character_property"
+    id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
+    character_id = db.Column(UUIDType(binary=False), db.ForeignKey("player_characters.id"))
+    title = db.Column(db.String(64), index=True)
+    value = db.Column(db.String(2048))
+    timestamp = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+
+
 class Character(db.Model):
     __tablename__ = "player_characters"
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     player_id = db.Column(UUIDType(binary=False), db.ForeignKey("player.id"))
     game_id = db.Column(UUIDType(binary=False))
+    properties = db.relationship("CharacterProperty", backref="player_characters", cascade="all, delete")
     title = db.Column(db.String(32), index=True)
     items = db.relationship("Item", cascade="all, delete")
     location = db.Column(UUIDType(binary=False))

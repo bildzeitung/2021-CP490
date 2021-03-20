@@ -138,6 +138,10 @@ components:
           type: string
         location:
           type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string          
     ArrayOfCharacters:
       type: array
       items:

@@ -125,6 +125,10 @@ components:
           type: string
         location:
           type: string
+        properties:
+          type: object
+          additionalProperties:
+            type: string          
     TurnResponseStatus:
       type: string
       enum:

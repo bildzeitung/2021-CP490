@@ -12,6 +12,19 @@ class ContentRunner:
     api = attr.ib()
     state = attr.ib()
 
+    def _cmd_help(self, *_):
+        """Show a list of available commands"""
+        print(
+            "\n".join(
+                [
+                    f'; {g.replace("_cmd_", "")}: '
+                    + (getattr(self, g).__doc__ or "").strip()
+                    for g in dir(self)
+                    if g.startswith("_cmd_")
+                ]
+            )
+        )
+        
     def _cmd_list_room(self, *_):
         with self.api.api() as api:
             try:
@@ -102,6 +115,11 @@ class ContentRunner:
             return
 
         args = command.split()
+
+        if args[0] == "help":
+            self._cmd_help()
+            return
+
         if len(args) < 2:
             print("Need at least: <noun> <verb>")
             return

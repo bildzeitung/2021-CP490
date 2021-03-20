@@ -1,18 +1,16 @@
 from coal_game_server.models.game import TurnDetailSchema
 from ....models import TurnSubmitSchema, TurnStatusEnum
 from ....config import db
+from ....engine import GameCommand
 
 
 def post(game_id, character_id, body):
   # process command
-  body["status"] = TurnStatusEnum.OK.name
-  body["game_id"] = game_id
-  body["character_id"] = character_id
-  body["text"] = "OUTPUT"
+  gc = GameCommand(game_id, character_id, body["command"])
 
   # serialize into DB
   t = TurnSubmitSchema()
-  new_turn = t.load(body, session=db.session)
+  new_turn = t.load(body | gc.result, session=db.session)
   db.session.add(new_turn)
   db.session.commit()
 
