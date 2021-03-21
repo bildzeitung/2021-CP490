@@ -8,6 +8,7 @@ from coal_public_api_client.exceptions import (
 from coal_public_api_client.model.game_submit import GameSubmit
 from coal_public_api_client.model.player_submit import PlayerSubmit
 from coal_public_api_client.model.character_submit import CharacterSubmit
+from coal_public_api_client.model.turn_submit import TurnSubmit
 
 
 @attr.s
@@ -151,6 +152,15 @@ class MetaRunner:
                 cid = self._create_character()
             print(f"Found character '{self.api.character}' [{cid}]")
             self.state.character = cid
+
+            # run a blank turn to get a LOOK
+            body = TurnSubmit(command="")
+            with self.api.api() as api:
+                rv = api.game_game_id_character_character_id_turn_post(self.state.game, self.state.character, body)
+                if rv.text:
+                    print()
+                    print(rv.text)
+
         except Exception as e:
             print(f"Cannot join :(\n\t{e}")
 

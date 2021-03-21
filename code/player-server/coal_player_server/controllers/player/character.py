@@ -7,7 +7,7 @@ from ...models import Player, CharacterSchema, CharacterSubmitSchema, Character
 def search(player_id):
     player = Player.query.filter(Player.id == player_id).one_or_none()
 
-    return CharacterSchema(many=True).dump(player.characters)
+    return CharacterSchema(many=True).dump(player.characters), 200
 
 
 def get():

@@ -1,6 +1,7 @@
 import uuid
 from datetime import datetime
 from marshmallow_sqlalchemy import field_for, SQLAlchemyAutoSchema
+from marshmallow_sqlalchemy.fields import Nested
 from sqlalchemy_utils import UUIDType
 from ..db import db
 
@@ -80,6 +81,27 @@ class CharacterSchema(SQLAlchemyAutoSchema):
         model = Character
         load_instance = True
         exclude = ("timestamp", "player_id", "items", "location", "game_id")
+
+
+class PropertySchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = CharacterProperty
+        load_instance = True
+        exclude = ("timestamp",)
+
+
+class PropertySerializer(Nested):
+    def serialize(self, attr, obj, accessor=None):
+        return {p.title: p.value for p in obj.properties}
+
+
+class CharacterDetailSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Character
+        load_instance = True
+        exclude = ("timestamp", )
+
+    properties = PropertySerializer(PropertySchema, many=True)
 
 
 class CharacterSubmitSchema(SQLAlchemyAutoSchema):

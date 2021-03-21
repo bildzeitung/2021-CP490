@@ -41,6 +41,8 @@ class Turn(db.Model):
     character_id = db.Column(UUIDType(binary=False))
     game_id = db.Column(UUIDType(binary=False), db.ForeignKey("game.id"))
     command = db.Column(db.String(2048))
+    status = db.Column(db.String(32))
+    text = db.Column(db.String(2048))
     timestamp = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

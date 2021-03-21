@@ -85,6 +85,23 @@ paths:
       responses:
         '204':
           description: Player deleted
+  /character/{character_id}:
+    get:
+      summary: Retrieve player character details
+      parameters:
+        - $ref: '#/components/parameters/characterId'
+      responses:
+        '200':
+          $ref: '#/components/responses/CharacterDetailResponse'
+    put:
+      summary: Update player character details
+      parameters:
+        - $ref: '#/components/parameters/characterId'
+      requestBody:
+          $ref: '#/components/requestBodies/CharacterUpdateBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/CharacterDetailResponse'
 components:
   schemas:
     Player:
@@ -184,6 +201,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CharacterSubmit'
+    CharacterUpdateBody:
+      description: Engine settable Player Character properties
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CharacterDetail'
   responses:
     PlayerDetailResponse:
       description: Player detail
