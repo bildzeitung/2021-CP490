@@ -1,3 +1,17 @@
 [build-system]
 requires = ["setuptools", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py39
+
+[testenv]
+deps =
+  build
+  pytest
+  pytest-flask
+  ../../connexion
+commands = pytest {posargs}
+"""

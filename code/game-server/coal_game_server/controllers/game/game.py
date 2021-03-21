@@ -30,7 +30,7 @@ def post(body):
 
     data = schema.dump(new_game)
 
-    return data, 200
+    return data, 201
 
 
 def put(game_id, body):

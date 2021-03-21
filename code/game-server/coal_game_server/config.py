@@ -1,32 +1,30 @@
-import os
 from pathlib import Path
 
 import connexion
 from connexion.resolver import RestyResolver
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
+from .db import db
 
-dbpath = Path(__file__).parent / "coal.db"
+dbpath = Path(__file__).parent / "coal-game.db"
 
-# Create the Connexion application instance
-options = {"swagger_ui": False}
-connex_app = connexion.App(
-    __name__,
-    specification_dir="./openapi",
-    options=options,
-    resolver=RestyResolver("coal_game_server.controllers"),
-)
 
-# Get the underlying Flask app instance
-app = connex_app.app
+class DefaultConfig:
+    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:////" + str(dbpath)
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-# Configure the SQLAlchemy part of the app instance
-app.config["SQLALCHEMY_ECHO"] = True
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////" + str(dbpath)
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-# Create the SQLAlchemy db instance
-db = SQLAlchemy(app)
+def create_app(config_object):  # Create the Connexion application instance
+    connex_options = {"swagger_ui": False}
+    connex_app = connexion.App(
+        __name__,
+        specification_dir="./openapi",
+        options=connex_options,
+        resolver=RestyResolver("coal_game_server.controllers"),
+    )
 
-# Initialize Marshmallow
-ma = Marshmallow(app)
+    # Get & configure the underlying Flask app instance
+    app = connex_app.app
+    app.config.from_object(config_object)
+    db.init_app(app)
+
+    return connex_app

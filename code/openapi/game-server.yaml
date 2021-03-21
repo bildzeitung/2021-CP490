@@ -11,11 +11,7 @@ paths:
       summary: Retrieve a list of games
       responses:
         '200':
-          description: List of games
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfGames'
+          $ref: '#/components/responses/GameListResponse'
     post:
       summary: Create a new game
       requestBody:
@@ -68,6 +64,50 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/TurnDetailResponse'
+  /game/{game_id}/event:
+    get:
+      summary: Retrieve a list of events
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventListResponse'
+    post:
+      summary: Create a new event
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      requestBody:
+        $ref: '#/components/requestBodies/EventBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/EventDetailResponse'
+  /game/{game_id}/event/{event_id}:
+    get:
+      summary: Retrieve event details
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventDetailResponse'
+    put:
+      summary: Update event parameters
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/eventId'
+      requestBody:
+        $ref: '#/components/requestBodies/EventBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventDetailResponse'
+    delete:
+      summary: Remove event
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '204':
+          description: Event deleted
 components:
   schemas:
     Game:
@@ -146,12 +186,68 @@ components:
       properties:
         command:
           type: string
+    EventItem:
+      type: object
+      properties:
+        id:
+          type: string
+        primitive:
+          type: string
+        arguments:
+          type: array
+          items:
+            type: string
+    EventItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventItem'
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemList'
+        true_part:
+          $ref: '#/components/schemas/EventItemList'
+        false_part:
+          $ref: '#/components/schemas/EventItemList'
+    ArrayOfEvents:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    EventItemSubmit:
+      type: object
+      properties:
+        primitive:
+          type: string
+        arguments:
+          type: array
+          items:
+            type: string
+    EventItemSubmitList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventItemSubmit'
+    EventSubmit:
+      type: object
+      properties:
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemSubmitList'
+        true_part:
+          $ref: '#/components/schemas/EventItemSubmitList'
+        false_part:
+          $ref: '#/components/schemas/EventItemSubmitList'
   parameters:
     gameId:
       name: game_id
       in: path
       required: true
-      description: The id of the game to edit
+      description: Game ID
       schema:
         type: string
     characterId:
@@ -159,6 +255,13 @@ components:
       in: path
       required: true
       description: Player Character ID
+      schema:
+        type: string
+    eventId:
+      name: event_id
+      in: path
+      required: true
+      description: Event ID
       schema:
         type: string
   requestBodies:
@@ -183,7 +286,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TurnSubmit'
+    EventBody:
+      description: Turn submission
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubmit'
   responses:
+    GameListResponse:
+      description: List of games
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfGames'
     GameDetailResponse:
       description: Game detail
       content:
@@ -202,3 +318,15 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TurnDetail'
+    EventListResponse:
+      description: List of events
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfEvents'
+    EventDetailResponse:
+      description: Event detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Event'

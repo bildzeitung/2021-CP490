@@ -4,7 +4,7 @@ import attr
 import click
 import toml
 
-from .config import connex_app
+from .config import create_app, DefaultConfig
 
 
 @attr.s(auto_attribs=True)
@@ -35,6 +35,7 @@ def load_config(config_path, profile):
     show_default=True,
 )
 def main(config, profile):
+    connex_app = create_app(DefaultConfig())
     connex_app.add_api("openapi.yaml", arguments={"title": "COAL Game Server"})
     app = connex_app.app
     app.config.from_object(load_config(config, profile))
