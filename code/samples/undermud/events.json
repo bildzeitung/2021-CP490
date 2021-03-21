@@ -9,5 +9,13 @@
       {"primitive": "set-key", "arguments": ["first-turn", "true"]},
       {"primitive": "message", "arguments": ["starting-message"]}
     ]
+  },
+  {
+    "command": "look",
+    "conditions": [],
+    "true_part": [
+      {"primitive": "look", "arguments": []}
+    ],
+    "false_part": []
   }
 ]

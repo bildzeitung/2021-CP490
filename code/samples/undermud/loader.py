@@ -9,7 +9,6 @@ import requests
 
 API_SERVER = "http://localhost:8000/v1"
 GAME_SERVER = "http://localhost:8100/v1"
-# CONTENT_SERVER = "http://localhost:8200/v1"
 
 EVENT_FILE = Path(__file__).parent / "events.json"
 ROOMS_FILE = Path(__file__).parent / "rooms.json"
