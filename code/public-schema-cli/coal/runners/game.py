@@ -21,4 +21,5 @@ class GameRunner:
           except Exception as e:
             print(f"Did not run turn:\n\t{e}")
             return
-        print(rv)
+        if rv['text']:
+          print(rv['text'])
