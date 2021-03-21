@@ -1,5 +1,5 @@
-from coal_game_server.models.game import EventItemFalseArgument, Game, GameProperty
-from .common import get_character, update_character_properties
+from coal_game_server.models.game import Game, GameProperty
+from .common import get_character, update_character_properties, get_room
 
 
 def set_key(command, key, value):
@@ -20,3 +20,20 @@ def message(command, key):
     if p.title == key:
       command.buffer.append(p.value)
       return
+
+
+def look(command):
+  """ Show the description of the character's current room
+  """
+  c = get_character(command.character_id)
+  r = get_room(c['location'])
+  
+  # header
+  command.buffer.append(r['title'].capitalize())
+
+  # description
+  command.buffer.append(f"\t{r['description']}")
+
+  # exits
+
+  # items

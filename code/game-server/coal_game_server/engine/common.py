@@ -13,6 +13,19 @@ def get_character(character_id):
 
   return rv.json()
 
+
+def get_room(room_id):
+  try:
+    rv = requests.get(
+      f"{current_app.config['CONTENT_SERVER_URL']}/room/{room_id}"
+    )
+    rv.raise_for_status()
+  except Exception as e:
+    abort(500, f"Could not contact game server: {str(e)}")
+
+  return rv.json()
+
+
 def update_character_properties(character):
   body = {"properties": character['properties']}
   try:
