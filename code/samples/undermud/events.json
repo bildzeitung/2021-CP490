@@ -1,0 +1,13 @@
+[
+  {
+    "command": "",
+    "conditions": [
+        {"primitive": "has-key", "arguments": ["first-turn"]}
+    ],
+    "true_part": [
+        {"primitive": "set-key", "arguments": ["first-turn", "true"]},
+        {"primitive": "message", "arguments": ["starting-message"]}
+    ],
+    "false_part": []
+  }
+]
