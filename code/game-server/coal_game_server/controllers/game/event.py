@@ -4,8 +4,8 @@ from ...models import EventSubmitSchema, EventSchema
 from ...config import db
 
 
-def search():
-    events = GameEvent.query.all()
+def search(game_id):
+    events = GameEvent.query.filter(GameEvent.game_id == game_id).all()
     return EventSchema(many=True).dump(events)
 
 

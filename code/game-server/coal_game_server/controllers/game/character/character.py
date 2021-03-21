@@ -10,7 +10,7 @@ def post(game_id, body):
         abort(404, f"Could not find game {game_id}")
 
     print(dir(game.properties))
-    starting_room = [p.value for p in game.properties if p.title == "starting_room"]
+    starting_room = [p.value for p in game.properties if p.title == "starting-room"]
     if not starting_room:
         abort(400, f"Could not create a character -- need a starting room")
 
