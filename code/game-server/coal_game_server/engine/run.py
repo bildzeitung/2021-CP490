@@ -102,7 +102,6 @@ class GameCommand:
             # disambiguation is to prefer special cases over variables
             keeplist = {k : v for k, v in events.items() if tokens[i] == v[i]}
             if keeplist:
-                self.buffer.append(f"Keeplist: {keeplist} {i} {tokens[i]}")
                 events = keeplist
 
         # final check
