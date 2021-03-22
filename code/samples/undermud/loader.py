@@ -13,8 +13,8 @@ GAME_SERVER = "http://localhost:8100/v1"
 
 EVENT_FILE = Path(__file__).parent / "events.json"
 ROOMS_FILE = Path(__file__).parent / "rooms.json"
-EXITS_FILE = Path(__file__).parent / "exits.txt"
-
+EXITS_FILE = Path(__file__).parent / "exits.json"
+PROPS_FILE = Path(__file__).parent / "properties.json"
 
 GAME_TITLE = "undermud"
 
@@ -48,23 +48,27 @@ def create_room(game_id, room):
   return rv.json()["id"]
 
 
-def create_exit(game_id, rooms, from_room, _, to_room, direction):
-  doc = {
-    "to_room_id": rooms[to_room],
-    "direction": direction,
-  }
-  rv = requests.post(f"{API_SERVER}/game/{game_id}/room/{rooms[from_room]}/exit", json=doc)
-  rv.raise_for_status()
+def load_exits(game_id, rooms):
+  with EXITS_FILE.open() as f:
+    exits = json.load(f)
+
+  for e in exits:
+    doc = {
+      "to_room_id": rooms[e['to']],
+      "direction": e["direction"],
+    }
+    rv = requests.post(f"{API_SERVER}/game/{game_id}/room/{rooms[e['from']]}/exit", json=doc)
+    rv.raise_for_status()
 
 
 def create_properties(game_id, rooms):
-  doc = {
-    "properties": {
-      "starting-room": rooms["meadow"],
-      "starting-message": "Welcome to UnderMUD!\n\tBe nice and enjoy.",
-      "bees-sting-you": "Oh no! You try to pick up the bees but they sting you instead!",
-    }
-  }
+  with PROPS_FILE.open() as f:
+    properties = json.load(f)
+
+  doc = {"properties": {}}
+  for k, v in properties.items():
+    doc["properties"][k] = eval(f"f'{v}'")
+
   rv = requests.put(f"{API_SERVER}/game/{game_id}", json=doc)
   rv.raise_for_status()
 
@@ -91,12 +95,6 @@ def load_events(game_id):
 def load_rooms(game_id):
   with ROOMS_FILE.open() as f:
     rooms = { r["title"] : create_room(game_id, r) for r in json.load(f)}
-
-  with EXITS_FILE.open() as f:
-    for line in f:
-      print(line)
-      create_exit(game_id, rooms, *line.strip().split())
-
   return rooms
 
 
@@ -127,6 +125,7 @@ def main(events_only, properties_only):
 
   load_events(game_id)
   rooms = load_rooms(game_id)
+  load_exits(game_id, rooms)
 
   create_properties(game_id, rooms)
 

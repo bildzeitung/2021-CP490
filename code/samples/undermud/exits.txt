@@ -1,2 +1,0 @@
-meadow -> forest north
-forest -> meadow south

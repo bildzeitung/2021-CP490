@@ -1,0 +1,11 @@
+[
+  { "from": "meadow",
+    "to": "forest",
+    "direction": "north"
+  },
+  {
+    "from": "forest",
+    "to": "meadow",
+    "direction": "south"
+  }
+]
