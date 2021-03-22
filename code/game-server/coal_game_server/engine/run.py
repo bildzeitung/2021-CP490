@@ -72,30 +72,46 @@ class GameCommand:
 
         all_events = {g.id: g for g in GameEvent().query.filter(GameEvent.command != "")}
         events = { x.id: x.command.split() for x in all_events.values() }
-        elements = [x.strip() for x in self.command.split()]
+        tokens = [x.strip() for x in self.command.split()]
 
-        idx = 0
-        while elements and events:
-            p = elements.pop(0)
-            events = {k : v for k, v in events.items() if len(v) > idx and p == v[idx]}
-            print("YYY", p, events)
-            idx += 1
-        
+        # only use events with the same number of tokens
+        events = {k : v for k, v in events.items() if len(v) == len(tokens)}
+
+        # sort out a list of candidate rules
+        for i in range(len(tokens)):
+            if not events:
+                self._status = "ERROR"
+                self.buffer.append("Sorry, I don't understand you.")
+                return
+
+            events = {k : v for k, v in events.items() if tokens[i] == v[i] or v[i].startswith('!')}
+
+        # no matches left, so we don't know what the player wants
         if not events:
-            self.buffer.append(f"Sorry, I don't understand you. elements: {elements} {events}")
             self._status = "ERROR"
+            self.buffer.append("Sorry, I don't think I know what you want.")
             return
 
-        if len(events) > 1:
-            self.buffer.append("That could mean so many things.")
-            self._status = "ERROR"
-            return
-        
-        print("ZZZ", elements, events)
+        # there's room for ambiguity between variables and special cases
+        for i in range(len(tokens)):
+            # if there's exactly one match -- we're done
+            if len(events) == 1:
+                self._status = "OK"
+                return all_events[list(events)[0]]
 
-        # events is now constrained to exactly one elements, so run that
-        self._status = "OK"
-        return all_events[list(events)[0]]
+            # disambiguation is to prefer special cases over variables
+            keeplist = {k : v for k, v in events.items() if tokens[i] == v[i]}
+            if keeplist:
+                self.buffer.append(f"Keeplist: {keeplist} {i} {tokens[i]}")
+                events = keeplist
+
+        # final check
+        if len(events) == 1:
+            self._status = "OK"
+            return all_events[list(events)[0]]
+
+        self._status = "ERROR"
+        self.buffer.append(f"That could mean so much. I don't know what to do. {events}")
 
     def _run_filter_match(self, event : GameEvent):
         if self._applies(event):
