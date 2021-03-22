@@ -100,14 +100,26 @@ def load_rooms(game_id):
   return rooms
 
 
+def get_room_ids(game_id):
+  rv = requests.get(f"{API_SERVER}/game/{game_id}/room")
+  rv.raise_for_status()
+  return { r["title"] : r["id"] for r in rv.json()}
+
 @click.command(help="Data loader for UnderMUD sample game")
 @click.option("--events-only", "-e", help="Reload only the Events", is_flag=True)
-def main(events_only):
+@click.option("--properties-only", "-p", help="Reload only the game properties", is_flag=True)
+def main(events_only, properties_only):
 
   if events_only:
     game_id = get_game_id()
     clear_events(game_id)
     load_events(game_id)
+    return
+
+  if properties_only:
+    game_id = get_game_id()
+    rooms = get_room_ids(game_id)
+    create_properties(game_id, rooms)
     return
 
   game_id = create_game()
