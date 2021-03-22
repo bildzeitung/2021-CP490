@@ -17,5 +17,32 @@
       {"primitive": "look", "arguments": []}
     ],
     "false_part": []
+  },
+  {
+    "command": "go !direction",
+    "conditions": [
+    ],
+    "true_part": [
+      {"primitive": "change-location-via-exit", "arguments": ["!direction"]}
+    ],
+    "false_part": []
+  },
+  {
+    "command": "get !object",
+    "conditions": [
+    ],
+    "true_part": [
+      {"primitive": "transfer-to-inventory", "arguments": ["!object"]}
+    ],
+    "false_part": []
+  },
+  {
+    "command": "get bees",
+    "conditions": [
+    ],
+    "true_part": [
+      {"primitive": "message", "arguments": ["bees-sting-you"]}
+    ],
+    "false_part": []
   }
 ]
