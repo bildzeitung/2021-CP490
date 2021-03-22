@@ -35,5 +35,8 @@ def look(command):
   command.buffer.append(f"\t{r['description']}")
 
   # exits
+  if r['exits']:
+    exit_list = ", ".join(e['direction'] for e in r['exits'])
+    command.buffer.append(f"\nYou see exits to the {exit_list}.")
 
   # items
