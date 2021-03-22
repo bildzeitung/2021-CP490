@@ -17,7 +17,14 @@ realclean: clean
 		find . -name '*.db' -exec rm {} \;
 
 
+undermud: $(VENV)
+		. $(VENV) \
+			&& coal_game_db_init \
+		  && coal_content_db_init \
+			&& coal_player_db_init \
+			&& ./samples/undermud/loader.py
 
-.PHONY: all clean realclean
+
+.PHONY: all clean realclean undermud
 
 .DEFAULT_GOAL:= all
