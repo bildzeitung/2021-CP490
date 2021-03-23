@@ -22,11 +22,7 @@ paths:
       summary: Retrieve a list of games
       responses:
         '200':
-          description: List of games
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfGames'
+          $ref: '#/components/responses/GameListResponse'
     post:
       summary: Create a new game
       requestBody:
@@ -65,11 +61,7 @@ paths:
         - $ref: '#/components/parameters/gameId'
       responses:
         '200':
-          description: List of rooms
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfRooms'
+          $ref: '#/components/responses/RoomListResponse'
     post:
       summary: Add a new room to a game
       parameters:
@@ -114,11 +106,7 @@ paths:
         - $ref: '#/components/parameters/roomId'
       responses:
         '200':
-          description: List of exits
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfExits'
+          $ref: '#/components/responses/RoomExitListResponse'
     post:
       summary: Add a new exit to a room
       parameters:
@@ -155,11 +143,7 @@ paths:
         - $ref: '#/components/parameters/gameId'
       responses:
         '200':
-          description: List of items
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfItems'
+          $ref: '#/components/responses/ItemListResponse'
     post:
       summary: Add a new item to a game
       parameters:
@@ -196,6 +180,50 @@ paths:
       responses:
         '204':
           description: Item deleted          
+  /game/{game_id}/event:
+    get:
+      summary: Retrieve a list of events
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventListResponse'
+    post:
+      summary: Create a new event
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+      requestBody:
+        $ref: '#/components/requestBodies/EventBody'
+      responses:
+        '201':
+          $ref: '#/components/responses/EventDetailResponse'
+  /game/{game_id}/event/{event_id}:
+    get:
+      summary: Retrieve event details
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventDetailResponse'
+    put:
+      summary: Update event parameters
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/eventId'
+      requestBody:
+        $ref: '#/components/requestBodies/EventBody'
+      responses:
+        '200':
+          $ref: '#/components/responses/EventDetailResponse'
+    delete:
+      summary: Remove event
+      parameters:
+        - $ref: '#/components/parameters/gameId'
+        - $ref: '#/components/parameters/eventId'
+      responses:
+        '204':
+          description: Event deleted
   /game/{game_id}/player/{player_id}/character:
     post:
       summary: Retrieve player characters
@@ -212,11 +240,7 @@ paths:
       summary: Retrieve a list of players
       responses:
         '200':
-          description: List of players
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfPlayers'
+          $ref: '#/components/responses/PlayerListResponse'
     post:
       summary: Create a new player
       requestBody:
@@ -255,11 +279,7 @@ paths:
         - $ref: '#/components/parameters/playerId'
       responses:
         '200':
-          description: List of player characters
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ArrayOfCharacters'
+          $ref: '#/components/responses/CharacterListResponse'
   /player/{player_id}/character/{character_id}:
     get:
       summary: Retrieve player character details
@@ -504,6 +524,62 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Character'
+    EventItem:
+      type: object
+      properties:
+        id:
+          type: string
+        primitive:
+          type: string
+        arguments:
+          type: array
+          items:
+            type: string
+    EventItemList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventItem'
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemList'
+        true_part:
+          $ref: '#/components/schemas/EventItemList'
+        false_part:
+          $ref: '#/components/schemas/EventItemList'
+    ArrayOfEvents:
+      type: array
+      items:
+        $ref: '#/components/schemas/Event'
+    EventItemSubmit:
+      type: object
+      properties:
+        primitive:
+          type: string
+        arguments:
+          type: array
+          items:
+            type: string
+    EventItemSubmitList:
+      type: array
+      items:
+        $ref: '#/components/schemas/EventItemSubmit'
+    EventSubmit:
+      type: object
+      properties:
+        command:
+          type: string
+        conditions:
+          $ref: '#/components/schemas/EventItemSubmitList'
+        true_part:
+          $ref: '#/components/schemas/EventItemSubmitList'
+        false_part:
+          $ref: '#/components/schemas/EventItemSubmitList'
   parameters:
     gameId:
       name: game_id
@@ -545,6 +621,13 @@ components:
       in: path
       required: true
       description: Player Character ID
+      schema:
+        type: string
+    eventId:
+      name: event_id
+      in: path
+      required: true
+      description: Event ID
       schema:
         type: string
   requestBodies:
@@ -597,6 +680,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CharacterSubmit'
+    EventBody:
+      description: Turn submission
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/EventSubmit'
   responses:
     TurnDetailResponse:
       description: Turn submission response
@@ -604,39 +694,87 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TurnDetail'
+    GameListResponse:            
+      description: List of games
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfGames'            
     GameDetailResponse:
       description: Game detail
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/GameDetail'
+    RoomListResponse:
+      description: List of rooms
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfRooms'
     RoomDetailResponse:
       description: Room detail
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/RoomDetail'
+    RoomExitListResponse:
+      description: List of exits
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfExits'    
     RoomExitDetailResponse:
       description: Exit detail
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Exit'
+    ItemListResponse:
+      description: List of items
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfItems'    
     ItemDetailResponse:
       description: Item detail
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ItemDetail'            
+    PlayerListResponse:
+      description: List of players
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfPlayers'
     PlayerDetailResponse:
       description: Player detail
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/PlayerDetail'
+    CharacterListResponse:
+      description: List of player characters
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfCharacters'
     CharacterDetailResponse:
       description: Character detail
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/CharacterDetail'
+    EventListResponse:
+      description: List of events
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ArrayOfEvents'
+    EventDetailResponse:
+      description: Event detail
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Event'
