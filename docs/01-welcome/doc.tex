@@ -16,6 +16,7 @@
 \usepackage{tabularx} % for text-wrapping in tables
 \usepackage{algorithm} % algorithms
 \usepackage{algpseudocode} % algorithms
+\usepackage{fancyvrb} % for nice examples
 \usepackage{tikz} % diagrams
 
 % Set up Tikz Library
@@ -301,10 +302,10 @@
 %----------------------------------------------------------------------------------------
 
 \newcommand{\hmwkTitle}{Welcome to K Division} % Assignment title
-\newcommand{\hmwkDueDate}{March 8, 2021} % Due date
+\newcommand{\hmwkDueDate}{March 29, 2021} % Due date
 \newcommand{\hmwkClass}{CP490} % Course/class
-\newcommand{\hmwkClassTime}{TBD} % Class/lecture time
-\newcommand{\hmwkClassInstructor}{TBD} % Teacher/lecturer
+\newcommand{\hmwkClassTime}{0930h} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Blackboard Collaborate} % Teacher/lecturer
 \newcommand{\hmwkAuthorName}{Mr. Klein} % Your name
 
 %----------------------------------------------------------------------------------------
@@ -331,7 +332,7 @@
 %----------------------------------------------------------------------------------------
 \begin{homeworkProblem}[Overview]
 
-  You are going to be part of a fictional, global corporation that produces interactive cloud applications. You will be split into teams. Each team will own a specific part of the application and you will be responsible for designing, programming, and deploying it. You will need to interact with your peer teams to ensure that all parts of the application work together. You will also need to interact with the product owner to ensure that your deliverables meet requirements, and interact with a fictional operations team who will also stand up your application.
+  You are going to be part of a fictional, global corporation that produces interactive cloud applications. You will be split into teams. Each team will own a specific part of the application and you will be responsible for designing, programming, and deploying it. You will need to interact with your peer teams to ensure that all parts of the application work together. You will also need to interact with the product owner to ensure that your deliverables meet requirements. Finally, a fictional operations team will also stand up your application, so your team will need to support them by producing documentation and answering questions.
 
 \begin{homeworkSection}{Course Format}
   The class will meet as a whole 3 times per week for an hour. During that meeting, time will be spent on:
@@ -343,13 +344,27 @@
 
 	Team status is a summary of activities -- what your team worked on, and what's up next.
 	
-	Teams will need to present their solutions to the group for feedback and review. Teams should be prepared to discuss the technical details of the problems they are solving. Teams should be prepared with any diagrams and supporting reference material so that the class is able to understand and contribute feedback. Discussion is to be focussed on gaps and potential trouble areas.
+	Teams will present their solutions to the group for feedback and review. While not formal presentations, teams should be prepared to discuss the technical details of the problems they are solving. Teams should be prepared with any diagrams and supporting reference material so that the class is able to understand and contribute feedback. Discussion is to be focussed on gaps and potential trouble areas.
 
 	The time can also be used to help teams solve problems encountered, whether that's a technical issue or help in coordinating deliverables between teams.
 	
-	Lastly, this project is likely to use technology unfamiliar to the class. I will lead sessions to cover this material.
+	This project is likely to use technology unfamiliar to the class. I will lead sessions to cover this material.
+
+	Lastly, I will meet with individual teams on an as--needed basis.
 \end{homeworkSection}
 
+\begin{homeworkSection}{Onboarding}
+	This document will be available on Blackboard. Outside of that, course content is hosted on Github and Slack.
+
+	We will be using Slack to communicate. Use this invite link to join:
+
+	\begin{center}
+		\url{https://tinyurl.com/4a469zjr}
+	\end{center}
+
+	Github is the chosen platform for hosting code and project management. XXX TBD: Signup? Link to project? XXX
+	
+\end{homeworkSection}
 
 \begin{homeworkSection}{Evaluation Criteria}
 	This class is PASS / FAIL, so no graded marks are given. A PASS in this class is earned by demonstrating that you provided value to your team and helped achieve its goals. Failure would represent individuals that did not contribute technically, were unable to work within agreed-upon processes, and could not coordinate with other teams.
@@ -367,7 +382,7 @@
 
 	\begin{compactitem}
 		\item \textbf{Respect always}: Assume that people are acting in good faith. Earn the trust of your teammates and give it, too.
-		\item \textbf{Fundamentals first}: Value the basics of testing, designing, and communicating. Creating complex solutions is possible through the diligent, regular application of focussed effort. Know your tools and practice.
+		\item \textbf{Fundamentals first}: Value the basics of testing, designing, and communicating. Creating complex solutions is possible through the diligent, regular application of focussed effort. Know your tools and practice your skills.
 		\item \textbf{Start simple and iterate}: Value taking action above waiting for answers. Reach out instead of disengaging. Sharing a partial solution today is far more valuable than trying to have everything working next week.
 	\end{compactitem}
 \end{homeworkSection}
@@ -394,7 +409,7 @@
 \begin{homeworkSection}{Playing the Game}
 	In the game, a user takes on the role of a character that wanders around a virtual world, solving puzzles, battling monsters and other characters, amassing various items, and conversing with other users.
 	
-	The user is presented with a text description of their character's current location and a command line prompt. For example\footnote{This is from \textit{Zork I: The Great Underground Empire} (Infocom, 1980)},
+	The user is presented with a text description of their character's current location and a command line prompt. For example\footnote{This is the opening of \textit{Zork I: The Great Underground Empire} (Infocom, 1980)},
 
 	\begin{verbatim}
 		West of House
@@ -419,18 +434,36 @@
 	\begin{compactitem}
 		\item valid exits, insofar as the player character can see
 		\item other player characters in the same place
-		\item monsters (non--player characters)
 	\end{compactitem}
 	
 	The user then types a command. For example, \texttt{GO EAST} or \texttt{OPEN MAILBOX}.
-	
-	The game processes the command and replies with a new description, and another prompt. That's it -- that is the core interface and gameplay. That is,
+
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}
+			\tikzset{
+				mynode/.style={rectangle,rounded corners, draw=black, very thick, inner sep=1em, text centered},
+				usernode/.style={rectangle,rounded corners, draw=black, very thick, inner sep=1em, text centered, fill=black!10},
+				dbnode/.style={cylinder,shape border rotate=90,draw=black, very thick, minimum height=2cm, aspect=0.25},
+			}
+			\node[mynode] (message) {Display};
+			\node[mynode, right = of message] (command) {Get input};
+			\node[mynode, right = of command] (process) {Evaluate};
+
+			\draw[->, thick] (message) -- (command);
+			\draw[->, thick] (command) -- (process);
+			\draw[->, thick] (process.east) -- ++(1, 0) -- ++(0, -1) -| (-2, 0) -- (message.west);
+		\end{tikzpicture}
+		\caption{Core game loop}
+		\label{fig:gameplay}
+		\end{figure}
+
+	The game processes the command and replies with a new description, and another prompt. That is the core interface and game play. See Figure \ref{fig:gameplay}:
 
 	\begin{compactitem}
-		\item The game server presents a block of text
-		\item User types in a command
-		\item Game server processes text, updating the game state
-		\item Repeat!
+		\item \textbf{Display}: The game presents a block of text
+		\item \textbf{Get input}: User types in a command
+		\item \textbf{Evaluate}: Game engine processes the incoming command, updating the game state
 	\end{compactitem}
 \end{homeworkSection}
 
@@ -438,10 +471,10 @@
 \begin{homeworkSection}{Game Objects}
 	There are four types of objects in the COAL engine:
 	\begin{compactitem}
-		\item \textbf{Rooms}: These are the locations inhabited by the player characters
-		\item \textbf{Items}: Objects that the player character interact with, such as boxes, lanterns, weapons, etc.
+		\item \textbf{Rooms}: The locations inhabited by the player characters
+		\item \textbf{Items}: Objects the player character interact with such as boxes, lanterns, weapons, etc.
 		\item \textbf{Characters}: The internal representation of a user's character, capturing the game state
-		\item \textbf{Events}: These define how the game engine responds to user commands
+		\item \textbf{Events}: How the game engine responds to user commands
 	\end{compactitem}
 
 \begin{table}
@@ -449,7 +482,7 @@
 		\hline
 		Property & Description \\
 		\hline \hline
-		Title & Short name for a room, e.g. \texttt{West of House} \\
+		Title & Short name for a room, e.g. \texttt{Forest} \\
 		Description & Longer text with details of what the room looks like \\
 		Exits & A list of visible directions mapped to destinations, e.g. \texttt{East $\rightarrow$ House} \\
 		\hline
@@ -483,7 +516,7 @@
 		Player & User account the character belongs to \\
 		Location & Room where the character is located \\
 		Inventory & Items acquired by the player character \\
-		Properties & A dictionary of key--value pairs for keeping game state (e.g. \texttt{HAS-SEEN-WELCOME-TEXT} $\rightarrow$ \texttt{TRUE}) \\
+		Properties & A dictionary of key--value pairs for storing game state (e.g. \texttt{HAS-SEEN-WELCOME-TEXT} $\rightarrow$ \texttt{TRUE}) \\
 		\hline
 	\end{tabularx}
 	\caption{Character properties}
@@ -496,7 +529,7 @@
 		Property & Description \\
 		\hline \hline
 		Command & Static text with (optionally) variables describing the syntax of the action, e.g. \texttt{GIVE !ITEM TO !CHARACTER}. This can be an empty string, which is seen as an Event run every turn. \\
-		Conditions & A list of Event Items, where all the conditions of given event must be met for the True actions to execute. Otherwise, the False actions will be run. If there are no conditions, the True actions are run. \\
+		Conditions & A list of assertions that govern which set of actins should be run in response to command. \\
 		True actions & A list of Event Items that manipulates the game state if all of the event conditions are all met, or if there are no event conditions. \\
 		False actions & A list of Event Items that manipulates the game state if any of the event conditions are not met. \\
 		\hline
@@ -510,8 +543,8 @@
 		\hline
 		Property & Description \\
 		\hline \hline
-		Primitive & A game engine function. For example, to display a message to the user, the game engine function is \texttt{display\_message}. \\
-		Arguments & Arguments to the game engine function. For example, \textit{which} message to display. \\
+		Primitive & A game engine function. For example, to display a message to the user, the game engine defines a function called \texttt{message}. \\
+		Arguments & Arguments to the game engine function. For example, which message to display. \\
 		\hline
 	\end{tabularx}
 	\caption{Event item properties}
@@ -522,7 +555,7 @@
 
 	The locations in the game are collectively referred to as ``rooms,'' even though they could be describing outdoor locations, caves, spaceships, or more abstract settings\footnote{For example, \href{https://en.wikipedia.org/wiki/A_Mind_Forever_Voyaging}{A Mind Forever Voyaging} (Infocom, 1985)}. A list of properties is given in Table \ref{tab:room-properties}. When a user enters a room, the full description is shown. A list of directions, like \texttt{NORTH} or \texttt{UP} are mapped against other rooms, connecting them. This list of exits is usable by, and shown to, the player. The title, description, and exits are all immutable properties.
 
-	Items are what users manipulate in the game: weapons, armour, keys, treasure, and so on. The properties of items are given in Table \ref{tab:item-properties}. An item has a name, but also possibly aliases. For example, there may be a book with the name \textit{Hitchhiker's Guide} that also has an alias of \textit{book} and \textit{guide}, so the user can type: \texttt{GET HITCHHIKER'S GUIDE} or \texttt{GET GUIDE} or \texttt{GET BOOK} interchangeably. Items may have other attributes, too. For example, if the game has combat elements, then items could have attack or defense values. Last, the only mutable property is the item location, since items (in general) can be added to a player character or monster inventory.
+	Items are what users manipulate in the game: weapons, armour, keys, treasure, and so on. The properties of items are given in Table \ref{tab:item-properties}. An item has a name, but also possibly aliases. For example, there may be a book with the name \textit{Hitchhiker's Guide} that also has an alias of \textit{guide}, so the user can type: \texttt{GET GUIDE} or \texttt{GET BOOK} interchangeably. Items may have other attributes, too. For example, if the game has combat elements, then items could have attack or defense values. Last, the only mutable property is the item location, since items (in general) can be added to a player character or monster inventory.
 
 	Table \ref{tab:character-properties} lists the properties of player characters. These are the proxies for users, and so all the state in this object is mutable. Additional properties allow the game engine to track game state. For example, the player character may be poisoned, or under the influence of a potion that lasts for a given number of moves. This key--value mechanism provides an open--ended way to create and manage character data. Each character is associated with one and only one player account, but a player account may have multiple player characters.
 
@@ -533,8 +566,6 @@
 	Game play requires game content. Classically, in MUDs, once you attained a certain rank within the game\footnote{sometimes called wizard status}, you were allowed to author game content. For some early or small MUDs, this meant recompiling the source code. The prevailing idea, however, was that you could add new content as meta--commands in the game.
 
 	For this project, game content creation is separate from game play, but an integral part of the platform. Users should be able to create rooms, items, monsters, and events. The API is designed with the idea that all game content can be authored in the system. What is exposed from the system is a list of \textit{capabilities} corresponding to the \textit{primitives} discussed in the previous section. Someone designing a MUD should be able to take the exposed functionality and author a complete game. Does the game have a PvP element? It should be programmable enough to allow that. What if there is no combat at all? Or an economy of some sort? It should be possible with the exposed primitives. This places pressure to define a robust set of primitives. I have some ideas, and teams have an opportunity to debate this, but emphasis in the project should be to get the platform working as a whole and not spend excessive time on this until the system is operational as a whole.
-	
-	What is \textit{missing} from this specification is controlling access to the content creation resources. Teams may want to consider implementing some sort of rudimentary access control as an extension to this specification.
 \end{homeworkSection}
 
 \begin{homeworkSection}{Design and Architecture Principles}
@@ -546,7 +577,9 @@
   
 	An \textit{API} is a kind of programming contract. If I provide your service with input that conforms to your specification, then your service agrees to return a result in a given format. For example, an API can be written to accepts and return JavaScript Object Notation (JSON)\footnote{see \href{https://en.wikipedia.org/wiki/JSON}{Wikipedia}} objects. To describe APIs, we are going to use \href{https://swagger.io/specification/}{OpenAPI documents}. OpenAPI is a way of writing descriptions of API contracts in a way that lets us use other code generation software tools to create clients and servers for us.
 
-  You will be given an OpenAPI document that specifies the public--facing API of the COAL Engine. You will negotiate internal APIs with your peer teams. I expect to be able to write my own game client against this public API and use it to explore your work. You may need to negotiate changes to the public API, if it doesn't let you fulfill your requirements.
+  You will be given an OpenAPI document that specifies the public--facing API of the COAL Engine. You will negotiate internal APIs with your peer teams. I expect to be able to run a sample game client against this public API and use it to explore your work.
+	
+	You may want to negotiate changes to the public API, if it doesn't let you fulfill your requirements. Any changes will be discussed in the full class meetings.
 \end{homeworkSection}
 
 \begin{homeworkSection}{Application Architecture}
@@ -559,20 +592,26 @@
 		usernode/.style={rectangle,rounded corners, draw=black, very thick, inner sep=1em, text centered, fill=black!10},
 		dbnode/.style={cylinder,shape border rotate=90,draw=black, very thick, minimum height=2cm, aspect=0.25},
 	}
-	\node[mynode] (api) at (0,0) {App Server};
+	\node[mynode] (api) at (0,0) {Proxy Service};
+
 	\node[mynode, above left = of api] (webserver) {Web Service};
 	\node[mynode, above = of webserver] (webui) {Web Browser};
-	\node[usernode, right = of webserver] (cli) {CLI Client};
+	\node[usernode, above = of api] (cli) {CLI Client};
 	\node[usernode, above = of cli] (term) {Text Terminal};
 
-	\draw[<->, thick] (webui.south) -- (webserver.north);
+	\node[usernode, above right = of api] (bot) {Slack Bot};
+	\node[usernode, above = of bot] (slack) {Slack};
+	\draw[<->, thick] (bot) -- (slack);
+	\draw[<->, thick] (bot.south) -- ++(0, -0.5) -| (api.45);
+
+	\draw[<->, thick] (webui) -- (webserver);
 
 	\draw[<->, thick] (cli.south) --  (api.north);
 	\draw[<->, thick] (cli.north) --  (term.south);
 	\draw[<->, thick] (webserver.south) -- ++(0, -0.5) -| (api.135);
 
 	\node[mynode, below left = of api] (ps) {Player Service};
-	\node[mynode, below = of api] (gs) {Game Server};
+	\node[mynode, below = of api] (gs) {Game Service};
 	\node[mynode, below right = of api] (cs) {Content Service};
 
 	\draw[<->, thick] (api.225) -- ++(0, -0.5) -| (ps.north);
@@ -594,57 +633,112 @@
 \label{fig:arch}
 \end{figure}
 
-The overall application architecture is given in Figure \ref{fig:arch}. There are three tiers:
+The overall application architecture is given in Figure \ref{fig:arch}. The class is responsible for implementing all of the services shown, while the \textit{Command Line Interface (CLI) Client} is provided. The third--party \textit{Slack} integration is a secondary objective.
+
+The application consists of the following layers:
+
 \begin{compactitem}
-	\item \textbf{User Interface}: The class is responsible for the web server front--end where users can play the game, manage their account, and so forth.
-	\item \textbf{Application Tier}: The application server coordinates activity between the data tier and the UI tiers. It exposes the public API, as given in the OpenAPI specification, and makes corresponding requests to the data tier servers. The server then formats the responses back to the UI clients.
-	\item \textbf{Data Tier}: The player, game, and content servers manage their respect portions of the COAL engine. Since each of these services can be expanded in different ways, they each have their own database components. The game service communicates with the player service to update state, as well as the content service to fetch data. 
+	\item \textbf{Presentation Layer}: This layer, consisting of all of the Services and clients above the Proxy service, implement the functionality that lets users play and create content for COAL Engine games. The Web Service makes public API calls into the Proxy Service and presents the results to the user.
+	\item \textbf{Application Logic}: The Proxy service brokers requests to the public API, translating them into calls into the other services. It exposes the public API, as given in the OpenAPI specification. The Player service provides user and player character support functions. The Game service implements the core game play loop, evaluating user input and calling into the other services to update game state and provide content. The Content service manages game assets such as room and item descriptions, as well as the other properties associated with them.
+	\item \textbf{Data Layer}: The player, game, and content services manage their respective portions of the COAL engine. Since each of these services have different responsibilities, they each have their own databases and associated schemas.
 \end{compactitem}
 
-The class is responsible for all of the components except the \textit{CLI Client}. You will be divided into teams to implement the various servers and database schemas.
-
-Components of the system are described in their own sections below, starting with the REST API itself.
+The components of the system are described below, beginning with the REST API itself.
 \end{homeworkSection}
 
 
 \begin{homeworkSection}{Public REST API}
 	A REST\footnote{see: \url{https://en.wikipedia.org/wiki/Representational_state_transfer}} API is a way of describing objects and operations against them. A reasonable set of design principles for REST is \href{https://restfulapi.net/}{given here}. In brief, the API has as set of \textit{resources}, or objects in the system, and \textit{methods} used to manipulate them.
 
-	The COAL public API is given in the API Specification PDF. Each URL endpoint is given, along with the expected input parameters, HTTP verb (GET, POST, PUT, or DELETE),  response code (200, 201, etc.) and output format. All data is transferred via JSON documents.
+	The COAL public API is given in the API Specification PDF. Each URL endpoint is given, along with the expected input parameters, HTTP verb (GET, POST, PUT, or DELETE),  response code (e.g. 200, 201, 404) and output format. All data is transferred via JSON documents.
 
-	The \texttt{/game} endpoint corresponds to a particular instance of a MUD. Each instance can be completely different -- different game logic, different game content, and so forth. Having different games is the platform aspect of this application.
+	For example, a \textit{game} is a resource. Each instance of the \textit{game} resource can be completely different -- different game logic, different rooms and items. Having different games is how COAL is a platform instead of just a game engine.
 
-	Objects within the game correspond to sub--resources of the \texttt{/game} endpoint:
+	To list all of the available games available in the COAL application, the \texttt{/game} endpoint is used with the HTTP \texttt{GET} verb. For example, consider a Proxy service that is listening to port 8100 on the local machine. Using the \href{https://curl.se/}{cURL} tool, the list of games can be retrieved, for example:
+
+\begin{Verbatim}[fontsize=\small]
+; curl -X GET http://localhost:8100/v1/game
+[
+  {
+    "id": "7c6b1fc3-0919-495c-bc80-dc1a8737a745",
+    "title": "undermud"
+  }
+]
+\end{Verbatim}
+
+	A JSON document is returned by the Proxy service. That document is a list of dictionaries. In the one dictionary that was returned, the short title of the game, \texttt{undermud}, was given, along with an internal unique identifier.
+
+	To retrieve the full details for the game, the \texttt{id} is appended to the URL. For example:
+
+\begin{Verbatim}[fontsize=\small]
+; curl http://localhost:8100/v1/game/7c6b1fc3-0919-495c-bc80-dc1a8737a745
+{
+  "description": "MUD for all",
+  "id": "7c6b1fc3-0919-495c-bc80-dc1a8737a745",
+  "properties": {
+    "starting-message": "Welcome to UnderMUD!",
+    "starting-room": "56065d49-0499-43ec-a0aa-b9e74f91a198"
+  },
+  "title": "undermud"
+}
+\end{Verbatim}	
+
+	In the GET call above, the \texttt{id} and \texttt{title} are shown again, along with the long form description and properties.
+
+	Creating a game uses a different HTTP verb: \texttt{POST}. A JSON document needs to be provided that specifies the title and description for the game:
+
+\begin{Verbatim}[fontsize=\small]
+; curl -X POST \
+       -H 'Content-type: application/json' \
+			 http://localhost:8100/v1/game \
+			 -d'{"title": "new", "description": "New MUD!"}'
+{
+  "description": "New MUD!",
+  "id": "dd290617-a480-4285-a857-e3312a3be831",
+  "properties": {},
+  "title": "new"
+}
+\end{Verbatim}
+
+	In the cURL call, the HTTP verb (\texttt{-X POST}) is specified, that the data is a JSON document (\texttt{-H `Content-type...'}), and the data itself. The Proxy service sends the request to the Game service, which then creates the game and sends the details back. Notice that the \texttt{id} is generated by the Game service.
+
+	Other game objects correspond to sub--resources of the \texttt{/game} endpoint:
 	\begin{compactitem}
 		\item \texttt{/game/\{game\_id\}/room}: Manipulate rooms; see Table \ref{tab:room-properties}
 		\item \texttt{/game/\{game\_id\}/item}: Manipulate items; see Table \ref{tab:item-properties}
 		\item \texttt{/game/\{game\_id\}/event}: Manipulate events; see Table \ref{tab:event-properties} and Table \ref{tab:event-item-properties}
 	\end{compactitem}
 	
-	Users have accounts with COAL in the form of player objects. Signing up with a server is a call against the \texttt{/player} endpoint. While characters can be retrieved as a sub--resource: \texttt{/player/\{player\_id\}/character}, creating a character is a function of the game server. 
+	Users have accounts with COAL in the form of player objects. Signing up with the application is a call against the \texttt{/player} endpoint. While characters can be retrieved as a sub--resource: \texttt{/player/\{player\_id\}/character}, creating a character is a function of the game service. 
 	
 	That is, creating a character is a POST to:
 	 
 	\texttt{/game/\{game\_id\}/player/\{player\_id\}/character} 
 	
-	The game server is responsible for creating the character and establishing any initial properties for it.
+	The game service is responsible for creating the character and establishing any initial properties for it.
+
+	To learn about all of the endpoints that the Proxy service must implement, review the API Specification PDF. The specification details all of the JSON documents that are sent and received, including fields names and structures. The specification is also what the game clients (that is, the user--facing web service) must implement in order to properly communicate with the Proxy service.
 \end{homeworkSection}
 
 
-\begin{homeworkSection}{Web Service}
-	The web service provides the front--end for the game. Users must be able to manage their account and game characters. They must also be able to play the game itself using an interactive console.
+\begin{homeworkSection}{Web service}
+	The web service provides the front--end for the game. Users must be able to manage their account and game characters. They must also be able to play the game itself using an interactive console. While the Web service renders the game output, it uses the public API to communicate with the Proxy service.
 \end{homeworkSection}
 
 
-\begin{homeworkSection}{App Server}
-	The App Server is a bridge between the public API and all of the internal components of the application. It has no direct access to the databases, and does not know how the data is stored. Instead, it accepts incoming requests from users and translates them into messages for the internal services and then sends back properly formatted responses.
+\begin{homeworkSection}{Proxy service}
+	The Proxy service is a bridge between the public API and all of the internal components of the application. It has no direct access to the databases, and does not know how the data is stored. Instead, it accepts incoming requests from users and translates them into messages for the internal services and then sends back properly formatted responses.
 	
-	This design is a pattern for providing \textit{horizontal scaling}. Multiple App Servers can be launched to accommodate user load independently of the other services, since those services may themselves have specific ways to use their resources.
+	This design is a pattern for providing \textit{horizontal scaling}. Multiple Proxy services can be launched to accommodate user load independently of the other services, since those services may themselves have specific ways to manage their resources.
 
-	The app server must send and receive JSON content according COAL public OpenAPI specification. You can use the YAML file in the repository to code generate server, if that helps you.
+	The Proxy service must send and receive JSON content according COAL public OpenAPI specification. Teams may use the YAML file in the repository to code generate a server application.
 \end{homeworkSection}
 
-\begin{homeworkSection}{Player Service}
+\begin{homeworkSection}{Data model conventions}
+	The \texttt{title} data model field is a unique, human--readable, one word \textbf{key}. Think of a \texttt{title} like a hashtag. In contrast, \texttt{description} fields are potentially multi--line text fields with as much text as needed. Properties tables are dictionaries or maps of keys (\texttt{titles}) and values; they're an open--ended mechanism for storing data. Most tables have an \texttt{id} field. This field is a primary key, separate from \texttt{title}.
+\end{homeworkSection}
+
+\begin{homeworkSection}{Player service}
 
 \begin{figure}
 	\centering		
@@ -685,13 +779,12 @@ Components of the system are described in their own sections below, starting wit
 		\draw[cf0many] (I) -- (C);
 		
   \end{tikzpicture}
-\caption{Player server data model}
+\caption{Player service data model}
 \label{fig:player-db}
 \end{figure}
 	
-	The Player Service is responsible for user accounts and managing the game characters the user creates. Figure \ref{fig:player-db}, shows a basic data model. Players may have multiple characters. Each character has a set of properties and a set of items. The \texttt{item\_id} and \texttt{game\_id} foreign keys belong to the content and game servers respectively.
+	The Player Service is responsible for user accounts and managing the game characters the user creates. Figure \ref{fig:player-db}, shows a basic data model. Players may have multiple characters. Each character has a set of properties and a set of items. The \texttt{item\_id} and \texttt{game\_id} foreign keys belong to the content and game services respectively.
 
-	Wherever you see \texttt{title} in a data model field, it is a unique, human--readable, one word \textbf{key}. Think of a \texttt{title} as a hashtag. In contrast, \texttt{description} fields are potentially multi--line text fields with as much text as needed. Properties tables are dictionaries or maps of keys (\texttt{titles}) and values; they're an open--ended mechanism for storing data.
 	\end{homeworkSection}
 
 \begin{homeworkSection}{Content Service}
@@ -745,13 +838,13 @@ Components of the system are described in their own sections below, starting wit
 			\draw[cf0many] (E) -- (R);
 			
 		\end{tikzpicture}
-	\caption{Content server data model}
+	\caption{Content service data model}
 	\label{fig:content-db}
 	\end{figure}
 	
-	The Content server contains all of the game assets -- text, descriptions, and properties for rooms and items. Figure \ref{fig:content-db} is a basic data model. Items have can have multiple properties and aliases. An Item \texttt{location} is a \texttt{room\_id}. Rooms can have zero or more exits. The \texttt{Exits} table has two foreign key fields that reference the same table. That is, \texttt{from\_room\_id} and \texttt{to\_room\_id} are both \texttt{room\_id} fields references the \texttt{Rooms} table. 
+	The Content service contains all of the game assets -- text, descriptions, and properties for rooms and items. Figure \ref{fig:content-db} is a basic data model. Items can have have multiple properties and aliases. An Item \texttt{location} is a \texttt{room\_id}. Rooms can have zero or more exits. The \texttt{Exits} table has two foreign key fields that reference the same table. That is, \texttt{from\_room\_id} and \texttt{to\_room\_id} are both \texttt{room\_id} fields referencing the \texttt{Rooms} table. 
 	
-	Implied in this schema is that room exits are not reciprocal. That is, just because a character can go \texttt{UP} into a room doesn't mean the character can go back \texttt{DOWN}.
+	Implied in this schema is that room exits are not reciprocal. That is, just because a character can go \texttt{UP} into a room doesn't mean the character can go back \texttt{DOWN} to where they were.
 \end{homeworkSection}
 
 \begin{homeworkSection}{Game Service}
@@ -845,22 +938,22 @@ Components of the system are described in their own sections below, starting wit
 		\draw[cf0many] (FA) -- (FP);
 
 		\end{tikzpicture}
-	\caption{Game server data model}
+	\caption{Game service data model}
 	\label{fig:game-db}
 	\end{figure}
 
-	The Game Service is responsible for managing game play. The service will have to reach out to the content service for room and item descriptions, and it will have to reach out to the player service to fetch and update character data. Figure \ref{fig:game-db} has a basic data model. The game engine parses user input (described in the next section), evaluates events with that input, and returns results back to the user.
+	The Game Service is responsible for managing game play. The service reaches out to the content service for room and item descriptions, and to the player service to fetch and update character data. Figure \ref{fig:game-db} has a basic data model. The game engine parses user input (described in the next section), evaluates events, and returns results back to the user.
 
-	While games themselves have a set of properties, the real complexity is in the engine logic, as captured in the \texttt{Events} table and its children. An event has three parts -- conditions to evaluate, steps to follow if those conditions are met, and steps to follow if they do not. All three of these parts consist of ordered lists, and so have a \texttt{position} field. Also, all three of these parts consist of a game engine function, called a \texttt{primitive}, and arguments to that function captured in the \texttt{*Args} tables.
+	The game engine logic is captured in the \texttt{Events} table and its children. An event has three parts -- conditions to evaluate, steps to follow if those conditions are met, and steps to follow if they do not. All three of these parts consist of ordered lists, and so have a \texttt{position} field. Also, all three of these parts consist of a game engine function, called a \texttt{primitive}, and arguments to that function captured in the \texttt{ConditionArgs}, \texttt{TrueArgs}, and \texttt{FalseArgs} tables.
 
 \end{homeworkSection}
 
 \begin{homeworkSection}{Input Parsing}
-	Text adventure games and MUDs have all kinds of ways to understand what the user is trying to do with their characters. Turning user text into actions that the game engine can perform is \textit{parsing} the input.
+	Text adventure games and MUDs have all kinds of ways to understand what the user is trying to do with their characters. Turning user input into actions for the game engine is called \textit{parsing} the input.
 
 	The COAL engine uses a specific parsing algorithm that's not as sophisticated as some\footnote{For example, the parser used by the \href{http://www.tads.org/t2doc/doc/parser.htm}{Text Adventure Development System (TADS)}}, but also not as simple as the ones used in the first text adventure games\footnote{Specifically, the first commercially successful ones published by \href{https://en.wikipedia.org/wiki/Scott_Adams_(game_designer)}{Scott Adams} in 1978, which understood only two words, and only the first three letters of each word at that.}.
 
-	To start, consider that each \texttt{Event}, as above, has a \texttt{command}. That \texttt{command} is a pattern consisting of words and variables. For example, all of these could be commands in the same game:
+	Consider that each \texttt{Event}, as above, has a \texttt{command}. That \texttt{command} is a pattern consisting of words and variables. For example, all of these could be commands in the same game:
 
 	\begin{compactitem}
 		\item \texttt{GIVE !ITEM TO !CHARACTER}
@@ -868,9 +961,7 @@ Components of the system are described in their own sections below, starting wit
 		\item \texttt{GIVE HONEY TO BEAR}
 	\end{compactitem}
 
-	In the first command, there are two variables: \texttt{!ITEM} and \texttt{!CHARACTER}. If the user typed: \texttt{GIVE LANTERN TO WIZARD}, then that would be a valid input. However, if the user typed: \texttt{GIVE FOOD FOR BEAR}, then that wouldn't be understood, because \texttt{FOR} isn't part of any of the command patterns.
-
-	The first part of the algorithm, then, is given in Algorithm \ref{alg:coal-part-1}. This part filters out whether there are any matching events at all. Using the algorithm, and the events above, if the user typed: \texttt{GIVE LANTERN TO BEAR}, then the first two events would match. The first because both variables accept the input, and the second because of the \texttt{BEAR} part. The last rule does not match, because the user typed \texttt{LANTERN} and not \texttt{HONEY}.
+	In the first command, there are two variables: \texttt{!ITEM} and \texttt{!CHARACTER}. All variables are prefixed with a (\texttt{!}). If the user typed: \texttt{GIVE LANTERN TO WIZARD}, then that would be a valid match for that command. However, if the user typed: \texttt{GIVE FOOD FOR BEAR}, then that wouldn't be understood, because \texttt{FOR} isn't part of any of the command patterns.
 
 	\begin{algorithm}
 		\caption{COAL Parser, Part 1}
@@ -880,24 +971,28 @@ Components of the system are described in their own sections below, starting wit
 				\State $w \gets$ number of words in input
 				\State $c \gets$ commands of length $w$
 				\For{$i \gets 1,w$}\Comment{Look at each word}
-					\State $keepers \gets$ empty list
+					\State $keepers \gets$ empty list\Comment{Store events that match the input word}
 					\For{$r \gets 1,c$}\Comment{Check each event}
 						\If{$w[i] = r[i]$ or $r[i]$ is a variable}
-							\State $keeprs \gets$ r
+							\State $keepers \gets$ r
 						\EndIf
 					\EndFor
-					\State $c \gets$ keepers
+					\State $c \gets$ keepers\Comment{discard events that do not match}
 				\EndFor
-				\Return $c$
+				\State \textbf{return} $c$\Comment{return all events that match the input}
 			\EndProcedure
 	\end{algorithmic}
 	\end{algorithm}
 
-	If there are no matches on the events, an error is returned. A message like, \texttt{I DO NOT UNDERSTAND} could be displayed.
+	The first part of the algorithm is given in Algorithm \ref{alg:coal-part-1}. This part creates list of matching events. First, the database is queried for all events that have commands with the same number of words as the input. Next, each word in the input is evaluated. The input word is compared to the command words, in the same position, and events that match are kept. If the command word is a variable, then it's an automatic match -- any input value is accepted. Otherwise, the input and command words must be the same for a match. Last, only events with matches are kept when looking at subsequent words. Once all of the input words are evaluated, the algorithm returns a list of events that match.
+	
+	Using the algorithm, and the commands above, if the user typed: \texttt{GIVE LANTERN TO BEAR}, then the first two events would match. The first matches because both variables accept the input, and the second matches because of the \texttt{BEAR} part. The last rule does not match, because the user typed \texttt{LANTERN} and not \texttt{HONEY}.
 
-	If only one event is left, then that event can be evaluated (see the next section for a discussion on processing events).
+	If there are no matches on the events, an error is returned. For example, \texttt{I DO NOT UNDERSTAND} could be return as a message to the user.
 
-	What do should happen if multiple rules match? Find the most specific one. That is, find the event with that matches that has the fewest variables. In the example, that is this rule: \texttt{GIVE !ITEM TO BEAR}, since this has one variable, and the other rule has two (\texttt{!ITEM} and \texttt{!CHARACTER}).
+	If only one event is left, then that event can be evaluated (see the next section on how events are evaluated).
+
+	If multiple rules match, then the most specific one is selected. That is, an algorithm should find the event that has the fewest variables. In the example, that is this rule: \texttt{GIVE !ITEM TO BEAR}, since this has one variable, and the other rule has two (\texttt{!ITEM} and \texttt{!CHARACTER}).
 
 	\begin{algorithm}
 		\caption{COAL Parser, Part 2}
@@ -906,16 +1001,16 @@ Components of the system are described in their own sections below, starting wit
 			\Procedure{ReduceEvents}{$input$, $events$}
 				\State $w \gets$ number of words in input
 				\For{$i \gets 1,w$}
-					\If{length($events$) $= 1$}
+					\If{length($events$) $= 1$}\Comment{Is the algorithm done?}
 						\State \textbf{return} $events[0]$
 					\EndIf
 					\State $keepers \gets$ empty list
 					\For{$r \gets 1,events$}
-						\If{$w[i] = r[i]$}
+						\If{$w[i] = r[i]$}\Comment{Is the input word an exact match?}
 							\State $keepers \gets r$
 						\EndIf
 					\EndFor
-					\If{length($keepers$) $>0$}
+					\If{length($keepers$) $>0$}\Comment{Keep only exact matches, if possible}
 						\State $events \gets keepers$
 					\EndIf
 				\EndFor
@@ -927,7 +1022,7 @@ Components of the system are described in their own sections below, starting wit
 		\end{algorithmic}
 	\end{algorithm}
 
-	Algorithm \ref{alg:coal-part-2} filters the events from Part 1. Again, this algorithm searches word by word through the user input. All the rules will match -- but if there's a word that matches \textit{exactly} then that event is kept. At the end of the loop through all of the rules, one of two things is true: (a) there is a set of rules with exact matches, or (b) that particular word is a variable in all the events. If (a) is true, then the set of events to process \textit{becomes} the set of matched rules. Otherwise, the algorithm continues onto the next input word.
+	Algorithm \ref{alg:coal-part-2} filters the events from Part 1. Again, this algorithm searches word by word through the user input. All the rules will match -- but if there's a word that matches \textit{exactly} then that event is kept. At the end of the inner loop through all of the events, one of two things is true: (a) there is a set of events with exact matches, or (b) that particular word is a variable in all events. If (a) is true, then the set of events to process \textit{becomes} the set of matched events. Otherwise, the algorithm continues onto the next input word.
 
 	At any time, if only one event remains, then the algorithm stops and returns that event. If, at the end of the algorithm, there are still multiple matches, then this represents a problem with the rules themselves -- an ambiguity has been created. The program shouldn't crash at this point, though, but rather return an error.
 
@@ -936,9 +1031,9 @@ Components of the system are described in their own sections below, starting wit
 \end{homeworkSection}
 
 \begin{homeworkSection}{Game Engine Primitives}
-	Once user input is parsed and an event identified, it must be evaluated. Game authors need to have the ability to make the game respond to commands, and the way to do this is to expose an API. This API is explicitly designed to manipulate game state, but not content. That is, the API will let you set properties, but not change room descriptions.
+	Once user input is parsed and an event identified, it is evaluated. Game authors need to have the ability to make the game respond to commands, and the facility for this is another API. This API manipulates game state, but not content. That is, the API can set properties, but not change room descriptions.
 
-	The API consists of functions in the game engine, and arguments to those functions. Arguments can be constant strings or command variables.
+	The API consists of functions and arguments to those functions in the game engine. Arguments can be constant strings or command variables.
 
 	\begin{table}
 		\begin{tabularx}{\textwidth}{|r|l|X|}
@@ -954,16 +1049,21 @@ Components of the system are described in their own sections below, starting wit
 		\label{tab:event-condition-primitives}
 	\end{table}
 
-	There are two classes of functions -- conditions, and actions. Conditions are used to evaluate the game state. For example, \texttt{is\_property\_eq(key, value)} asks whether character property \texttt{key} has a specific value. Each condition has a boolean result. A list of condition primitives is given in Table \ref{tab-event-condition-primitives}.
+	There are two classes of functions -- conditions, and actions. Conditions are used to evaluate the game state. For example, \texttt{is\_property\_eq(key, value)} asks whether the value of character property \texttt{key} matches an argument. Each condition has a boolean result. A list of condition primitives is given in Table \ref{tab:event-condition-primitives}.
 	
+	The first part of evaluating an event is to evaluate all of its conditions. If all of its conditions are true, then the list of true actions are run (see Table \ref{tab:event-item-properties}). An event may also have \textit{no} conditions, in which case the true actions are run automatically. Otherwise, if any condition is false, then the false actions are run.
+
+	A user can issue a command, have it recognized by the engine, but still result in some error message because of how the event conditions were evaluated. This is perfectly reasonable -- \texttt{GIVE HONEY TO BEAR} shouldn't result in a successful result if, for example, the \texttt{BEAR} is not present or the character is not carrying \texttt{HONEY}.
+
 	\begin{table}
 		\begin{tabularx}{\textwidth}{|r|l|X|}
 			\hline
 			Primitive & Arguments & Description \\
 			\hline \hline
-			message & key & Send the value of global property \textit{key} to the user \\
-			set\_key & key, value & Set character property \textit{key} to \textit{value} \\
-			look & none & Send a message with the the title, description, list of exits, and items of the character's current room \\
+			message     & key        & Send the value of global property \textit{key} to the user \\
+			set\_key    & key, value & Set character property \textit{key} to \textit{value} \\
+			append\_key & key, value & Add \textit{value} to the end of the existing value of \textit{key} \\
+			look        & none       & Send a message with the the title, description, list of exits, and items of the character's current room \\
 			\hline
 		\end{tabularx}
 		\caption{Event action primitives}
@@ -971,10 +1071,6 @@ Components of the system are described in their own sections below, starting wit
 	\end{table}
 
 	An action affects the game state. For example, \texttt{message(key)} sends the value of the game property \texttt{key} back to the user. Some actions are given in Table \ref{tab:event-action-primitives}.
-
-	The first part of evaluating an event is to evaluate all of its conditions. If all of its conditions are true, then the list of actions in the \texttt{true\_part} are run. An event may also have \textit{no} conditions, in which case the true actions are run automatically. Otherwise, if any condition is false, then the \texttt{false\_part} actions are run.
-
-	What can happen, then, is that a user can try to a command, have it recognized by the engine, but still result in nothing happening. That's entirely ok.
 
 	Lastly, there is one set of events that are always evaluated. Events may have a command string that is empty. These are global events that run for every character on every input. An example of this is displaying a welcome message to new characters. A global event is defined that checks to see if the \texttt{first-time} key is set for a character. If it is, then nothing happens (the \texttt{true\_part} is empty). If it isn't set, then: (a) the welcome message is sent, and (b) the \texttt{first-time} key is set.
 \end{homeworkSection}
@@ -984,8 +1080,9 @@ Components of the system are described in their own sections below, starting wit
 	There are things missing from this specification. If we get to them, then these would be interesting:
 	\begin{compactitem}
 		\item \textbf{Engine Primitives}: The lists of actions and conditions is most likely entirely incomplete. I haven't thought enough about authoring a game to work through what a \textit{minimal} set looks like, so I've taken some guesses. If we get to the point of actually getting game content together then it'll make for some good discussion.
-		\item \textbf{Access Control}: Content creation is normally reserved for the people running the game server and their designates. The servers should be extended to recognize different user access levels -- player and admin, and restrict all of the content creation endpoints to be admin-only.
+		\item \textbf{Access Control}: Content creation is normally reserved for the people running the game and their designates. The services should be extended to recognize different user access levels -- player and admin, and restrict all of the content creation endpoints to be admin-only.
 		\item \textbf{Non--Player Characters (NPCs)}: A feature of some MUDs are monsters and combat mechanics. Sometimes, there are shop and equipment buying mechanics, too. While this might be possible using item objects, having NPCs as their own content type might be easier.
+		\item \textbf{Third Party Integration}: The power of having a proxy service is in being able to integrate with other text platforms. For example, a bot could be written that facilitates playing COAL Engine games in Slack or Discord.
 	\end{compactitem}
 \end{homeworkSection}
 
@@ -997,12 +1094,17 @@ Components of the system are described in their own sections below, starting wit
 %----------------------------------------------------------------------------------------
 \begin{homeworkProblem}[Tools and Technology]
 
-	\begin{homeworkSection}{Coding Environment}
-		It's up to you and your team.
+	\begin{homeworkSection}{Implementation Language and Environment}
+		What language the services are written in and the tools you use to do that are up to you and your team.
 		
-		For what it's worth, however, this project was prototyped entirely in Python.
-		
-		I work on a Microsoft Surface Pro 6 running Windows 10. I use the Windows Subsystem for Linux v2 and run Ubuntu. All of the code and documents were written in \href{https://code.visualstudio.com/}{Visual Studio Code}.
+		For what it's worth, however, there is a proof of concept implementation written for this project and it:
+		\begin{compactitem}
+			\item was written entirely in Python,
+			\item used SQLite as a database backend,
+			\item lived on a Microsoft Surface Pro 6 running Windows 10,
+			\item ran on Windows Subsystem for Linux v2 (Ubuntu),
+			\item was debugged in Visual Studio Code.
+		\end{compactitem}
 	\end{homeworkSection}
 
 	\begin{homeworkSection}{Hosting}
