@@ -9,7 +9,6 @@ from pathlib import Path
 import requests
 
 API_SERVER = "http://localhost:8000/v1"
-GAME_SERVER = "http://localhost:8100/v1"
 
 EVENT_FILE = Path(__file__).parent / "events.json"
 ROOMS_FILE = Path(__file__).parent / "rooms.json"
@@ -24,13 +23,13 @@ def create_game():
     "title": GAME_TITLE,
     "description": "MUD for all"
   }
-  rv = requests.post(f"{GAME_SERVER}/game", json=game)
+  rv = requests.post(f"{API_SERVER}/game", json=game)
   rv.raise_for_status()
   return rv.json()["id"]
 
 
 def get_game_id():
-  rv = requests.get(f"{GAME_SERVER}/game")
+  rv = requests.get(f"{API_SERVER}/game")
   rv.raise_for_status()
 
   for g in rv.json():
@@ -38,7 +37,7 @@ def get_game_id():
       return g["id"]
 
 def create_event(game_id, event):
-  rv = requests.post(f"{GAME_SERVER}/game/{game_id}/event", json=event)
+  rv = requests.post(f"{API_SERVER}/game/{game_id}/event", json=event)
   rv.raise_for_status()
 
 
@@ -76,10 +75,10 @@ def create_properties(game_id, rooms):
 def clear_events(game_id):
   """ Delete all of the Events from a game
   """
-  rv = requests.get(f"{GAME_SERVER}/game/{game_id}/event")
+  rv = requests.get(f"{API_SERVER}/game/{game_id}/event")
   rv.raise_for_status()
   for e in rv.json():
-    requests.delete(f"{GAME_SERVER}/game/{game_id}/event/{e['id']}")
+    requests.delete(f"{API_SERVER}/game/{game_id}/event/{e['id']}")
     rv.raise_for_status()
 
 
