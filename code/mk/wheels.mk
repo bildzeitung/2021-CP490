@@ -3,7 +3,7 @@ WHEEL_DIR:=./publish
 $(WHEEL_DIR):
 	mkdir -p $@
 
-wheels: $(VENV) $(PUBLIC_API_SERVER_YAML) | $(WHEEL_DIR)
+wheels: $(VENV) $(PUBLIC_API_SERVER_YAML) $(GAME_SERVER_YAML) $(CONTENT_SERVER_YAML) $(PLAYER_SERVER_YAML) | $(WHEEL_DIR)
 	. $(VENV) && cd public-schema-server && python -m build
 	. $(VENV) && cd game-server && python -m build
 	. $(VENV) && cd content-server && python -m build
@@ -15,4 +15,7 @@ wheels: $(VENV) $(PUBLIC_API_SERVER_YAML) | $(WHEEL_DIR)
 	cp content-server/dist/coal_*.whl $(WHEEL_DIR)
 	cp player-server/dist/coal_*.whl $(WHEEL_DIR)
 
-.PHONY: wheels
+clean::
+	rm -fr $(WHEEL_DIR)
+
+.PHONY: wheels clean

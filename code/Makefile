@@ -11,7 +11,7 @@ all: client servers
 	@echo "All done."
 
 clean::
-	rm -fr $(CLIENT)
+
 
 realclean: clean
 		rm -fr $(VENV_DIR)

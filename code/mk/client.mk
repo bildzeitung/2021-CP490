@@ -22,7 +22,7 @@ $(COAL): $(CLIENT_SETUP)
 client: $(COAL)
 
 clean::
-	rm -fr public-schema-client
+	rm -fr $(CLIENT)
 	rm -fr public-schema-cli/coal.egg-info
 	for i in build dist __pycache__ .tox ; do \
 		find public-schema-cli -name "$${i}" -exec rm -fr {} \; || true ; \
