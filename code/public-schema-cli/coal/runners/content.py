@@ -1,7 +1,7 @@
 import attr
 from tabulate import tabulate
 
-from coal_public_api_client.models import RoomSubmit, ExitSubmit
+#from coal_public_api_client.models import RoomSubmit, ExitSubmit
 from coal_public_api_client.exceptions import ApiException, ServiceException
 
 

@@ -16,7 +16,6 @@ realclean: clean
 		rm -fr $(VENV_DIR)
 		find . -name '*.db' -exec rm {} \;
 
-
 undermud: $(VENV)
 		. $(VENV) \
 			&& coal_game_db_init \

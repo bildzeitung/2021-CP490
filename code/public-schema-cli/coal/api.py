@@ -3,7 +3,7 @@ from contextlib import contextmanager
 import attr
 
 from coal_public_api_client import Configuration, ApiClient
-from coal_public_api_client.api.default_api import DefaultApi
+from coal_public_api_client.api.game_api import GameApi
 
 
 @attr.s
@@ -22,7 +22,7 @@ class Api:
     @contextmanager
     def api(self):
         with ApiClient(self.config) as api_client:
-            yield DefaultApi(api_client)
+            yield GameApi(api_client)
 
     @classmethod
     def from_config(cls, incoming_config):

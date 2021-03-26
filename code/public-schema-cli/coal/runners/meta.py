@@ -6,7 +6,7 @@ from coal_public_api_client.exceptions import (
     ServiceException,
 )
 from coal_public_api_client.model.game_submit import GameSubmit
-from coal_public_api_client.model.player_submit import PlayerSubmit
+#from coal_public_api_client.model.player_submit import PlayerSubmit
 from coal_public_api_client.model.character_submit import CharacterSubmit
 from coal_public_api_client.model.turn_submit import TurnSubmit
 
