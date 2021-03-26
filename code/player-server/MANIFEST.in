@@ -1,1 +1,1 @@
-include coal_content_server/openapi/openapi.yaml
+include coal_player_server/openapi/openapi.yaml
