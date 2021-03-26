@@ -39,16 +39,22 @@ paths:
     $ref: './resources/game-event.yaml'
   /game/{game_id}/player/{player_id}/character:
     $ref: './resources/game-player-characters.yaml'
-
   /player:
     $ref: './resources/players.yaml'
   /player/{player_id}:
     $ref: './resources/player.yaml'
   /player/{player_id}/character:
-    $ref: './resources/player-characters.yaml'
+    get:
+      summary: Retrieve a list of player characters
+      tags:
+        - character
+      parameters:
+        - $ref: './parameters/path/playerId.yaml'
+      responses:
+        '200':
+          $ref: './responses/CharacterListResponse.yaml'
   /player/{player_id}/character/{character_id}:
     $ref: './resources/player-character.yaml'
-
 components:
   parameters:
     $ref: "./parameters/_index.yaml"
