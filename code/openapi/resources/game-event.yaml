@@ -1,0 +1,32 @@
+get:
+  summary: Retrieve event details
+  tags:
+    - event
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/eventId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/EventDetailResponse.yaml'
+put:
+  summary: Update event parameters
+  tags:
+    - event
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/eventId.yaml'
+  requestBody:
+    $ref: '../requestBodies/EventBody.yaml'
+  responses:
+    '200':
+      $ref: '../responses/EventDetailResponse.yaml'
+delete:
+  summary: Remove event
+  tags:
+    - event
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/eventId.yaml'
+  responses:
+    '204':
+      description: Event deleted

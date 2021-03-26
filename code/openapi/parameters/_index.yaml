@@ -1,0 +1,23 @@
+gameId:
+  $ref: './path/gameId.yaml'
+
+gameQueryId:
+  $ref: './query/gameId.yaml'
+
+characterId:
+  $ref: './path/characterId.yaml'
+
+eventId:
+  $ref: './path/eventId.yaml'
+
+roomId:
+  $ref: './path/roomId.yaml'
+
+exitId:
+  $ref: './path/exitId.yaml'
+
+itemId:
+  $ref: './path/itemId.yaml'
+
+playerId:
+  $ref: './path/playerId.yaml'

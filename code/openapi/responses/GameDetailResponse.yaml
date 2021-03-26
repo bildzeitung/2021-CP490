@@ -1,0 +1,5 @@
+description: Game detail
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/GameDetail.yaml'

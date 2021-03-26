@@ -1,0 +1,5 @@
+description: List of items
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ArrayOfItems.yaml'

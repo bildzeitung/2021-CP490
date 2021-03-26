@@ -1,0 +1,20 @@
+get:
+  summary: Retrieve a list of player characters
+  tags:
+    - character
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/CharacterListResponse.yaml'
+post:
+  summary: Create a new player character
+  tags:
+    - character
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+  requestBody:
+      $ref: '../requestBodies/CharacterBody.yaml'
+  responses:
+    '201':
+      $ref: '../responses/CharacterDetailResponse.yaml'

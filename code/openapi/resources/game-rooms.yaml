@@ -1,0 +1,20 @@
+get:
+  summary: Retrieve all rooms
+  tags:
+    - room
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/RoomListResponse.yaml'
+post:
+  summary: Add a new room to a game
+  tags:
+    - room
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+  requestBody:
+    $ref: '../requestBodies/RoomBody.yaml'
+  responses:
+    '201':
+      $ref: '../responses/RoomDetailResponse.yaml'

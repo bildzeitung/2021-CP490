@@ -1,0 +1,6 @@
+description: Settable Exit properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ExitSubmit.yaml'

@@ -1,0 +1,12 @@
+type: object
+properties:
+  game_id:
+    type: string
+  title:
+    type: string
+  description:
+    type: string
+  exits:
+    type: array
+    items:
+      $ref: './ExitSubmit.yaml'

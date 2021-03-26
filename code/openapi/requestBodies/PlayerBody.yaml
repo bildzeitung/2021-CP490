@@ -1,0 +1,6 @@
+description: Settable Player properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/PlayerSubmit.yaml'

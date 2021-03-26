@@ -1,0 +1,5 @@
+description: List of events
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ArrayOfEvents.yaml'

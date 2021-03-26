@@ -1,0 +1,10 @@
+type: object
+properties:
+  id:
+    type: string
+  primitive:
+    type: string
+  arguments:
+    type: array
+    items:
+      type: string

@@ -1,0 +1,20 @@
+get:
+  summary: Retrieve details for a specific exit
+  tags:
+    - exit
+  parameters:
+    - $ref: '../parameters/path/roomId.yaml'
+    - $ref: '../parameters/path/exitId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/RoomExitDetailResponse.yaml'
+delete:
+  summary: Remove exit from room
+  tags:
+    - exit
+  parameters:
+    - $ref: '../parameters/path/roomId.yaml'
+    - $ref: '../parameters/path/exitId.yaml'
+  responses:
+    '204':
+      description: Exit deleted

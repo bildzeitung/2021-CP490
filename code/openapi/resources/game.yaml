@@ -1,0 +1,29 @@
+get:
+  summary: Retrieve game details
+  tags:
+    - game
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/GameDetailResponse.yaml'
+put:
+  summary: Update game parameters
+  tags:
+    - game
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+  requestBody:
+    $ref: '../requestBodies/GameBody.yaml'
+  responses:
+    '200':
+      $ref: '../responses/GameDetailResponse.yaml'
+delete:
+  summary: Remove game
+  tags:
+    - game
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+  responses:
+    '204':
+      description: Game deleted

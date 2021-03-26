@@ -1,0 +1,6 @@
+description: Settable Item properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ItemSubmit.yaml'

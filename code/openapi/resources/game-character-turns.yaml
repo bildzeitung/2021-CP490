@@ -1,0 +1,12 @@
+post:
+  summary: Submit player turn
+  tags:
+    - turn
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/characterId.yaml'
+  requestBody:
+    $ref: '../requestBodies/TurnBody.yaml'
+  responses:
+    '201':
+      $ref: '../responses/TurnDetailResponse.yaml'

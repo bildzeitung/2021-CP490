@@ -1,0 +1,98 @@
+ArrayOfGames:
+  $ref: './ArrayOfGames.yaml'
+
+Game:
+  $ref: './Game.yaml'
+
+GameDetail:
+  $ref: './GameDetail.yaml'
+
+GameSubmit:
+  $ref: './GameSubmit.yaml'
+
+CharacterSubmit:
+  $ref: './CharacterSubmit.yaml'
+
+CharacterDetail:
+  $ref: './CharacterDetail.yaml'
+
+TurnResponseStatus:
+  $ref: './TurnResponseStatus.yaml'
+
+TurnDetail:
+  $ref: './TurnDetail.yaml'
+
+TurnSubmit:
+  $ref: './TurnSubmit.yaml'
+
+EventItem:
+  $ref: './EventItem.yaml'
+
+EventItemList:
+  $ref: './EventItemList.yaml'
+
+Event:
+  $ref: './Event.yaml'
+
+ArrayOfEvents:
+  $ref: './ArrayOfEvents.yaml'
+
+EventItemSubmit:
+  $ref: './EventItemSubmit.yaml'
+
+EventItemSubmitList:
+  $ref: './EventItemSubmitList.yaml'
+
+EventSubmit:
+  $ref: './EventSubmit.yaml'
+
+Room:
+  $ref: './Room.yaml'
+
+RoomDetail:
+  $ref: './RoomDetail.yaml'
+
+Exit:
+  $ref: './Exit.yaml'
+
+ExitSubmit:
+  $ref: './ExitSubmit.yaml'
+
+RoomSubmit:
+  $ref: './RoomSubmit.yaml'
+
+ArrayOfRooms:
+  $ref: './ArrayOfRooms.yaml'
+
+ArrayOfExits:
+  $ref: './ArrayOfExits.yaml'
+
+Item:
+  $ref: './Item.yaml'
+
+ItemDetail:
+  $ref: './ItemDetail.yaml'
+
+ItemSubmit:
+  $ref: './ItemSubmit.yaml'
+
+ArrayOfItems:
+  $ref: './ArrayOfItems.yaml'
+
+Player:
+  $ref: './Player.yaml'
+
+PlayerSubmit:
+  $ref: './PlayerSubmit.yaml'
+
+PlayerDetail:
+  $ref: './PlayerDetail.yaml'
+
+ArrayOfPlayers:
+  $ref: './ArrayOfPlayers.yaml'
+
+Character:
+  $ref: './Character.yaml'
+
+ArrayOfCharacters:
+  $ref: './ArrayOfCharacters.yaml'

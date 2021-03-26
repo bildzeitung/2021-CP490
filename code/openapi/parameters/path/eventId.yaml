@@ -1,0 +1,6 @@
+name: event_id
+in: path
+required: true
+description: Event ID
+schema:
+  type: string

@@ -1,0 +1,6 @@
+type: object
+properties:
+  status: 
+    $ref: './TurnResponseStatus.yaml'
+  text:
+    type: string

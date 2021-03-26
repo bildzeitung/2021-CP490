@@ -1,0 +1,5 @@
+description: Player detail
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/PlayerDetail.yaml'

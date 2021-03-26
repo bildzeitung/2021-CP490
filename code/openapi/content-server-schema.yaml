@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: COAL Content Server
+    description: An API for COAL Content Server
+servers:
+- url: /v1
+tags:
+- name: room
+- name: item
+- name: exit
+paths:
+  /room:
+    $ref: './resources/rooms.yaml'
+  /room/{room_id}:
+    $ref: './resources/room.yaml'
+  /room/{room_id}/exit:
+    $ref: './resources/room-exits.yaml'
+  /room/{room_id}/exit/{exit_id}:
+    $ref: './resources/room-exit.yaml'
+  /item:
+    $ref: './resources/items.yaml'
+  /item/{item_id}:
+    $ref: './resources/item.yaml'
+components:
+  schemas:
+    $ref: "./schemas/_index.yaml"
+  parameters:
+    $ref: "./parameters/_index.yaml"
+  requestBodies:
+    $ref: "./requestBodies/_index.yaml"
+  responses:
+    $ref: "./responses/_index.yaml"

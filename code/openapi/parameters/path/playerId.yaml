@@ -1,0 +1,6 @@
+name: player_id
+in: path
+required: true
+description: Player ID
+schema:
+  type: string

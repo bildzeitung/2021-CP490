@@ -1,0 +1,6 @@
+name: game_id
+in: query
+required: false
+description: Game ID
+schema:
+  type: string

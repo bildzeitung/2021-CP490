@@ -1,0 +1,6 @@
+name: room_id
+in: path
+required: true
+description: UUID of a room
+schema:
+  type: string

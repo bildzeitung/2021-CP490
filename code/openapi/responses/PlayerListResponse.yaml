@@ -1,0 +1,5 @@
+description: List of players
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ArrayOfPlayers.yaml'

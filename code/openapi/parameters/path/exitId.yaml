@@ -1,0 +1,6 @@
+name: exit_id
+in: path
+required: true
+description: UUID of an exit
+schema:
+  type: string

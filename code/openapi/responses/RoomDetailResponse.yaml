@@ -1,0 +1,5 @@
+description: Room detail
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/RoomDetail.yaml'

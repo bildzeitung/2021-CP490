@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: string
+  title:
+    type: string
+  description:
+    type: string
+  properties:
+    type: object
+    additionalProperties:
+      type: string

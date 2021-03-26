@@ -1,0 +1,5 @@
+description: Item detail
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ItemDetail.yaml'

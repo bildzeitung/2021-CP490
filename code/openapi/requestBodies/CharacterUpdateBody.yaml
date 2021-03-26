@@ -1,0 +1,6 @@
+description: Engine settable Player Character properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/CharacterDetail.yaml'

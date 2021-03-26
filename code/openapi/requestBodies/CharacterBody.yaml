@@ -1,0 +1,6 @@
+description: Settable Player Character properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/CharacterSubmit.yaml'

@@ -1,0 +1,6 @@
+description: Settable Room properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/RoomSubmit.yaml'

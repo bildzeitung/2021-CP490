@@ -1,0 +1,32 @@
+get:
+  summary: Retrieve item details
+  tags:
+    - item
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/itemId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/ItemDetailResponse.yaml'
+put:
+  summary: Update item details
+  tags:
+    - item
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/itemId.yaml'
+  requestBody:
+    $ref: '../requestBodies/ItemBody.yaml'
+  responses:
+    '200':
+      $ref: '../responses/ItemDetailResponse.yaml'
+delete:
+  summary: Remove item
+  tags:
+    - item
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/itemId.yaml'
+  responses:
+    '204':
+      description: Item deleted

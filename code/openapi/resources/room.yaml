@@ -1,0 +1,29 @@
+get:
+  summary: Retrieve room details
+  tags:
+    - room
+  parameters:
+    - $ref: '../parameters/path/roomId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/RoomDetailResponse.yaml'
+put:
+  summary: Update room details
+  tags:
+    - room
+  parameters:
+    - $ref: '../parameters/path/roomId.yaml'
+  requestBody:
+    $ref: '../requestBodies/RoomBody.yaml'
+  responses:
+    '200':
+      $ref: '../responses/RoomDetailResponse.yaml'
+delete:
+  summary: Remove room
+  tags:
+    - room
+  parameters:
+    - $ref: '../parameters/path/roomId.yaml'
+  responses:
+    '204':
+      description: Room deleted

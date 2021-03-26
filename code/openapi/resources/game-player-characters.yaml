@@ -1,0 +1,12 @@
+post:
+  summary: Create a new player character
+  tags:
+    - character
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/playerId.yaml'
+  requestBody:
+      $ref: '../requestBodies/CharacterBody.yaml'
+  responses:
+    '201':
+      $ref: '../responses/CharacterDetailResponse.yaml'

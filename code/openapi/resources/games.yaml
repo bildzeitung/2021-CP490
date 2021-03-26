@@ -1,0 +1,16 @@
+get:
+  summary: Retrieve a list of games
+  tags:
+    - game
+  responses:
+    '200':
+      $ref: '../responses/GameListResponse.yaml'
+post:
+  summary: Create a new game
+  tags:
+    - game
+  requestBody:
+      $ref: '../requestBodies/GameBody.yaml'
+  responses:
+    '201':
+      $ref: '../responses/GameDetailResponse.yaml'

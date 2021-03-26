@@ -1,0 +1,5 @@
+description: List of rooms
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ArrayOfRooms.yaml'

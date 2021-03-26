@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: string
+  game_id:
+    type: string
+  title:
+    type: string
+  description:
+    type: string
+  exits:
+    $ref: './ArrayOfExits.yaml'

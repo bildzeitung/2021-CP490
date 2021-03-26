@@ -1,0 +1,5 @@
+description: Character detail
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/CharacterDetail.yaml'

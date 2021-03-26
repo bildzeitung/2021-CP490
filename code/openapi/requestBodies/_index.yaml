@@ -1,0 +1,26 @@
+GameBody:
+  $ref: './GameBody.yaml'
+
+CharacterBody:
+  $ref: './CharacterBody.yaml'
+
+TurnBody:
+  $ref: './TurnBody.yaml'
+
+EventBody:
+  $ref: './EventBody.yaml'
+
+RoomBody:
+  $ref: './RoomBody.yaml'
+
+ExitBody:
+  $ref: './ExitBody.yaml'
+
+ItemBody:
+  $ref: './ItemBody.yaml'
+
+PlayerBody:
+  $ref: './PlayerBody.yaml'
+
+CharacterUpdateBody:
+  $ref: './CharacterUpdateBody.yaml'

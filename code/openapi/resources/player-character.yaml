@@ -1,0 +1,20 @@
+get:
+  summary: Retrieve player character details
+  tags:
+    - character
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+    - $ref: '../parameters/path/characterId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/CharacterDetailResponse.yaml'
+delete:
+  summary: Remove player character
+  tags:
+    - character
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+    - $ref: '../parameters/path/characterId.yaml'
+  responses:
+    '204':
+      description: Player deleted

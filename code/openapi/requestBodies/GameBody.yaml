@@ -1,0 +1,6 @@
+description: Game properties
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/GameSubmit.yaml'

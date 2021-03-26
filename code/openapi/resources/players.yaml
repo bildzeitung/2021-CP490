@@ -1,0 +1,16 @@
+get:
+  summary: Retrieve a list of players
+  tags:
+    - player
+  responses:
+    '200':
+      $ref: '../responses/PlayerListResponse.yaml'
+post:
+  summary: Create a new player
+  tags:
+    - player
+  requestBody:
+      $ref: '../requestBodies/PlayerBody.yaml'
+  responses:
+    '201':
+      $ref: '../responses/PlayerDetailResponse.yaml'

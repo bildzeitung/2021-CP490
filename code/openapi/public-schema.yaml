@@ -1,0 +1,60 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: Concurrent Online Adventure Land, or MUD
+    description: An API for playing multi-user text adventures
+servers:
+- url: /v1
+tags:
+  - name: game
+  - name: room
+  - name: turn
+  - name: item
+  - name: exit
+  - name: event
+  - name: player
+  - name: character
+paths:
+  /game/{game_id}/character/{character_id}/turn:
+    $ref: './resources/game-character-turns.yaml'
+  /game:
+    $ref: './resources/games.yaml'
+  /game/{game_id}:
+    $ref: './resources/game.yaml'
+  /game/{game_id}/room:
+    $ref: './resources/game-rooms.yaml'
+  /game/{game_id}/room/{room_id}:
+    $ref: './resources/game-room.yaml'
+  /game/{game_id}/room/{room_id}/exit:
+    $ref: './resources/game-room-exits.yaml'
+  /game/{game_id}/room/{room_id}/exit/{exit_id}:
+    $ref: './resources/game-room-exit.yaml'
+  /game/{game_id}/item:
+    $ref: './resources/game-items.yaml'
+  /game/{game_id}/item/{item_id}:
+    $ref: './resources/game-item.yaml'
+  /game/{game_id}/event:
+    $ref: './resources/game-events.yaml'
+  /game/{game_id}/event/{event_id}:
+    $ref: './resources/game-event.yaml'
+  /game/{game_id}/player/{player_id}/character:
+    $ref: './resources/game-player-characters.yaml'
+
+  /player:
+    $ref: './resources/players.yaml'
+  /player/{player_id}:
+    $ref: './resources/player.yaml'
+  /player/{player_id}/character:
+    $ref: './resources/player-characters.yaml'
+  /player/{player_id}/character/{character_id}:
+    $ref: './resources/player-character.yaml'
+
+components:
+  parameters:
+    $ref: "./parameters/_index.yaml"
+  schemas:
+    $ref: "./schemas/_index.yaml"
+  requestBodies:
+    $ref: "./requestBodies/_index.yaml"
+  responses:
+    $ref: "./responses/_index.yaml"

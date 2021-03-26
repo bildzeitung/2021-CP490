@@ -1,0 +1,6 @@
+type: object
+properties:
+  to_room_id:
+    type: string
+  direction:
+    type: string

@@ -1,0 +1,29 @@
+get:
+  summary: Retrieve player details
+  tags:
+    - player
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/PlayerDetailResponse.yaml'
+put:
+  summary: Update player parameters
+  tags:
+    - player
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+  requestBody:
+    $ref: '../requestBodies/PlayerBody.yaml'
+  responses:
+    '200':
+      $ref: '../responses/PlayerDetailResponse.yaml'
+delete:
+  summary: Remove player
+  tags:
+    - player
+  parameters:
+    - $ref: '../parameters/path/playerId.yaml'
+  responses:
+    '204':
+      description: Player deleted

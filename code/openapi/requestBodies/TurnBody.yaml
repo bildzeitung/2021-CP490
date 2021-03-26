@@ -1,0 +1,6 @@
+description: Turn submission
+required: true
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/TurnSubmit.yaml'

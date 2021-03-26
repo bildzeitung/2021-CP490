@@ -1,0 +1,10 @@
+type: object
+properties:
+  command:
+    type: string
+  conditions:
+    $ref: './EventItemSubmitList.yaml'
+  true_part:
+    $ref: './EventItemSubmitList.yaml'
+  false_part:
+    $ref: './EventItemSubmitList.yaml'

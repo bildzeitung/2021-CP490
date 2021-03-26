@@ -1,0 +1,34 @@
+openapi: 3.0.3
+info:
+    version: 1.0.0
+    title: COAL Game Server
+    description: An API for COAL Game Server
+servers:
+- url: /v1
+tags:
+  - name: game
+  - name: turn
+  - name: character
+  - name: event
+paths:
+  /game:
+    $ref: './resources/games.yaml'
+  /game/{game_id}:
+    $ref: './resources/game.yaml'
+  /game/{game_id}/character:
+    $ref: './resources/game-characters.yaml'
+  /game/{game_id}/character/{character_id}/turn:
+    $ref: './resources/game-character-turns.yaml'
+  /game/{game_id}/event:
+    $ref: './resources/game-events.yaml'
+  /game/{game_id}/event/{event_id}:
+    $ref: './resources/game-event.yaml'
+components:
+  schemas:
+    $ref: "./schemas/_index.yaml"
+  parameters:
+    $ref: "./parameters/_index.yaml"
+  requestBodies:
+    $ref: "./requestBodies/_index.yaml"
+  responses:
+    $ref: "./responses/_index.yaml"
