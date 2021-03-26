@@ -14,6 +14,19 @@ For combining all of the OpenAPI files into one:
   ; docker build . -t swagger-cli
 ```
 
+## Creating YAML files
+
+Each server needs its own single YAML, as does the client. Use the following
+make target:
+
+```
+  make yaml
+```
+
+This will use the docker image above to process the files in the `openapi`
+directory and create the `openapi.yaml` files in each server and client
+module.
+
 ## Reference material
 - Formal specification: http://spec.openapis.org/oas/v3.0.3
 - Nice-looking specification: https://swagger.io/specification

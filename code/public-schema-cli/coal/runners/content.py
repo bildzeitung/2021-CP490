@@ -1,7 +1,7 @@
 import attr
 from tabulate import tabulate
 
-#from coal_public_api_client.models import RoomSubmit, ExitSubmit
+from coal_public_api_client.models import RoomSubmit, ExitSubmit
 from coal_public_api_client.exceptions import ApiException, ServiceException
 
 
@@ -24,9 +24,9 @@ class ContentRunner:
                 ]
             )
         )
-        
+
     def _cmd_list_room(self, *_):
-        with self.api.api() as api:
+        with self.api.room_api() as api:
             try:
                 rv = api.game_game_id_room_get(self.state.game)
                 print(tabulate([r.id, r.title] for r in rv.value))
@@ -42,7 +42,7 @@ class ContentRunner:
             print("Need a room description")
             return
 
-        with self.api.api() as api:
+        with self.api.room_api() as api:
             try:
                 room = RoomSubmit(title=title, description=desc)
                 api.game_game_id_room_post(self.state.game, room)
@@ -51,7 +51,7 @@ class ContentRunner:
                 print(f"Cannot create '{title}': {e.body}")
 
     def _get_room_id_from_title(self, title):
-        with self.api.api() as api:
+        with self.api.room_api() as api:
             try:
                 rv = api.game_game_id_room_get(self.state.game)
                 for r in rv.value:
@@ -69,7 +69,7 @@ class ContentRunner:
         if not room_id:
             print(f"Cannot find room: 'title'")
             return
-        with self.api.api() as api:
+        with self.api.room_api() as api:
             try:
                 rv = api.game_game_id_room_room_id_get(self.state.game, room_id)
                 print(tabulate([k, v] for k, v in rv.to_dict().items()))
@@ -84,7 +84,7 @@ class ContentRunner:
         from_rid = self._get_room_id_from_title(from_room)
         to_rid = self._get_room_id_from_title(to_room)
 
-        with self.api.api() as api:
+        with self.api.exit_api() as api:
             try:
                 es = ExitSubmit(to_room_id=to_rid, direction=d)
                 rv = api.game_game_id_room_room_id_exit_post(
@@ -103,7 +103,7 @@ class ContentRunner:
         if not room_id:
             print(f"Cannot find room: |{title}|")
             return
-        with self.api.api() as api:
+        with self.api.room_api() as api:
             try:
                 api.game_game_id_room_room_id_delete(self.state.game, room_id)
             except ApiException as e:

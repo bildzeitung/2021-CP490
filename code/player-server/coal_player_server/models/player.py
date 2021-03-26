@@ -21,7 +21,9 @@ class Item(db.Model):
 class CharacterProperty(db.Model):
     __tablename__ = "character_property"
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    character_id = db.Column(UUIDType(binary=False), db.ForeignKey("player_characters.id"))
+    character_id = db.Column(
+        UUIDType(binary=False), db.ForeignKey("player_characters.id")
+    )
     title = db.Column(db.String(64), index=True)
     value = db.Column(db.String(2048))
     timestamp = db.Column(
@@ -34,7 +36,9 @@ class Character(db.Model):
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     player_id = db.Column(UUIDType(binary=False), db.ForeignKey("player.id"))
     game_id = db.Column(UUIDType(binary=False))
-    properties = db.relationship("CharacterProperty", backref="player_characters", cascade="all, delete")
+    properties = db.relationship(
+        "CharacterProperty", backref="player_characters", cascade="all, delete"
+    )
     title = db.Column(db.String(32), index=True)
     items = db.relationship("Item", cascade="all, delete")
     location = db.Column(UUIDType(binary=False))
@@ -99,7 +103,7 @@ class CharacterDetailSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Character
         load_instance = True
-        exclude = ("timestamp", )
+        exclude = ("timestamp",)
 
     properties = PropertySerializer(PropertySchema, many=True)
 

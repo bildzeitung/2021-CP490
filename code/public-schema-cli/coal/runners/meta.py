@@ -6,7 +6,7 @@ from coal_public_api_client.exceptions import (
     ServiceException,
 )
 from coal_public_api_client.model.game_submit import GameSubmit
-#from coal_public_api_client.model.player_submit import PlayerSubmit
+from coal_public_api_client.model.player_submit import PlayerSubmit
 from coal_public_api_client.model.character_submit import CharacterSubmit
 from coal_public_api_client.model.turn_submit import TurnSubmit
 
@@ -64,14 +64,16 @@ class MetaRunner:
         with self.api.api() as api:
             try:
                 game = GameSubmit(title=title, description=" ".join(description))
-                api.game_post(game)
+                rv = api.game_post(game)
                 print(f"Created '{title}'")
+                self.state.game = rv.id
+                self.state.character = None
             except ApiException as e:
                 print(f"Cannot create '{title}'': {e.body}")
 
     def _cmd_signup(self, *_):
         """Signup with a new server"""
-        with self.api.api() as api:
+        with self.api.player_api() as api:
             try:
                 p = PlayerSubmit(title=self.api.player)
                 api.player_post(p)
@@ -103,21 +105,21 @@ class MetaRunner:
                     return game.id
 
     def _get_player_id(self):
-        with self.api.api() as api:
+        with self.api.player_api() as api:
             rv = api.player_get()
             for p in rv.value:
                 if p.title == self.api.player:
                     return p.id
 
     def _get_character_id(self):
-        with self.api.api() as api:
+        with self.api.character_api() as api:
             rv = api.player_player_id_character_get(self.state.player)
             for c in rv.value:
                 if c.title == self.api.character:
                     return c.id
 
     def _create_character(self):
-        with self.api.api() as api:
+        with self.api.character_api() as api:
             c = CharacterSubmit(title=self.api.character)
             rv = api.game_game_id_player_player_id_character_post(
                 self.state.game, self.state.player, c
@@ -148,15 +150,19 @@ class MetaRunner:
             # get character id from server
             cid = self._get_character_id()
             if not cid:
-                print(f"Could not find '{self.api.character}' on server; gonna create it..")
+                print(
+                    f"Could not find '{self.api.character}' on server; gonna create it.."
+                )
                 cid = self._create_character()
             print(f"Found character '{self.api.character}' [{cid}]")
             self.state.character = cid
 
             # run a blank turn to get a LOOK
             body = TurnSubmit(command="")
-            with self.api.api() as api:
-                rv = api.game_game_id_character_character_id_turn_post(self.state.game, self.state.character, body)
+            with self.api.turn_api() as api:
+                rv = api.game_game_id_character_character_id_turn_post(
+                    self.state.game, self.state.character, body
+                )
                 if rv.text:
                     print()
                     print(rv.text)
@@ -170,7 +176,7 @@ class MetaRunner:
             print("Please /join first")
             return
 
-        with self.api.api() as api:
+        with self.api.character_api() as api:
             api.player_player_id_character_character_id_delete(
                 self.state.player, self.state.character
             )

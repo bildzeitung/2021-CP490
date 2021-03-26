@@ -33,3 +33,6 @@ PlayerListResponse:
 
 PlayerDetailResponse:
   $ref: "./PlayerDetailResponse.yaml"
+
+EventDetailResponse:
+  $ref: "./EventDetailResponse.yaml"

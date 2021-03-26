@@ -1,16 +1,31 @@
 from pathlib import Path
 
+import attr
 import connexion
+import toml
 from connexion.resolver import RestyResolver
 from .db import db
 
-dbpath = Path(__file__).parent / "coal-game.db"
+
+@attr.s(auto_attribs=True)
+class ServerConfig:
+    CONTENT_SERVER_URL: str
+    PLAYER_SERVER_URL: str
+    DB_PATH: str
 
 
+def load_config(config_path, profile):
+    """Read TOML file from the given path; use the given profile"""
+    with open(config_path) as f:
+        config = toml.load(f)
+    return ServerConfig(**{k.upper(): v for k, v in config[profile].items()})
+
+
+@attr.s()
 class DefaultConfig:
-    SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:////" + str(dbpath)
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_ECHO = attr.ib(default=True)
+    SQLALCHEMY_DATABASE_URI = attr.ib(default="sqlite:////")
+    SQLALCHEMY_TRACK_MODIFICATIONS = attr.ib(default=False)
 
 
 def create_app(config_object):  # Create the Connexion application instance

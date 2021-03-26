@@ -2,4 +2,4 @@ description: Event detail
 content:
   application/json:
     schema:
-      $ref: '../schemas/Event.yaml'
+      $ref: '../schemas/EventDetail.yaml'
