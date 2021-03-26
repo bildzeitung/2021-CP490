@@ -332,17 +332,21 @@
 %----------------------------------------------------------------------------------------
 \begin{homeworkProblem}[Overview]
 
-  You are going to be part of a fictional, global corporation that produces interactive cloud applications. You will be split into teams. Each team will own a specific part of the application and you will be responsible for designing, programming, and deploying it. You will need to interact with your peer teams to ensure that all parts of the application work together. You will also need to interact with the product owner to ensure that your deliverables meet requirements. Finally, a fictional operations team will also stand up your application, so your team will need to support them by producing documentation and answering questions.
+  You are going to be part of a fictional, global corporation that produces interactive cloud applications.
+	
+	You will be split into teams. Each team will own a specific part of the application and you will be responsible for designing, programming, and deploying it. 
+	
+	You will need to interact with the other teams in the class to ensure that all parts of the application work together. You will also need to interact with the product owner (me) to ensure that your deliverables meet requirements. Finally, a fictional operations team will also stand up your application, so your team will need to support them by producing documentation and answering questions.
 
 \begin{homeworkSection}{Course Format}
   The class will meet as a whole 3 times per week for an hour. During that meeting, time will be spent on:
 	\begin{compactitem}
-		\item (15 minutes) Team status (3 x 5 minutes)
+		\item ($\sim$15 minutes) Team status reports (5 minutes per team)
 		\item (30 minutes) Architecture / Design / Document Reviews, as needed
 		\item (30 minutes) Problem solving or bootstrapping
 	\end{compactitem}
 
-	Team status is a summary of activities -- what your team worked on, and what's up next.
+	To start, each team will share a summary of their activities -- what the team worked on, what's up next, and challenges.
 	
 	Teams will present their solutions to the group for feedback and review. While not formal presentations, teams should be prepared to discuss the technical details of the problems they are solving. Teams should be prepared with any diagrams and supporting reference material so that the class is able to understand and contribute feedback. Discussion is to be focussed on gaps and potential trouble areas.
 
@@ -350,7 +354,7 @@
 	
 	This project is likely to use technology unfamiliar to the class. I will lead sessions to cover this material.
 
-	Lastly, I will meet with individual teams on an as--needed basis.
+	Lastly, I will meet with individual teams on an as--needed basis. I'll schedule those meetings with the team, at our mutual convenience, during ``business hours'' (10am --- 4pm).
 \end{homeworkSection}
 
 \begin{homeworkSection}{Onboarding}
@@ -362,7 +366,11 @@
 		\url{https://tinyurl.com/4a469zjr}
 	\end{center}
 
-	Github is the chosen platform for hosting code and project management. XXX TBD: Signup? Link to project? XXX
+	Github is where the projects hosts its code and does its project management. Please forward you Github account name to me \textit{as soon as possible} so that you are able to access this organisation and its associated projects and repositories:
+
+	\begin{center}
+		\url{https://github.com/cp490-kdivision}
+	\end{center}
 	
 \end{homeworkSection}
 
@@ -499,7 +507,7 @@
 		Name & Short name for the item, e.g. \texttt{Sting} \\
 		Aliases & Other words that can be used for the item, e.g. \texttt{sword} \\
 		Description & Additional details, e.g. \texttt{An Elvish short-sword that is somewhat fond of spiders} \\
-		Properties & A dictionary of key--value pairs for metadata (like attack value) \\
+		Properties & A dictionary of key--value pairs for metadata (for example, to track the number of times a potion can be used, and item might have: \texttt{doses} $\rightarrow$ \texttt{5}) \\
 		Location & Current room the object is in (or none, if it's inside something else or in a player's inventory) \\
 		\hline
 	\end{tabularx}
@@ -528,7 +536,7 @@
 		\hline
 		Property & Description \\
 		\hline \hline
-		Command & Static text with (optionally) variables describing the syntax of the action, e.g. \texttt{GIVE !ITEM TO !CHARACTER}. This can be an empty string, which is seen as an Event run every turn. \\
+		Command & Static text with (optionally) variables describing the syntax of the action. See the \textit{Input Parsing} section for examples. \\
 		Conditions & A list of assertions that govern which set of actins should be run in response to command. \\
 		True actions & A list of Event Items that manipulates the game state if all of the event conditions are all met, or if there are no event conditions. \\
 		False actions & A list of Event Items that manipulates the game state if any of the event conditions are not met. \\
@@ -555,7 +563,7 @@
 
 	The locations in the game are collectively referred to as ``rooms,'' even though they could be describing outdoor locations, caves, spaceships, or more abstract settings\footnote{For example, \href{https://en.wikipedia.org/wiki/A_Mind_Forever_Voyaging}{A Mind Forever Voyaging} (Infocom, 1985)}. A list of properties is given in Table \ref{tab:room-properties}. When a user enters a room, the full description is shown. A list of directions, like \texttt{NORTH} or \texttt{UP} are mapped against other rooms, connecting them. This list of exits is usable by, and shown to, the player. The title, description, and exits are all immutable properties.
 
-	Items are what users manipulate in the game: weapons, armour, keys, treasure, and so on. The properties of items are given in Table \ref{tab:item-properties}. An item has a name, but also possibly aliases. For example, there may be a book with the name \textit{Hitchhiker's Guide} that also has an alias of \textit{guide}, so the user can type: \texttt{GET GUIDE} or \texttt{GET BOOK} interchangeably. Items may have other attributes, too. For example, if the game has combat elements, then items could have attack or defense values. Last, the only mutable property is the item location, since items (in general) can be added to a player character or monster inventory.
+	Items are what users manipulate in the game: weapons, armour, keys, treasure, and so on. The properties of items are given in Table \ref{tab:item-properties}. An item has a name, but also possibly aliases. For example, there may be a book with the name \textit{Hitchhiker's Guide} that also has an alias of \textit{guide}, so the user can type: \texttt{GET GUIDE} or \texttt{GET BOOK} interchangeably. Items may have other attributes, too. For example, if the game has combat elements, then items could have attack or defense values. Last, the only mutable property is the item location, since items can be added to a player character or monster inventory or carried from one room to another and then dropped.
 
 	Table \ref{tab:character-properties} lists the properties of player characters. These are the proxies for users, and so all the state in this object is mutable. Additional properties allow the game engine to track game state. For example, the player character may be poisoned, or under the influence of a potion that lasts for a given number of moves. This key--value mechanism provides an open--ended way to create and manage character data. Each character is associated with one and only one player account, but a player account may have multiple player characters.
 
@@ -569,6 +577,7 @@
 \end{homeworkSection}
 
 \begin{homeworkSection}{Design and Architecture Principles}
+	\label{sec:design-and-arch}
   Cloud computing is a popular way of deploying large-scale enterprise business applications. Companies large and small outsource their infrastructure and host their applications with cloud computing companies -- be it Amazon, Microsoft, Google, or others. One reason for Amazon's success as a cloud provider is their emphasis on creating \textit{platforms}. The same website that let them sell books became the same one that lets everyone else sell, well, everything. It's a \textit{platform} for online sales. Further, Amazon Web Services (AWS) is consumed by Amazon internally, meaning that the services Amazon sells are the same ones it uses to run their business.
   
   Similarly, the K Division application is a \textit{platform} for MUDs. The game that we should be able to play at the end of this is a \textit{demonstration of the platform} more than a shrink--wrap product\footnote{read more about this here: \url{https://gist.github.com/chitchcock/1281611}}.
@@ -610,16 +619,16 @@
 	\draw[<->, thick] (cli.north) --  (term.south);
 	\draw[<->, thick] (webserver.south) -- ++(0, -0.5) -| (api.135);
 
-	\node[mynode, below left = of api] (ps) {Player Service};
 	\node[mynode, below = of api] (gs) {Game Service};
-	\node[mynode, below right = of api] (cs) {Content Service};
+	\node[mynode, left = of gs] (ps) {Player Service};
+	\node[mynode, right = of gs] (cs) {Content Service};
 
 	\draw[<->, thick] (api.225) -- ++(0, -0.5) -| (ps.north);
 	\draw[<->, thick] (api.south) -- (gs.north);
 	\draw[<->, thick] (api.315) -- ++(0, -0.5) -| (cs.north);
 
 	\draw[<->, dashed] (gs.west) -- (ps.east);
-	\draw[<-, dashed] (gs.east) -- (cs.west);
+	\draw[<->, dashed] (gs.east) -- (cs.west);
 
 	\node[dbnode, below = of gs] (gdb) {Game DB};
 	\node[dbnode, below = of ps] (pdb) {Player DB};
@@ -720,6 +729,62 @@ The components of the system are described below, beginning with the REST API it
 	To learn about all of the endpoints that the Proxy service must implement, review the API Specification PDF. The specification details all of the JSON documents that are sent and received, including fields names and structures. The specification is also what the game clients (that is, the user--facing web service) must implement in order to properly communicate with the Proxy service.
 \end{homeworkSection}
 
+\begin{homeworkSection}{OpenAPI Specification}
+	The API Specification PDF that you are given describes the REST API in detail. The text file used to create the PDF is also given to you, and is called \texttt{openapi.yaml}. This file is the OpenAPI document mentioned in the \textit{Design and Architecture Principles} section. The document is a text file in the YAML format; \href{https://en.wikipedia.org/wiki/YAML}{see this page}. Describing APIs in this way lets us use tools to generate code for servers and clients in a large number of languages. These YAML documents are also used in testing services and clients.
+
+	Using the same example as above, retrieving the details of a particular game from the COAL application is described by the following fragment:
+\begin{verbatim}
+/game/{game_id}:
+  get:
+    summary: Retrieve game details
+    parameters:
+      - $ref: '#/components/parameters/gameId'
+    responses:
+      '200':
+        $ref: '#/components/responses/GameDetailResponse'
+\end{verbatim}
+
+The path (\texttt{/game}) is first, followed by the HTTP verb: \texttt{get}. The URL parameters are listed after a human--readable description. The \texttt{\$ref} is a \textit{reference} to another part of the document that describes the \texttt{game\_id} identifier.
+
+Expected responses are described starting with their HTTP status code. Since responses can be the same for different operations, describing the response only once avoids errors. The \texttt{\$ref} allows sections of the document to be re--used. The \texttt{GameDetailResponse} contains these details:
+
+\begin{verbatim}
+responses:
+  GameDetailResponse:
+  description: Game detail
+  content:
+    application/json:
+      schema:
+        $ref: '#/components/schemas/GameDetail'
+\end{verbatim}
+
+The \texttt{content} section shows that the response should be in JSON format, and that it should contain a \texttt{GameDetail} object, shown here:
+
+\begin{verbatim}
+GameDetail:
+  type: object
+  properties:
+    id:
+      type: string
+    title:
+      type: string
+    description:
+      type: string
+    properties:
+      type: object
+      additionalProperties:
+        type: string
+\end{verbatim}
+
+Finally! The \texttt{GameDetail} object describes the properties that will be returned in the JSON document. Each property (\texttt{id}, \texttt{title}, \dots) has a data type, at a minimum, but more sophisticated definitions are possible (see: \href{https://swagger.io/specification/}{the OpenAPI specification}). Each of these properties lines up with part of the JSON from the example in the previous section.
+
+The OpenAPI YAML file is quite long. The API Specification PDF is meant to help you interpret the specification in terms of the JSON that is sent and received by the services. Additionally, use the tools listed at the end of this document to explore the YAML.
+
+If a team want to propose changes to the public COAL API, then I will work with the team to present the modifications necessary to the OpenAPI document.
+
+\end{homeworkSection}
+
+
 
 \begin{homeworkSection}{Web service}
 	The web service provides the front--end for the game. Users must be able to manage their account and game characters. They must also be able to play the game itself using an interactive console. While the Web service renders the game output, it uses the public API to communicate with the Proxy service.
@@ -731,7 +796,7 @@ The components of the system are described below, beginning with the REST API it
 	
 	This design is a pattern for providing \textit{horizontal scaling}. Multiple Proxy services can be launched to accommodate user load independently of the other services, since those services may themselves have specific ways to manage their resources.
 
-	The Proxy service must send and receive JSON content according COAL public OpenAPI specification. Teams may use the YAML file in the repository to code generate a server application.
+	The Proxy service must send and receive JSON content according COAL public OpenAPI specification.
 \end{homeworkSection}
 
 \begin{homeworkSection}{Data model conventions}
@@ -974,7 +1039,7 @@ The components of the system are described below, beginning with the REST API it
 					\State $keepers \gets$ empty list\Comment{Store events that match the input word}
 					\For{$r \gets 1,c$}\Comment{Check each event}
 						\If{$w[i] = r[i]$ or $r[i]$ is a variable}
-							\State $keepers \gets$ r
+							\State $keepers.append(r)$
 						\EndIf
 					\EndFor
 					\State $c \gets$ keepers\Comment{discard events that do not match}
@@ -1007,7 +1072,7 @@ The components of the system are described below, beginning with the REST API it
 					\State $keepers \gets$ empty list
 					\For{$r \gets 1,events$}
 						\If{$w[i] = r[i]$}\Comment{Is the input word an exact match?}
-							\State $keepers \gets r$
+							\State $keepers.append(r)$
 						\EndIf
 					\EndFor
 					\If{length($keepers$) $>0$}\Comment{Keep only exact matches, if possible}
@@ -1095,7 +1160,7 @@ The components of the system are described below, beginning with the REST API it
 \begin{homeworkProblem}[Tools and Technology]
 
 	\begin{homeworkSection}{Implementation Language and Environment}
-		What language the services are written in and the tools you use to do that are up to you and your team.
+		What language the services are written in and the tools you use to do that are up to you and your team. Different teams may use different languages.
 		
 		For what it's worth, however, there is a proof of concept implementation written for this project and it:
 		\begin{compactitem}
@@ -1108,7 +1173,7 @@ The components of the system are described below, beginning with the REST API it
 	\end{homeworkSection}
 
 	\begin{homeworkSection}{Hosting}
-		Standing up the application and seeing it work over the Internet makes all of this seem more real. Depending on the technology stack your team chooses, there are different places where you can host it for no cost.
+		Standing up the application and seeing it work over the Internet makes all of this seem more real. Depending on the technology stack your team chooses, there are different places where you can host it for no cost. A caveat: while the services that you'd want to use are \textit{free}, the company may still want a credit card to be able to sign--up.
 
 		For example, if you want a plain Linux server, then a cloud--based virtual machine (compute instance) would work:
 		\begin{compactitem}
@@ -1120,7 +1185,7 @@ The components of the system are described below, beginning with the REST API it
 	\end{homeworkSection}
 
 	\begin{homeworkSection}{OpenAPI}
-		To edit or visualise the COAL specification, use this site: \url{https://editor.swagger.io/}
+		To edit or visualize the COAL specification YAML file, use this site: \url{https://editor.swagger.io/}
 
 		The full specification for what OpenAPI is can be found \href{http://spec.openapis.org/oas/v3.0.3}{here}. We are using v3.0.3. A more easily browsable version is \href{https://swagger.io/specification/}{on this site}. Finally, if you want a friendlier explanation of the specification, \href{https://swagger.io/docs/specification/basic-structure/}{go here}.
 	\end{homeworkSection}
