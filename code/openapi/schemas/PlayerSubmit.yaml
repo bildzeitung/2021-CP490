@@ -1,4 +1,7 @@
-type: object
-properties:
-  title:
-    type: string
+allOf:
+  - $ref: './ObjectBase.yaml'
+  - properties:
+      properties:
+        type: object
+        additionalProperties:
+          type: string

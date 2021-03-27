@@ -1,0 +1,12 @@
+type: object
+properties:
+  id:
+    type: string
+  command:
+    type: string
+  conditions:
+    $ref: './EventItemList.yaml'
+  true_part:
+    $ref: './EventItemList.yaml'
+  false_part:
+    $ref: './EventItemList.yaml'

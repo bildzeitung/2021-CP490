@@ -1,12 +1,3 @@
-type: object
-properties:
-  id:
-    type: string
-  title:
-    type: string
-  description:
-    type: string
-  properties:
-    type: object
-    additionalProperties:
-      type: string
+allOf:
+  - $ref: './Game.yaml'
+  - $ref: './GameSubmit.yaml'

@@ -1,21 +1,3 @@
-type: object
-properties:
-  id:
-    type: string
-  game_id:
-    type: string
-  title:
-    type: string
-  description:
-    type: string
-  aliases:
-    type: array
-    items:
-      type: string
-  attack:
-    type: integer
-  defense:
-    type: integer
-  location:
-    type: string
-    nullable: true
+allOf:
+  - $ref: './Item.yaml'
+  - $ref: './ItemSubmit.yaml'

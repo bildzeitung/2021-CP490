@@ -1,6 +1,2 @@
-type: object
-properties:
-  player_id:
-    type: string
-  title:
-    type: string
+allOf:
+  - $ref: './ObjectBase.yaml'

@@ -1,12 +1,16 @@
-type: object
-properties:
-  game_id:
-    type: string
-  title:
-    type: string
-  description:
-    type: string
-  exits:
-    type: array
-    items:
-      $ref: './ExitSubmit.yaml'
+allOf:
+  - $ref: './ObjectBase.yaml'
+  - type: object
+    properties:
+      game_id:
+        type: string
+      description:
+        type: string
+      exits:
+        type: array
+        items:
+          $ref: './ExitSubmit.yaml'
+      properties:
+        type: object
+        additionalProperties:
+          type: string

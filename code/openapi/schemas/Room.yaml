@@ -1,6 +1,2 @@
-type: object
-properties:
-  id:
-    type: string
-  title:
-    type: string
+allOf:
+  - $ref: "./DBObjectBase.yaml"

@@ -12,6 +12,6 @@ deps =
   build
   pytest
   pytest-flask
-  ../../connexion
+  ../connexion
 commands = pytest {posargs}
 """

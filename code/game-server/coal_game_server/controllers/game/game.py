@@ -23,6 +23,9 @@ def post(body):
     if existing_game is not None:
         abort(409, f"A game with this title: '{title}' already exists.")
 
+    if body.get("properties"):
+        body["properties"] = [{"title": k, "value":v} for k, v in body["properties"].items()]
+
     schema = GameSubmitSchema()
     new_game = schema.load(body, session=db.session)
     db.session.add(new_game)

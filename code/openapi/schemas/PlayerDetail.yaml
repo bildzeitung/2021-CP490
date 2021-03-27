@@ -1,8 +1,7 @@
-type: object
-properties:
-  id:
-    type: string
-  title:
-    type: string
-  characters:
-    $ref: './ArrayOfCharacters.yaml'
+allOf:
+  - $ref: './Player.yaml'
+  - $ref: './PlayerSubmit.yaml'
+  - type: object
+    properties:
+      characters:
+        $ref: './ArrayOfCharacters.yaml'

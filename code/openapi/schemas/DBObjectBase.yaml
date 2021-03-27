@@ -1,0 +1,6 @@
+allOf:
+  - $ref: './ObjectBase.yaml'
+  - type: object
+    properties:
+      id:
+        type: string

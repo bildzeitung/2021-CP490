@@ -167,13 +167,6 @@ class GameSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp", "description")
 
 
-class GameSubmitSchema(SQLAlchemyAutoSchema):
-    class Meta:
-        model = Game
-        load_instance = True
-        exclude = ("timestamp",)
-        id = field_for(Game, "id", dump_only=True)
-
 
 class PropertySerializer(Nested):
     def serialize(self, attr, obj, accessor=None):
@@ -185,6 +178,18 @@ class PropertySchema(SQLAlchemyAutoSchema):
         model = GameProperty
         load_instance = True
         exclude = ("timestamp",)
+
+
+class GameSubmitSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Game
+        load_instance = True
+        exclude = ("timestamp",)
+    
+    id = field_for(Game, "id", dump_only=True)
+    properties = PropertySerializer(PropertySchema, many=True)
+
+
 
 
 class GameDetailSchema(SQLAlchemyAutoSchema):

@@ -17,6 +17,8 @@ paths:
     $ref: './resources/player-characters.yaml'
   /player/{player_id}/character/{character_id}:
     $ref: './resources/player-character.yaml'
+  /game/{game_id}/player/{player_id}/character:
+    $ref: './resources/game-player-characters.yaml'
   /character/{character_id}:
     $ref: './resources/character.yaml'
 components:

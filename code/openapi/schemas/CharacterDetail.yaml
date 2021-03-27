@@ -1,16 +1,15 @@
-type: object
-properties:
-  id:
-    type: string
-  game_id:
-    type: string
-  player_id:
-    type: string
-  title:
-    type: string
-  location:
-    type: string
-  properties:
-    type: object
-    additionalProperties:
-      type: string
+allOf:
+  - $ref: './Character.yaml'
+  - $ref: './CharacterSubmit.yaml'
+  - type: object
+    properties:
+      game_id:
+        type: string
+      player_id:
+        type: string
+      location:
+        type: string
+      properties:
+        type: object
+        additionalProperties:
+          type: string

@@ -15,8 +15,8 @@ paths:
     $ref: './resources/games.yaml'
   /game/{game_id}:
     $ref: './resources/game.yaml'
-  /game/{game_id}/character:
-    $ref: './resources/game-characters.yaml'
+  /game/{game_id}/player/{player_id}/character:
+    $ref: './resources/game-player-characters.yaml'
   /game/{game_id}/character/{character_id}/turn:
     $ref: './resources/game-character-turns.yaml'
   /game/{game_id}/event:

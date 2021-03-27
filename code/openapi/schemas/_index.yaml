@@ -96,3 +96,9 @@ Character:
 
 ArrayOfCharacters:
   $ref: './ArrayOfCharacters.yaml'
+
+DBObjectBase:
+  $ref: './DBObjectBase.yaml'
+
+ObjectBase:
+  $ref: './ObjectBase.yaml'
