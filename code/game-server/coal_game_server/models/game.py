@@ -8,8 +8,8 @@ from sqlalchemy_utils import UUIDType
 from ..config import db
 
 
-class GameProperty(db.Model):
-    __tablename__ = "game_property"
+class GameAttribute(db.Model):
+    __tablename__ = "game_attribute"
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     game_id = db.Column(UUIDType(binary=False), db.ForeignKey("game.id"))
     title = db.Column(db.String(64), index=True)
@@ -22,7 +22,7 @@ class GameProperty(db.Model):
 class Game(db.Model):
     __tablename__ = "game"
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
-    properties = db.relationship("GameProperty", backref="game", cascade="all, delete")
+    attributes = db.relationship("GameAttribute", backref="game", cascade="all, delete")
     title = db.Column(db.String(32), index=True)
     description = db.Column(db.String(2048))
     timestamp = db.Column(
@@ -170,12 +170,12 @@ class GameSchema(SQLAlchemyAutoSchema):
 
 class PropertySerializer(Nested):
     def serialize(self, attr, obj, accessor=None):
-        return {p.title: p.value for p in obj.properties}
+        return {p.title: p.value for p in obj.attributes}
 
 
 class PropertySchema(SQLAlchemyAutoSchema):
     class Meta:
-        model = GameProperty
+        model = GameAttribute
         load_instance = True
         exclude = ("timestamp",)
 
@@ -187,7 +187,7 @@ class GameSubmitSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp",)
     
     id = field_for(Game, "id", dump_only=True)
-    properties = PropertySerializer(PropertySchema, many=True)
+    attributes = PropertySerializer(PropertySchema, many=True)
 
 
 
@@ -198,7 +198,7 @@ class GameDetailSchema(SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ("timestamp",)
 
-    properties = PropertySerializer(PropertySchema, many=True)
+    attributes = PropertySerializer(PropertySchema, many=True)
 
 
 class TurnSubmitSchema(SQLAlchemyAutoSchema):

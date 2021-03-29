@@ -1,6 +1,6 @@
 from flask import make_response, abort
 from ...config import db
-from ...models import Game, GameSchema, GameSubmitSchema, GameDetailSchema, GameProperty
+from ...models import Game, GameSchema, GameSubmitSchema, GameDetailSchema, GameAttribute
 
 
 def search():
@@ -23,8 +23,8 @@ def post(body):
     if existing_game is not None:
         abort(409, f"A game with this title: '{title}' already exists.")
 
-    if body.get("properties"):
-        body["properties"] = [{"title": k, "value":v} for k, v in body["properties"].items()]
+    if body.get("attributes"):
+        body["attributes"] = [{"title": k, "value":v} for k, v in body["properties"].items()]
 
     schema = GameSubmitSchema()
     new_game = schema.load(body, session=db.session)
@@ -41,13 +41,13 @@ def put(game_id, body):
     if not game:
         abort(404, f"Could not find game {game_id}")
 
-    props = body.get("properties")
+    props = body.get("attributes")
     if props is not None:
         # delete existing properties
-        game.properties.clear()
+        game.attributes.clear()
         # replace with incoming
-        game.properties.extend(
-            GameProperty(title=k, value=v, game_id=game_id) for k, v in props.items()
+        game.attributes.extend(
+            GameAttribute(title=k, value=v, game_id=game_id) for k, v in props.items()
         )
         db.session.commit()
 

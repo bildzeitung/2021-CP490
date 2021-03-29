@@ -1,4 +1,4 @@
-from coal_game_server.models.game import Game, GameProperty
+from coal_game_server.models.game import Game, GameAttribute
 from .common import get_character, update_character_properties, get_room
 
 
@@ -13,8 +13,8 @@ def set_key(command, key, value):
 def message(command, key):
     """Add a message to the buffer"""
     g: Game = Game.query.filter(Game.id == command.game_id).one_or_none()
-    p: GameProperty
-    for p in g.properties:
+    p: GameAttribute
+    for p in g.attributes:
         if p.title == key:
             command.buffer.append(p.value)
             return

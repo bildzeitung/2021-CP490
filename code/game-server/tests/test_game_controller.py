@@ -1,7 +1,7 @@
 import pytest
 from coal_game_server.models.game import (
   Game,
-  GameProperty
+  GameAttribute
   )
 
 #
@@ -41,12 +41,12 @@ def test_post_game(testapp):
   assert doc == rv.json
 
   assert Game.query.count() == 1
-  assert GameProperty.query.count() == 3
+  assert GameAttribute.query.count() == 3
 
 
 @pytest.fixture()
 def game(session):
-  new_game = Game(title="title-string", description="description-string", properties=[GameProperty(title="starting-room", value="room-id")])
+  new_game = Game(title="title-string", description="description-string", properties=[GameAttribute(title="starting-room", value="room-id")])
   session.add(new_game)
   session.commit()
   yield new_game
