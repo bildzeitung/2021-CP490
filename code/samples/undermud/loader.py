@@ -11,13 +11,13 @@ import requests
 import toml
 
 API_SERVER = ""
+GAME_TITLE = ""
 
+GAME_FILE = Path(__file__).parent / "game.json"
 EVENT_FILE = Path(__file__).parent / "events.json"
 ROOMS_FILE = Path(__file__).parent / "rooms.json"
 EXITS_FILE = Path(__file__).parent / "exits.json"
-PROPS_FILE = Path(__file__).parent / "properties.json"
-
-GAME_TITLE = "undermud"
+ATTRS_FILE = Path(__file__).parent / "attributes.json"
 
 
 @attr.s(auto_attribs=True)
@@ -34,8 +34,9 @@ def load_config(config_path, profile):
 
 
 def create_game():
-    game = {"title": GAME_TITLE, "description": "MUD for all"}
-    rv = requests.post(f"{API_SERVER}/game", json=game)
+    with GAME_FILE.open() as f:
+        data = json.load(f)
+    rv = requests.post(f"{API_SERVER}/game", json=data)
     rv.raise_for_status()
     return rv.json()["id"]
 
@@ -75,13 +76,13 @@ def load_exits(game_id, rooms):
         rv.raise_for_status()
 
 
-def create_properties(game_id, rooms):
-    with PROPS_FILE.open() as f:
-        properties = json.load(f)
+def create_attributes(game_id, rooms):
+    with ATTRS_FILE.open() as f:
+        attributes = json.load(f)
 
-    doc = {"properties": {}}
-    for k, v in properties.items():
-        doc["properties"][k] = eval(f"f'{v}'")
+    doc = {"attributes": {}}
+    for k, v in attributes.items():
+        doc["attributes"][k] = eval(f"f'{v}'")
 
     rv = requests.put(f"{API_SERVER}/game/{game_id}", json=doc)
     rv.raise_for_status()
@@ -119,7 +120,7 @@ def get_room_ids(game_id):
 @click.command(help="Data loader for UnderMUD sample game")
 @click.option("--events-only", "-e", help="Reload only the Events", is_flag=True)
 @click.option(
-    "--properties-only", "-p", help="Reload only the game properties", is_flag=True
+    "--properties-only", help="Reload only the game properties", is_flag=True
 )
 @click.option(
     "--config",
@@ -136,8 +137,13 @@ def get_room_ids(game_id):
 )
 def main(events_only, properties_only, config, profile):
     global API_SERVER
+    global GAME_TITLE
     config = load_config(config, profile)
     API_SERVER = config.API_SERVER
+
+    with GAME_FILE.open() as f:
+        game = json.load(f)
+    GAME_TITLE = game["title"]
 
     if events_only:
         game_id = get_game_id()
@@ -148,7 +154,7 @@ def main(events_only, properties_only, config, profile):
     if properties_only:
         game_id = get_game_id()
         rooms = get_room_ids(game_id)
-        create_properties(game_id, rooms)
+        create_attributes(game_id, rooms)
         return
 
     game_id = create_game()
@@ -158,7 +164,7 @@ def main(events_only, properties_only, config, profile):
     rooms = load_rooms(game_id)
     load_exits(game_id, rooms)
 
-    create_properties(game_id, rooms)
+    create_attributes(game_id, rooms)
 
 
 if __name__ == "__main__":
