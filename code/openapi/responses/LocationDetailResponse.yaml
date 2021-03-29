@@ -1,0 +1,5 @@
+description: Location detail
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/LocationDetail.yaml'

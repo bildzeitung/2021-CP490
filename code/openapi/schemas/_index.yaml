@@ -102,3 +102,15 @@ DBObjectBase:
 
 ObjectBase:
   $ref: './ObjectBase.yaml'
+
+ArrayOfLocation:
+  $ref: './ArrayOfLocations.yaml'
+
+Location:
+  $ref: './Location.yaml'
+
+LocationDetail:
+  $ref: './LocationDetail.yaml'
+
+LocationSubmit:
+  $ref: './LocationSubmit.yaml'

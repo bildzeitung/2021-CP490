@@ -21,3 +21,6 @@ itemId:
 
 playerId:
   $ref: './path/playerId.yaml'
+
+locationId:
+  $ref: './path/locationId.yaml'

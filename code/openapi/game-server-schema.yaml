@@ -10,6 +10,7 @@ tags:
   - name: turn
   - name: character
   - name: event
+  - name: location
 paths:
   /game:
     $ref: './resources/games.yaml'
@@ -23,6 +24,10 @@ paths:
     $ref: './resources/game-events.yaml'
   /game/{game_id}/event/{event_id}:
     $ref: './resources/game-event.yaml'
+  /game/{game_id}/location:
+    $ref: './resources/game-locations.yaml'
+  /game/{game_id}/location/{location_id}:
+    $ref: './resources/game-location.yaml'
 components:
   schemas:
     $ref: "./schemas/_index.yaml"

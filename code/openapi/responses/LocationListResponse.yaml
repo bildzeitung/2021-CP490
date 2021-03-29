@@ -1,0 +1,5 @@
+description: List of locations
+content:
+  application/json:
+    schema:
+      $ref: '../schemas/ArrayOfLocations.yaml'

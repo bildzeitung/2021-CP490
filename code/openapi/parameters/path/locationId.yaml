@@ -1,0 +1,6 @@
+name: location_id
+in: path
+required: true
+description: The id of the location
+schema:
+  type: string

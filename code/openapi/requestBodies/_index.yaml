@@ -24,3 +24,6 @@ PlayerBody:
 
 CharacterUpdateBody:
   $ref: './CharacterUpdateBody.yaml'
+
+LocationBody:
+  $ref: './LocationBody.yaml'

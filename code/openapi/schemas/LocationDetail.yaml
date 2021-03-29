@@ -1,0 +1,3 @@
+allOf:
+  - $ref: './Location.yaml'
+  - $ref: './LocationSubmit.yaml'

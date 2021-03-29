@@ -36,3 +36,9 @@ PlayerDetailResponse:
 
 EventDetailResponse:
   $ref: "./EventDetailResponse.yaml"
+
+LocationDetailResponse:
+  $ref: "./LocationDetailResponse.yaml"
+
+LocationListResponse:
+  $ref: "./LocationListResponse.yaml"

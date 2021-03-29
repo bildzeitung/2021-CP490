@@ -1,0 +1,32 @@
+get:
+  summary: Retrieve location details
+  tags:
+    - location
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/locationId.yaml'
+  responses:
+    '200':
+      $ref: '../responses/LocationDetailResponse.yaml'
+put:
+  summary: Update location details
+  tags:
+    - location
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/locationId.yaml'
+  requestBody:
+    $ref: '../requestBodies/LocationBody.yaml'
+  responses:
+    '200':
+      $ref: '../responses/LocationDetailResponse.yaml'
+delete:
+  summary: Remove location
+  tags:
+    - location
+  parameters:
+    - $ref: '../parameters/path/gameId.yaml'
+    - $ref: '../parameters/path/locationId.yaml'
+  responses:
+    '204':
+      description: Location deleted

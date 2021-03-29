@@ -14,6 +14,7 @@ tags:
   - name: event
   - name: player
   - name: character
+  - name: location
 paths:
   /game/{game_id}/character/{character_id}/turn:
     $ref: './resources/game-character-turns.yaml'
@@ -39,6 +40,10 @@ paths:
     $ref: './resources/game-event.yaml'
   /game/{game_id}/player/{player_id}/character:
     $ref: './resources/game-player-characters.yaml'
+  /game/{game_id}/location:
+    $ref: './resources/game-locations.yaml'
+  /game/{game_id}/location/{location_id}:
+    $ref: './resources/game-location.yaml'
   /player:
     $ref: './resources/players.yaml'
   /player/{player_id}:
