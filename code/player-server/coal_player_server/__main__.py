@@ -7,7 +7,7 @@ from .config import create_app, DefaultConfig, load_config, DBNAME
 @click.option(
     "--config",
     "-c",
-    default=Path().home() / ".config" / "coal-contentserver.conf",
+    default=Path().home() / ".config" / "coal-playerserver.conf",
     show_default=True,
 )
 @click.option(
