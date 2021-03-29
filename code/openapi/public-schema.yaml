@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
     version: 1.0.0
-    title: Concurrent Online Adventure Land, or MUD
+    title: Concurrent Online Adventure Land
     description: An API for playing multi-user text adventures
 servers:
 - url: /v1
