@@ -10,7 +10,7 @@ allOf:
         type: array
         items:
           $ref: './ExitSubmit.yaml'
-      properties:
+      attributes:
         type: object
         additionalProperties:
           type: string

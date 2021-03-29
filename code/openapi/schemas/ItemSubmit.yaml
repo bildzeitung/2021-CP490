@@ -12,7 +12,7 @@ allOf:
         type: array
         items:
           type: string
-      properties:
+      attributes:
         type: object
         additionalProperties:
           type: string

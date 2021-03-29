@@ -9,7 +9,7 @@ allOf:
         type: string
       location:
         type: string
-      properties:
+      attributes:
         type: object
         additionalProperties:
           type: string

@@ -4,7 +4,7 @@ allOf:
     properties:
       description:
         type: string
-      properties:
+      attributes:
         type: object
         additionalProperties:
           type: string
