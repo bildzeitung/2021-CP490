@@ -7,7 +7,8 @@
     "true_part": [],
     "false_part": [
       {"primitive": "set-key", "arguments": ["first-turn", "true"]},
-      {"primitive": "message", "arguments": ["starting-message"]}
+      {"primitive": "message", "arguments": ["starting-message"]},
+      {"primitive": "set-room", "arguments": ["starting-room"]}
     ]
   },
   {

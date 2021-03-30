@@ -1,12 +1,11 @@
 from flask import make_response, abort
 from ...config import db
-from ...models import Game, GameSchema, GameSubmitSchema, GameDetailSchema, GameAttribute
+from ...models import Location, LocationSchema
 
 
 def search(game_id):
-    return
-    games = Game.query.all()
-    return GameSchema(many=True).dump(games)
+    locations = Location.query.filter(Location.game_id == game_id).all()
+    return LocationSchema(many=True).dump(locations)
 
 
 def get(game_id):
@@ -27,7 +26,9 @@ def post(body):
         abort(409, f"A game with this title: '{title}' already exists.")
 
     if body.get("attributes"):
-        body["attributes"] = [{"title": k, "value":v} for k, v in body["properties"].items()]
+        body["attributes"] = [
+            {"title": k, "value": v} for k, v in body["properties"].items()
+        ]
 
     schema = GameSubmitSchema()
     new_game = schema.load(body, session=db.session)

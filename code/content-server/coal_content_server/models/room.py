@@ -29,7 +29,7 @@ class Room(db.Model):
     id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     game_id = db.Column(UUIDType(binary=False))
     title = db.Column(db.String(32), index=True)
-    description = db.Column(db.String(2048))    
+    description = db.Column(db.String(2048))
     timestamp = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )
@@ -70,6 +70,7 @@ class RoomAttributeSchema(SQLAlchemyAutoSchema):
         model = RoomAttribute
         load_instance = True
         exclude = ("timestamp",)
+
 
 class RoomSubmitSchema(SQLAlchemyAutoSchema):
     class Meta:

@@ -1,5 +1,5 @@
 {
-  "starting-room": "{rooms[\"meadow\"]}",
   "starting-message": "Welcome to UnderMUD!\\n\\tBe nice and enjoy.\\n\\tYou may want to \\'look\\'.",
-  "bees-sting-you": "Oh no! You try to pick up the bees but they sting you instead!"
+  "bees-sting-you": "Oh no! You try to pick up the bees but they sting you instead!",
+  "starting-room": "meadow"
 }

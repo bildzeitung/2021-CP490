@@ -1,5 +1,11 @@
-from coal_game_server.models.game import Game, GameAttribute
-from .common import get_character, update_character_properties, get_room
+from coal_game_server.models import Game, GameAttribute, Location
+from .common import (
+    get_character,
+    update_character_properties,
+    get_room,
+    get_room_by_title,
+)
+from ..config import db
 
 
 def set_key(command, key, value):
@@ -8,6 +14,25 @@ def set_key(command, key, value):
     c["attributes"][key] = value
 
     update_character_properties(c)
+
+
+def set_room(command, key):
+    """Set the room for the current character"""
+    p: GameAttribute = GameAttribute.query.filter(
+        GameAttribute.game_id == command.game_id, GameAttribute.title == key
+    ).one_or_none()
+    c = get_character(command.character_id)["id"]
+    r = get_room_by_title(command.game_id, p.value)
+
+    l: Location = Location.query.filter(
+        Location.game_id == command.game_id, Location.character_id == c
+    ).one_or_none()
+    if not l:
+        l = Location(game_id=command.game_id, character_id=c, room_id=r)
+        db.session.add(l)
+    else:
+        l.room_id = r
+    db.session.commit()
 
 
 def message(command, key):
@@ -22,8 +47,12 @@ def message(command, key):
 
 def look(command):
     """Show the description of the character's current room"""
-    c = get_character(command.character_id)
-    r = get_room(c["location"])
+    c = get_character(command.character_id)["id"]
+
+    l: Location = Location.query.filter(
+        Location.game_id == command.game_id, Location.character_id == c
+    ).one_or_none()
+    r = get_room(l.room_id)
 
     # header
     command.buffer.append(r["title"].capitalize())

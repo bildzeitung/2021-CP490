@@ -15,14 +15,14 @@ def put(character_id, body):
     c = Character.query.filter(Character.id == character_id).one_or_none()
     if not c:
         abort(404, f"Could not find character {character_id}")
-    props = body.get("properties")
-    if props is not None:
+    attributes = body.get("attributes")
+    if attributes is not None:
         # delete existing properties
-        c.properties.clear()
+        c.attributes.clear()
         # replace with incoming
-        c.properties.extend(
+        c.attributes.extend(
             CharacterAttributes(title=k, value=v, character_id=character_id)
-            for k, v in props.items()
+            for k, v in attributes.items()
         )
         db.session.commit()
 

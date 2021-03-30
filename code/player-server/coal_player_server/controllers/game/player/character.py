@@ -3,6 +3,7 @@ from flask import abort
 from ....config import db
 from ....models import Character, CharacterSubmitSchema
 
+
 def post(game_id, player_id, body):
     title = body.get("title")
     existing = (

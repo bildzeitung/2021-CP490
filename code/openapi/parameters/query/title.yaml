@@ -1,0 +1,6 @@
+name: title
+in: query
+required: false
+description: Title field
+schema:
+  type: string

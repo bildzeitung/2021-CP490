@@ -176,11 +176,9 @@ class GameSubmitSchema(SQLAlchemyAutoSchema):
         model = Game
         load_instance = True
         exclude = ("timestamp",)
-    
+
     id = field_for(Game, "id", dump_only=True)
     attributes = AttributeSerializer(GameAttributeSchema, many=True)
-
-
 
 
 class GameDetailSchema(SQLAlchemyAutoSchema):

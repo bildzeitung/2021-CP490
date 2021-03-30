@@ -1,6 +1,12 @@
 from flask import make_response, abort
 from ...config import db
-from ...models import Game, GameSchema, GameSubmitSchema, GameDetailSchema, GameAttribute
+from ...models import (
+    Game,
+    GameSchema,
+    GameSubmitSchema,
+    GameDetailSchema,
+    GameAttribute,
+)
 
 
 def search():

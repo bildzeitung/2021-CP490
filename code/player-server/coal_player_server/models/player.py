@@ -9,6 +9,7 @@ from sqlalchemy_utils import UUIDType
 
 from ..db import db
 
+
 class CharacterAttributes(AttributeMixin, db.Model):
     __tablename__ = "character_attribute"
     character_id = db.Column(
@@ -32,9 +33,7 @@ class Character(db.Model):
 
 class PlayerAttributes(AttributeMixin, db.Model):
     __tablename__ = "player_attributes"
-    player_id = db.Column(
-        UUIDType(binary=False), db.ForeignKey("player.id")
-    )
+    player_id = db.Column(UUIDType(binary=False), db.ForeignKey("player.id"))
 
 
 class Player(db.Model):
@@ -110,9 +109,7 @@ class CharacterSubmitSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Character
         load_instance = True
-        exclude = (
-            "timestamp",
-        )
+        exclude = ("timestamp",)
         include_fk = True
 
     id = field_for(Character, "id", dump_only=True)

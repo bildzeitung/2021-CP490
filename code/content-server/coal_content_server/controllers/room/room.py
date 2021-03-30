@@ -3,12 +3,15 @@ from ...db import db
 from ...models import Room, RoomSchema, RoomDetailSchema, RoomSubmitSchema, RoomExit
 
 
-def search(game_id=None):
+def search(game_id=None, title=None):
+    rooms = Room.query
     if game_id:
-        rooms = Room.query.filter(Room.game_id == game_id).all()
-    else:
-        rooms = Room.query.all()
-    return RoomSchema(many=True).dump(rooms)
+        rooms = rooms.filter(Room.game_id == game_id)
+
+    if title:
+        rooms = rooms.filter(Room.title == title)
+
+    return RoomSchema(many=True).dump(rooms.all())
 
 
 def get(room_id):

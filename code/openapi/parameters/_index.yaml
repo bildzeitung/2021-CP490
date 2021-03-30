@@ -4,6 +4,9 @@ gameId:
 gameQueryId:
   $ref: './query/gameId.yaml'
 
+titleQuery:
+  $ref: './query/title.yaml'
+
 characterId:
   $ref: './path/characterId.yaml'
 
