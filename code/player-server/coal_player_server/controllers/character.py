@@ -1,5 +1,5 @@
 from flask import abort
-from ..models import Character, CharacterDetailSchema, CharacterProperty
+from ..models import Character, CharacterDetailSchema, CharacterAttributes
 from ..config import db
 
 
@@ -21,7 +21,7 @@ def put(character_id, body):
         c.properties.clear()
         # replace with incoming
         c.properties.extend(
-            CharacterProperty(title=k, value=v, character_id=character_id)
+            CharacterAttributes(title=k, value=v, character_id=character_id)
             for k, v in props.items()
         )
         db.session.commit()

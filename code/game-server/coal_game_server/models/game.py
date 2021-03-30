@@ -1,6 +1,8 @@
 import enum
 import uuid
 from datetime import datetime
+
+from coal_common.mixins import AttributeMixin
 from marshmallow_sqlalchemy import field_for, SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 from sqlalchemy.ext.orderinglist import ordering_list
@@ -8,15 +10,9 @@ from sqlalchemy_utils import UUIDType
 from ..config import db
 
 
-class GameAttribute(db.Model):
+class GameAttribute(AttributeMixin, db.Model):
     __tablename__ = "game_attribute"
-    id = db.Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     game_id = db.Column(UUIDType(binary=False), db.ForeignKey("game.id"))
-    title = db.Column(db.String(64), index=True)
-    value = db.Column(db.String(2048))
-    timestamp = db.Column(
-        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
-    )
 
 
 class Game(db.Model):
