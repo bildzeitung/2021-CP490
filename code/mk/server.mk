@@ -63,24 +63,28 @@ $(PLAYER_SERVER_YAML): | $(PLAYER_SERVER_YAML_DIR)
 #
 # Server targets
 #
-PUBLIC_API_SERVER:=$(VENV)/bin/coal_public_api_server
+COAL_COMMON:=$(VENV_DIR)/lib/python3.9/site-packages/coal-common.egg-link
+$(COAL_COMMON): $(VENV)
+	. $(VENV) && pip install -e ./coal-common
 
-$(PUBLIC_API_SERVER): $(PUBLIC_API_SERVER_YAML) $(GAME_SERVER)
+PUBLIC_API_SERVER:=$(VENV_DIR)/bin/coal_public_api_server
+
+$(PUBLIC_API_SERVER): $(PUBLIC_API_SERVER_YAML) $(VENV)
 	. $(VENV) && pip install -e $(PUBLIC_API_SERVER_DIR)
 
-GAME_SERVER:=$(GAME_SERVER_DIR)/bin/coal_game_server
+GAME_SERVER:=$(VENV_DIR)/bin/coal_game_server
 
-$(GAME_SERVER): $(GAME_SERVER_YAML) $(VENV)
+$(GAME_SERVER): $(GAME_SERVER_YAML) $(COAL_COMMON)
 	. $(VENV) && pip install -e $(GAME_SERVER_DIR)
 
-CONTENT_SERVER:=$(CONTENT_SERVER_DIR)/bin/coal_content_server
+CONTENT_SERVER:=$(VENV_DIR)/bin/coal_content_server
 
-$(CONTENT_SERVER): $(CONTENT_SERVER_YAML) $(VENV)
+$(CONTENT_SERVER): $(CONTENT_SERVER_YAML) $(COAL_COMMON)
 	. $(VENV) && pip install -e $(CONTENT_SERVER_DIR)
 
-PLAYER_SERVER:=$(PLAYER_SERVER_DIR)/bin/coal_content_server
+PLAYER_SERVER:=$(VENV_DIR)/bin/coal_player_server
 
-$(PLAYER_SERVER): $(PLAYER_SERVER_YAML) $(VENV)
+$(PLAYER_SERVER): $(PLAYER_SERVER_YAML) $(COAL_COMMON)
 	. $(VENV) && pip install -e $(PLAYER_SERVER_DIR)
 
 #
