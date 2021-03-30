@@ -3,6 +3,7 @@ import uuid
 from datetime import datetime
 
 from coal_common.mixins import AttributeMixin
+from coal_common.serializers import AttributeSerializer
 from marshmallow_sqlalchemy import field_for, SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 from sqlalchemy.ext.orderinglist import ordering_list
@@ -163,13 +164,7 @@ class GameSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp", "description")
 
 
-
-class PropertySerializer(Nested):
-    def serialize(self, attr, obj, accessor=None):
-        return {p.title: p.value for p in obj.attributes}
-
-
-class PropertySchema(SQLAlchemyAutoSchema):
+class GameAttributeSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = GameAttribute
         load_instance = True
@@ -183,7 +178,7 @@ class GameSubmitSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp",)
     
     id = field_for(Game, "id", dump_only=True)
-    attributes = PropertySerializer(PropertySchema, many=True)
+    attributes = AttributeSerializer(GameAttributeSchema, many=True)
 
 
 
@@ -194,7 +189,7 @@ class GameDetailSchema(SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ("timestamp",)
 
-    attributes = PropertySerializer(PropertySchema, many=True)
+    attributes = AttributeSerializer(GameAttributeSchema, many=True)
 
 
 class TurnSubmitSchema(SQLAlchemyAutoSchema):

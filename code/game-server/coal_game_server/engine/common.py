@@ -25,7 +25,7 @@ def get_room(room_id):
 
 
 def update_character_properties(character):
-    body = {"properties": character["properties"]}
+    body = {"attributes": character["attributes"]}
     try:
         rv = requests.put(
             f"{current_app.config['PLAYER_SERVER_URL']}/character/{character['id']}",

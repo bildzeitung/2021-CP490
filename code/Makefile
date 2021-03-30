@@ -35,6 +35,9 @@ run:
 		-u "$$(id -u):$$(id -g)" \
 		coal
 
-.PHONY: all clean realclean undermud
+newdb:
+	find . -name '*.db' -exec rm {} \; ; coal_player_db_init ; coal_game_db_init ; coal_content_db_init
+
+.PHONY: all clean realclean undermud run docker newdb
 
 .DEFAULT_GOAL:= all

@@ -5,7 +5,7 @@ from .common import get_character, update_character_properties, get_room
 def set_key(command, key, value):
     """Set a character key to a value"""
     c = get_character(command.character_id)
-    c["properties"][key] = value
+    c["attributes"][key] = value
 
     update_character_properties(c)
 

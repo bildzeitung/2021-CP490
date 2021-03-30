@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from coal_common.mixins import AttributeMixin
+from coal_common.serializers import AttributeSerializer
 from marshmallow_sqlalchemy import field_for, SQLAlchemyAutoSchema, fields
 from sqlalchemy_utils import UUIDType
 from ..db import db
@@ -64,6 +65,12 @@ class RoomSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp", "description", "game_id", "exit_to_me")
 
 
+class RoomAttributeSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = RoomAttribute
+        load_instance = True
+        exclude = ("timestamp",)
+
 class RoomSubmitSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Room
@@ -72,6 +79,7 @@ class RoomSubmitSchema(SQLAlchemyAutoSchema):
 
     id = field_for(Room, "id", dump_only=True)
     exits = fields.Nested(ExitSchema, many=True)
+    attributes = AttributeSerializer(RoomAttributeSchema, many=True)
 
 
 class RoomDetailSchema(SQLAlchemyAutoSchema):
@@ -82,3 +90,4 @@ class RoomDetailSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp", "exit_to_me")
 
     exits = fields.Nested(ExitSchema, many=True)
+    attributes = AttributeSerializer(RoomAttributeSchema, many=True)

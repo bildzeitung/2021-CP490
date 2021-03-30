@@ -9,12 +9,6 @@ def post(game_id, player_id, body):
     if not game:
         abort(404, f"Could not find game {game_id}")
 
-    starting_room = [p.value for p in game.attributes if p.title == "starting-room"]
-    if not starting_room:
-        abort(400, f"Could not create a character -- need a starting room")
-
-    body["location"] = starting_room[0]
-
     try:
         rv = requests.post(
             f"{current_app.config['PLAYER_SERVER_URL']}/game/{game_id}/player/{player_id}/character",

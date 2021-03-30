@@ -2,6 +2,7 @@ import uuid
 from datetime import datetime
 
 from coal_common.mixins import AttributeMixin
+from coal_common.serializers import AttributeSerializer
 from marshmallow_sqlalchemy import field_for, SQLAlchemyAutoSchema
 from marshmallow_sqlalchemy.fields import Nested
 from sqlalchemy_utils import UUIDType
@@ -56,12 +57,20 @@ class PlayerSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp",)
 
 
+class PlayerAttributeSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = PlayerAttributes
+        load_instance = True
+        exclude = ("timestamp",)
+
+
 class PlayerSubmitSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Player
         load_instance = True
         exclude = ("timestamp",)
 
+    attributes = AttributeSerializer(PlayerAttributeSchema, many=True)
     id = field_for(Player, "id", dump_only=True)
 
 
@@ -71,6 +80,8 @@ class PlayerDetailSchema(SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ("timestamp",)
 
+    attributes = AttributeSerializer(PlayerAttributeSchema, many=True)
+
 
 class CharacterSchema(SQLAlchemyAutoSchema):
     class Meta:
@@ -79,16 +90,11 @@ class CharacterSchema(SQLAlchemyAutoSchema):
         exclude = ("timestamp", "player_id", "game_id")
 
 
-class PropertySchema(SQLAlchemyAutoSchema):
+class CharacterAttributeSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = CharacterAttributes
         load_instance = True
         exclude = ("timestamp",)
-
-
-class PropertySerializer(Nested):
-    def serialize(self, attr, obj, accessor=None):
-        return {p.title: p.value for p in obj.properties}
 
 
 class CharacterDetailSchema(SQLAlchemyAutoSchema):
@@ -97,7 +103,7 @@ class CharacterDetailSchema(SQLAlchemyAutoSchema):
         load_instance = True
         exclude = ("timestamp",)
 
-    properties = PropertySerializer(PropertySchema, many=True)
+    attributes = AttributeSerializer(CharacterAttributeSchema, many=True)
 
 
 class CharacterSubmitSchema(SQLAlchemyAutoSchema):
@@ -106,8 +112,8 @@ class CharacterSubmitSchema(SQLAlchemyAutoSchema):
         load_instance = True
         exclude = (
             "timestamp",
-            "items",
         )
         include_fk = True
 
     id = field_for(Character, "id", dump_only=True)
+    attributes = AttributeSerializer(CharacterAttributeSchema, many=True)

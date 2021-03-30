@@ -1,6 +1,6 @@
 from flask import abort
 
-from ...models import Player, PlayerSchema, PlayerSubmitSchema
+from ...models import Player, PlayerSchema, PlayerSubmitSchema, PlayerDetailSchema
 from ...db import db
 
 
@@ -9,8 +9,13 @@ def search():
     return PlayerSchema(many=True).dump(players)
 
 
-def get():
-    pass
+def get(player_id):
+    player = Player.query.filter(Player.id == player_id).one_or_none()
+
+    if not player:
+        abort(404, f"Player {player_id} not found")
+
+    return PlayerDetailSchema().dump(player), 200
 
 
 def post(body):
