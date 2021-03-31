@@ -12,7 +12,8 @@ WORKDIR /app
 VOLUME /data
 
 COPY /publish/* .
-RUN    pip3 install connexion*.whl \
+RUN    pip3 install --upgrade pip \
+    && pip3 install connexion*.whl \
     && pip3 install coal*whl
 
 COPY /docker/*conf /config/
