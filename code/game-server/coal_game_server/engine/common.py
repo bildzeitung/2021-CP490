@@ -1,6 +1,8 @@
 import requests
 from flask import current_app, abort
 
+from ..models import Location
+
 
 def get_character(character_id):
     try:
@@ -48,3 +50,10 @@ def update_character_properties(character):
         rv.raise_for_status()
     except Exception as e:
         abort(500, f"Could not contact player server: {str(e)}")
+
+
+def get_current_room(game_id, character_id):
+    l: Location = Location.query.filter(
+        Location.game_id == game_id, Location.character_id == character_id
+    ).one_or_none()
+    return get_room(l.room_id)

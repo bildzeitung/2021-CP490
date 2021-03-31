@@ -2,13 +2,13 @@
   {
     "command": "",
     "conditions": [
-        {"primitive": "has-key", "arguments": ["first-turn"]}
+        {"primitive": "has-key", "arguments": ["character", "first-turn"]}
     ],
     "true_part": [],
     "false_part": [
-      {"primitive": "set-key", "arguments": ["first-turn", "true"]},
-      {"primitive": "message", "arguments": ["starting-message"]},
-      {"primitive": "set-room", "arguments": ["starting-room"]}
+      {"primitive": "set-key",  "arguments": ["character", "first-turn", "true"]},
+      {"primitive": "message",  "arguments": ["game", "starting-message"]},
+      {"primitive": "go", "arguments": ["game", "starting-room"]}
     ]
   },
   {
@@ -24,25 +24,7 @@
     "conditions": [
     ],
     "true_part": [
-      {"primitive": "change-location-via-exit", "arguments": ["!direction"]}
-    ],
-    "false_part": []
-  },
-  {
-    "command": "get !object",
-    "conditions": [
-    ],
-    "true_part": [
-      {"primitive": "transfer-to-inventory", "arguments": ["!object"]}
-    ],
-    "false_part": []
-  },
-  {
-    "command": "get bees",
-    "conditions": [
-    ],
-    "true_part": [
-      {"primitive": "message", "arguments": ["bees-sting-you"]}
+      {"primitive": "go-via-exit", "arguments": ["!direction"]}
     ],
     "false_part": []
   }

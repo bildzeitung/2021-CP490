@@ -93,7 +93,7 @@ def clear_events(game_id):
     rv = requests.get(f"{API_SERVER}/game/{game_id}/event")
     rv.raise_for_status()
     for e in rv.json():
-        requests.delete(f"{API_SERVER}/game/{game_id}/event/{e['id']}")
+        rv = requests.delete(f"{API_SERVER}/game/{game_id}/event/{e['id']}")
         rv.raise_for_status()
 
 

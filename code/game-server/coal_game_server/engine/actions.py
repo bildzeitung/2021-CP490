@@ -1,31 +1,31 @@
-from coal_game_server.models import Game, GameAttribute, Location
+from coal_game_server.models import GameAttribute, Location
 from .common import (
     get_character,
     update_character_properties,
-    get_room,
     get_room_by_title,
+    get_current_room,
 )
 from ..config import db
 
 
-def set_key(command, key, value):
+def set_key(command, obj, key, value):
     """Set a character key to a value"""
-    c = get_character(command.character_id)
-    c["attributes"][key] = value
+    if obj == "character":
+        c = get_character(command.character_id)
+        c["attributes"][key] = value
+        update_character_properties(c)
 
-    update_character_properties(c)
 
-
-def set_room(command, key):
+def go(command, obj, key):
     """Set the room for the current character"""
-    p: GameAttribute = GameAttribute.query.filter(
-        GameAttribute.game_id == command.game_id, GameAttribute.title == key
-    ).one_or_none()
-    c = get_character(command.character_id)["id"]
-    r = get_room_by_title(command.game_id, p.value)
-
+    if obj == "game":
+        p: GameAttribute = GameAttribute.query.filter(
+            GameAttribute.game_id == command.game_id, GameAttribute.title == key
+        ).one_or_none()
+        r = get_room_by_title(command.game_id, p.value)
+    
     l: Location = Location.query.filter(
-        Location.game_id == command.game_id, Location.character_id == c
+        Location.game_id == command.game_id, Location.character_id == command.character_id
     ).one_or_none()
     if not l:
         l = Location(game_id=command.game_id, character_id=c, room_id=r)
@@ -35,24 +35,16 @@ def set_room(command, key):
     db.session.commit()
 
 
-def message(command, key):
+def message(command, obj, key):
     """Add a message to the buffer"""
-    g: Game = Game.query.filter(Game.id == command.game_id).one_or_none()
-    p: GameAttribute
-    for p in g.attributes:
-        if p.title == key:
-            command.buffer.append(p.value)
-            return
+    if obj == "game":
+        p: GameAttribute = GameAttribute.query.filter(GameAttribute.game_id == command.game_id, GameAttribute.title == key).one_or_none()
+        command.buffer.append(p.value)
 
 
 def look(command):
     """Show the description of the character's current room"""
-    c = get_character(command.character_id)["id"]
-
-    l: Location = Location.query.filter(
-        Location.game_id == command.game_id, Location.character_id == c
-    ).one_or_none()
-    r = get_room(l.room_id)
+    r = get_current_room(command.game_id, command.character_id)
 
     # header
     command.buffer.append(r["title"].capitalize())
@@ -65,4 +57,17 @@ def look(command):
         exit_list = ", ".join(e["direction"] for e in r["exits"])
         command.buffer.append(f"\nYou see exits to the {exit_list}.")
 
-    # items
+    # TODO: items
+    # TODO: other characters
+
+
+def go_via_exit(command, direction):
+    r = get_current_room(command.game_id, command.character_id)
+    for e in r["exits"]:
+        if e["direction"] == direction:
+            l: Location = Location.query.filter(Location.game_id == command.game_id, Location.character_id == command.character_id).one_or_none()
+            l.room_id = e["to_room_id"]
+            db.session.commit()
+            return look(command)
+
+    command.buffer.append("I'm sorry, but I can't go there.")
