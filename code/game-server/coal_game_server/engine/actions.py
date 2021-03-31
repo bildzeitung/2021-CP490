@@ -28,7 +28,7 @@ def go(command, obj, key):
         Location.game_id == command.game_id, Location.character_id == command.character_id
     ).one_or_none()
     if not l:
-        l = Location(game_id=command.game_id, character_id=c, room_id=r)
+        l = Location(game_id=command.game_id, character_id=command.character_id, room_id=r)
         db.session.add(l)
     else:
         l.room_id = r
