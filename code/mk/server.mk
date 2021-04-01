@@ -96,7 +96,7 @@ yaml: $(PUBLIC_API_SERVER_YAML) $(GAME_SERVER_YAML) $(CONTENT_SERVER_YAML) $(PLA
 
 clean::
 	rm -f $(PUBLIC_API_SERVER_YAML) $(GAME_SERVER_YAML) $(CONTENT_SERVER_YAML) $(PLAYER_SERVER_YAML)
-	for i in build dist __pycache__ .tox ; do \
+	for i in build __pycache__ .tox ; do \
 		find $(PUBLIC_API_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; || true ; \
 		find $(GAME_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; || true ; \
 		find $(CONTENT_SERVER_DIR) -name "$${i}" -exec rm -fr {} \; || true ; \

@@ -5,13 +5,14 @@ include mk/venv.mk
 include mk/server.mk
 include mk/client.mk
 include mk/qol.mk
+include mk/build_number.mk
 include mk/wheels.mk
 
 all: client servers
 	@echo "All done."
 
 clean::
-
+		find . -name 'dist' -exec rm -fr {} \;
 
 realclean: clean
 		rm -fr $(VENV_DIR)

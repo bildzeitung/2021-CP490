@@ -1,21 +1,21 @@
-WHEEL_DIR:=./publish
+WHEEL_DIR:=$(abspath ./publish)
 
 $(WHEEL_DIR):
 	mkdir -p $@
 
-wheels: $(VENV) $(PUBLIC_API_SERVER_YAML) $(GAME_SERVER_YAML) $(CONTENT_SERVER_YAML) $(PLAYER_SERVER_YAML) | $(WHEEL_DIR)
-	. $(VENV) && cd public-schema-server && python -m build
-	. $(VENV) && cd coal-common && python -m build
-	. $(VENV) && cd game-server && python -m build
-	. $(VENV) && cd content-server && python -m build
-	. $(VENV) && cd player-server && python -m build
+WHEELMODS := public-schema-server coal-common game-server content-server player-server slackbot
+
+wheels: $(VENV) build_number $(PUBLIC_API_SERVER_YAML) $(GAME_SERVER_YAML) $(CONTENT_SERVER_YAML) $(PLAYER_SERVER_YAML) | $(WHEEL_DIR)
 	. $(VENV) && cd connexion && python -m build
 	cp connexion/dist/*.whl $(WHEEL_DIR)
-	cp public-schema-server/dist/coal_public_api_server-*.whl $(WHEEL_DIR)
-	cp coal-common/dist/coal_*.whl $(WHEEL_DIR)
-	cp game-server/dist/coal_*.whl $(WHEEL_DIR)
-	cp content-server/dist/coal_*.whl $(WHEEL_DIR)
-	cp player-server/dist/coal_*.whl $(WHEEL_DIR)
+	for i in $(WHEELMODS) ; do \
+		echo "Building $${i}" ; \
+		cd "$${i}" && echo "__version__ = \"$$(cat ../master-version.txt).$$(cat ../build-number.txt)\"" > "$$(ls -d coal_* | grep -v egg)/__version__.py"  && cd .. ; \
+		. $(VENV) && cd "$${i}" && python -m build ; \
+		cp dist/*.whl $(WHEEL_DIR) ; \
+		git restore coal_*/__version__.py ; \
+		cd .. ; \
+	done
 
 clean::
 	rm -fr $(WHEEL_DIR)
