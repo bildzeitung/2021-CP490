@@ -1,6 +1,6 @@
 from coal_game_server.models import GameAttribute, Location
 from .common import (
-    get_character,
+    get_character, get_item,
     update_character_properties,
     get_room_by_title,
     get_current_room,
@@ -57,12 +57,24 @@ def look(command):
     # description
     command.buffer.append(f"\t{r['description']}")
 
+    # items
+    l : Location = Location.query.filter(
+        Location.game_id == command.game_id,
+        Location.character_id == None,
+        Location.room_id == r["id"]
+    ).all()
+    if len(l) > 0:
+        item_list = "\n".join(get_item(i.item_id)["description"] for i in l)
+        command.buffer.append(f"\n{item_list}")
+
     # exits
     if r["exits"]:
-        exit_list = ", ".join(e["direction"] for e in r["exits"])
-        command.buffer.append(f"\nYou see exits to the {exit_list}.")
+        if len(r["exits"]) == 1:
+            command.buffer.append(f"\nYou see an exit to the {r['exits'][0]['direction']}.")
+        else:
+            exit_list = ", ".join(e["direction"] for e in r["exits"])
+            command.buffer.append(f"\nYou see exits to the {exit_list}.")
 
-    # TODO: items
     # TODO: other characters
 
 

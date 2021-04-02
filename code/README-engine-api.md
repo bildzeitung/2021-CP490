@@ -33,14 +33,16 @@ Where the `<name>` is the text in the _primitive_ field and shown in this docume
 
 The `<arguments>` specify what the function should use or operate on. Arguments consist of a set of: `object`, `key`, and `value`. An `object` is one of: `game`, `character`, `room`, or `item`. A `key` is the name of an object attribute. A `value` is a text string.
 
-A `value` text string may be a _variable reference_. That is, if a command has a variable: `GO !DIRECTION`, then a `value` can be `!DIRECTION`. Whatever the user entered for `!DIRECTOIN` will be used by the primitive.
+A `value` text string may be a _variable reference_. That is, if a command has a variable: `GO !DIRECTION`, then a `value` can be `!DIRECTION`. Whatever the user entered for `!DIRECTION` will be used by the primitive.
 
 ## Conditions
-Events use conditions to decide what to do.
+Events use conditions to decide what to do. If the `object` is `game` or `character`, then it's in the context of the _current game_ and the _player character that is acting_. If the `object` is `item`, then _which_ item needs to be specified in a 3rd `title` argument.
 
-| Primitive | Arguments          | Description                               |
-|----------:|--------------------|:------------------------------------------|
-| has-key   | object, key        | True if `key` is an attribute of `object` |
+| Primitive   | Arguments               | Description                                      |
+|------------:|-------------------------|:-------------------------------------------------|
+| has-key     | object, key             | True if `key` is an attribute of `object`        |
+| is-true     | object, `[title]`, key  | True if `object`'s attribute `key` equals `true` |
+| item-in-room| title                   | True if `item[title]` is in the same room as the player character |
 
 ## Actions
 Actions alter game state and send messages back to the player.

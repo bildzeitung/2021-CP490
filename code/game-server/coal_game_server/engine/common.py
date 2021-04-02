@@ -57,3 +57,24 @@ def get_current_room(game_id, character_id):
         Location.game_id == game_id, Location.character_id == character_id
     ).one_or_none()
     return get_room(l.room_id)
+
+
+def get_item(item_id):
+    try:
+        rv = requests.get(f"{current_app.config['CONTENT_SERVER_URL']}/item/{item_id}")
+        rv.raise_for_status()
+    except Exception as e:
+        abort(500, f"Could not contact game server: {str(e)}")
+
+    return rv.json()
+
+def get_item_by_title(game_id, title):
+    try:
+        rv = requests.get(f"{current_app.config['CONTENT_SERVER_URL']}/item", params={"title":title, "game_id": game_id})
+        rv.raise_for_status()
+        rv = requests.get(f"{current_app.config['CONTENT_SERVER_URL']}/item/{rv.json()[0]['id']}")
+        rv.raise_for_status()
+    except Exception as e:
+        abort(500, f"Could not contact game server: {str(e)}")
+
+    return rv.json()

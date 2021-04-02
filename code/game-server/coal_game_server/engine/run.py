@@ -54,9 +54,13 @@ class GameCommand:
                 self._run_false_part(g.false_part)
 
     def _applies(self, event: GameEvent):
+        
         return all(
             getattr(conditions, c.primitive.replace("-", "_"))(
-                self, *[x.title for x in c.arguments]
+                self, *[
+                self.varmap[a.title] if a.title.startswith("!") else a.title
+                for a in c.arguments
+            ]
             )
             for c in event.conditions
         )

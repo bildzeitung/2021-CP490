@@ -24,3 +24,13 @@ class LocationSchema(SQLAlchemyAutoSchema):
         model = Location
         load_instance = True
         exclude = ("timestamp",)
+
+
+class LocationSubmitSchema(SQLAlchemyAutoSchema):
+    class Meta:
+        model = Location
+        load_instance = True
+        include_fk = True
+        exclude = ("timestamp",)
+
+    id = field_for(Location, "id", dump_only=True)
