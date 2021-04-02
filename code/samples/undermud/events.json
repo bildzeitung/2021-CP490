@@ -46,6 +46,8 @@
     "true_part":[
       {"primitive": "message", "arguments": ["game", "blackboard"]}
     ],
-    "false_part":[]
+    "false_part":[
+      {"primitive": "message", "arguments": ["game", "item-not-here"]}
+    ]
   }
 ]
