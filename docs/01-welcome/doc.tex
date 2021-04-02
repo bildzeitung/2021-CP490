@@ -966,7 +966,15 @@ If a team wants to propose changes to the public COAL API, then I will work with
 									title \\
 									description \\
 							}};
-	
+
+			\pic [left = 1.25cm of R] {entity={RA}{Attributes}{%
+									id \\
+									room\_id \\
+									title \\
+									value \\
+			}};
+				
+
 			\pic[right = 1.25cm of R] {entity={E}{Exits}{%
 							id \\
 							from\_room\_id \\
@@ -977,6 +985,10 @@ If a team wants to propose changes to the public COAL API, then I will work with
 			% Draw the cardinalities
 			\draw[cfoneone] (I) -- (IA);
 			\draw[cf0many] (IA) -- (I);
+
+			\draw[cfoneone] (R) -- (RA);
+			\draw[cf0many] (RA) -- (R);
+
 
 			\draw[cfoneone] (I) -- (P);
 			\draw[cf0many] (P) -- (I);
