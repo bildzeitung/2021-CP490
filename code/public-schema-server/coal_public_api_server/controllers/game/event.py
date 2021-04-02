@@ -4,7 +4,9 @@ from flask import current_app, abort, make_response
 
 def search(game_id):
     try:
-        rv = requests.get(f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}/event")
+        rv = requests.get(
+            f"{current_app.config['GAME_SERVER_URL']}/game/{game_id}/event"
+        )
         rv.raise_for_status()
     except Exception as e:
         abort(500, f"Could not contact game server: {str(e)}")

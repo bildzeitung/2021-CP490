@@ -23,12 +23,15 @@ def go(command, obj, key):
             GameAttribute.game_id == command.game_id, GameAttribute.title == key
         ).one_or_none()
         r = get_room_by_title(command.game_id, p.value)
-    
+
     l: Location = Location.query.filter(
-        Location.game_id == command.game_id, Location.character_id == command.character_id
+        Location.game_id == command.game_id,
+        Location.character_id == command.character_id,
     ).one_or_none()
     if not l:
-        l = Location(game_id=command.game_id, character_id=command.character_id, room_id=r)
+        l = Location(
+            game_id=command.game_id, character_id=command.character_id, room_id=r
+        )
         db.session.add(l)
     else:
         l.room_id = r
@@ -38,7 +41,9 @@ def go(command, obj, key):
 def message(command, obj, key):
     """Add a message to the buffer"""
     if obj == "game":
-        p: GameAttribute = GameAttribute.query.filter(GameAttribute.game_id == command.game_id, GameAttribute.title == key).one_or_none()
+        p: GameAttribute = GameAttribute.query.filter(
+            GameAttribute.game_id == command.game_id, GameAttribute.title == key
+        ).one_or_none()
         command.buffer.append(p.value)
 
 
@@ -65,7 +70,10 @@ def go_via_exit(command, direction):
     r = get_current_room(command.game_id, command.character_id)
     for e in r["exits"]:
         if e["direction"] == direction:
-            l: Location = Location.query.filter(Location.game_id == command.game_id, Location.character_id == command.character_id).one_or_none()
+            l: Location = Location.query.filter(
+                Location.game_id == command.game_id,
+                Location.character_id == command.character_id,
+            ).one_or_none()
             l.room_id = e["to_room_id"]
             db.session.commit()
             return look(command)

@@ -64,13 +64,19 @@ class GameCommand:
     def _run_false_part(self, event):
         f: EventConditionFalseItem
         for f in event:
-            arguments = [self.varmap[a.title] if a.title.startswith("!") else a.title for a in f.arguments]
+            arguments = [
+                self.varmap[a.title] if a.title.startswith("!") else a.title
+                for a in f.arguments
+            ]
             getattr(actions, f.primitive.replace("-", "_"))(self, *arguments)
 
     def _run_true_part(self, event):
         f: EventConditionTrueItem
         for f in event:
-            arguments = [self.varmap[a.title] if a.title.startswith("!") else a.title for a in f.arguments]
+            arguments = [
+                self.varmap[a.title] if a.title.startswith("!") else a.title
+                for a in f.arguments
+            ]
             getattr(actions, f.primitive.replace("-", "_"))(self, *arguments)
 
     def _filter_match(self):
@@ -126,9 +132,13 @@ class GameCommand:
         self.buffer.append(
             f"That could mean so much. I don't know what to do. {events}"
         )
-    
+
     def _resolve_vars(self, event: GameEvent):
-        self.varmap = { x: self.tokens[i] for i, x in enumerate(event.command.split()) if x.startswith("!")}
+        self.varmap = {
+            x: self.tokens[i]
+            for i, x in enumerate(event.command.split())
+            if x.startswith("!")
+        }
 
     def _run_filter_match(self, event: GameEvent):
         self._resolve_vars(event)

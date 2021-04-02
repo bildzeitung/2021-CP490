@@ -25,7 +25,6 @@ class LoaderConfig:
     API_SERVER: str
 
 
-
 def load_config(config_path, profile):
     """Read TOML file from the given path; use the given profile"""
     with open(config_path) as f:
@@ -119,9 +118,7 @@ def get_room_ids(game_id):
 
 @click.command(help="Data loader for UnderMUD sample game")
 @click.option("--events-only", "-e", help="Reload only the Events", is_flag=True)
-@click.option(
-    "--properties-only", help="Reload only the game properties", is_flag=True
-)
+@click.option("--properties-only", help="Reload only the game properties", is_flag=True)
 @click.option(
     "--config",
     "-c",
