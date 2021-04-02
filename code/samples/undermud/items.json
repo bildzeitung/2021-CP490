@@ -1,0 +1,10 @@
+[
+  {
+    "title": "blackboard",
+    "description": "There is an old wooden blackboard here. It appears as though someone wrote on it.",
+    "attributes": {
+      "takeable": "false"
+    },
+    "location": "east-of-meadow"
+  }
+]

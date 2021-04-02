@@ -7,5 +7,15 @@
     "from": "forest",
     "to": "meadow",
     "direction": "south"
+  },
+  {
+    "from": "meadow",
+    "to": "east-of-meadow",
+    "direction": "east"
+  },
+  {
+    "from": "east-of-meadow",
+    "to": "meadow",
+    "direction": "west"
   }
 ]

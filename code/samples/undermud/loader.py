@@ -18,7 +18,7 @@ EVENT_FILE = Path(__file__).parent / "events.json"
 ROOMS_FILE = Path(__file__).parent / "rooms.json"
 EXITS_FILE = Path(__file__).parent / "exits.json"
 ATTRS_FILE = Path(__file__).parent / "attributes.json"
-
+ITEMS_FILE = Path(__file__).parent / "items.json"
 
 @attr.s(auto_attribs=True)
 class LoaderConfig:
@@ -106,8 +106,31 @@ def load_events(game_id):
 
 def load_rooms(game_id):
     with ROOMS_FILE.open() as f:
-        rooms = {r["title"]: create_room(game_id, r) for r in json.load(f)}
-    return rooms
+        return {r["title"]: create_room(game_id, r) for r in json.load(f)}
+
+
+def create_item(game_id, item):
+    rv = requests.post(f"{API_SERVER}/game/{game_id}/item", json=item)
+    rv.raise_for_status()
+    return rv.json()["id"]
+
+
+def create_item_location(game_id, item_id, room_id):
+    doc = {
+        "room_id": room_id,
+        "item_id": item_id
+    }
+    rv = requests.post(f"{API_SERVER}/game/{game_id}/location", json=doc)
+    rv.raise_for_status()
+
+
+def load_items(game_id, rooms):
+    with ITEMS_FILE.open() as f:
+        for r in json.load(f):
+            location = r["location"]
+            del r["location"]
+            item = create_item(game_id, r)
+            create_item_location(game_id, item, rooms[location])
 
 
 def get_room_ids(game_id):
@@ -160,6 +183,7 @@ def main(events_only, properties_only, config, profile):
     load_events(game_id)
     rooms = load_rooms(game_id)
     load_exits(game_id, rooms)
+    load_items(game_id, rooms)
 
     create_attributes(game_id, rooms)
 

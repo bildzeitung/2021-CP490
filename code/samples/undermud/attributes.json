@@ -1,4 +1,6 @@
 {
   "starting-message": "Welcome to UnderMUD!\\n\\tBe nice and enjoy.\\n\\tYou may want to \\'look\\'.",
-  "starting-room": "meadow"
+  "starting-room": "meadow",
+  "cannot-take-that": "I\\'m sorry, but I can\\'t let you take that.",
+  "blackboard": "Welcome to K Division!\\nA Haiku for you:\\n\\t   Some bears like honey\\n\\tThis software is incomplete\\n\\t    Dragons are cranky"
 }

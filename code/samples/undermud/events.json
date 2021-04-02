@@ -27,5 +27,25 @@
       {"primitive": "go-via-exit", "arguments": ["!direction"]}
     ],
     "false_part": []
+  },
+  {
+    "command": "get !item",
+    "conditions": [
+      {"primitive": "is-true", "arguments": ["item", "!item", "takeable"]}
+    ],
+    "true_part": [],
+    "false_part": [
+      {"primitive": "message", "arguments": ["game", "cannot-take-that"]}
+    ]
+  },
+  {
+    "command": "read blackboard",
+    "conditions": [
+      {"primitive": "item-in-room", "arguments": ["blackboard"]}
+    ],
+    "true_part":[
+      {"primitive": "message", "arguments": ["game", "blackboard"]}
+    ],
+    "false_part":[]
   }
 ]
