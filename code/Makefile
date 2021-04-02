@@ -1,6 +1,7 @@
 #
 # COAL ENGINE
 #
+include mk/vars.mk
 include mk/venv.mk
 include mk/server.mk
 include mk/client.mk

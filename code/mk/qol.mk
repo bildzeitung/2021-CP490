@@ -1,8 +1,6 @@
 lint: $(VENV)
-	. $(VENV) && cd public-schema-cli && black .
-	. $(VENV) && cd public-schema-server && black .
-	. $(VENV) && cd content-server && black .
-	. $(VENV) && cd game-server && black .
-	. $(VENV) && cd player-server && black .
+	for i in $(SERVER_MODS) ; do \
+		. $(VENV) && cd "$${i}" && black . && cd .. ; \
+	done
 
 .PHONY: lint
