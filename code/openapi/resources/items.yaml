@@ -4,6 +4,7 @@ get:
     - item
   parameters:
     - $ref: '../parameters/query/gameId.yaml'
+    - $ref: '../parameters/query/title.yaml'
   responses:
     '200':
       $ref: '../responses/ItemListResponse.yaml'

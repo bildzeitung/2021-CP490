@@ -53,7 +53,7 @@ class ItemSubmitSchema(SQLAlchemyAutoSchema):
     attributes = AttributeSerializer(ItemAttributeSchema, many=True)
 
 
-class RoomDetailSchema(SQLAlchemyAutoSchema):
+class ItemDetailSchema(SQLAlchemyAutoSchema):
     class Meta:
         model = Item
         load_instance = True
