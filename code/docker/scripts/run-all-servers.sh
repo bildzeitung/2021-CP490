@@ -33,6 +33,8 @@ if [ $status -ne 0 ]; then
   exit $status
 fi
 
+coal_slackbot &
+
 while sleep 2; do
   ps aux |grep coal_public_api_server |grep -q -v grep
   PROCESS_1_STATUS=$?
@@ -46,7 +48,10 @@ while sleep 2; do
   ps aux |grep coal_player_server |grep -q -v grep
   PROCESS_4_STATUS=$?
 
-  if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 -o $PROCESS_3_STATUS -ne 0 -o $PROCESS_4_STATUS -ne 0 ]; then
+  ps aux |grep coal_player_server |grep -q -v grep
+  PROCESS_5_STATUS=$?
+
+  if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 -o $PROCESS_3_STATUS -ne 0 -o $PROCESS_4_STATUS -ne 0 -o $PROCESS_5_STATUS -ne 0 ]; then
     echo "Something died :("
     exit 1
   fi
