@@ -13,7 +13,7 @@ all: client servers
 	@echo "All done."
 
 clean::
-		find . -name 'dist' -exec rm -fr {} \;
+		find . -name 'dist' -exec rm -fr {} \; || true
 
 realclean: clean
 		rm -fr $(VENV_DIR)
@@ -28,6 +28,7 @@ undermud: $(VENV)
 
 docker: wheels
 	docker build . -t coal
+	docker save coal:latest | gzip > coal_docker_$$(cat master-version.txt build-number.txt | paste -sd.).tar.gz
 
 run:
 	mkdir -p dbs
