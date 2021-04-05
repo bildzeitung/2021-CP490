@@ -1,1 +1,1 @@
-SERVER_MODS := public-schema-server coal-common game-server content-server player-server slackbot
+SERVER_MODS := public-schema-server coal-common game-server content-server player-server slackbot discordbot

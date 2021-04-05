@@ -6,13 +6,21 @@
 # See:
 #   - https://docs.docker.com/config/containers/multi-service_container/
 #
-FROM python:3.9-alpine
+# This is why I switched from Alpine to Debian:
+#   - https://pythonspeed.com/articles/alpine-docker-python/
+#   - https://pythonspeed.com/articles/base-image-python-docker-images/
+#
+FROM python:3.9-slim-buster
+
+COPY /docker/scripts/install-packages.sh .
+RUN ./install-packages.sh
 
 WORKDIR /app
 VOLUME /data
 
 COPY /publish/* .
 RUN    pip3 install --upgrade pip \
+    && pip3 install wheel \
     && pip3 install connexion*.whl \
     && pip3 install coal*whl \
     && rm *whl

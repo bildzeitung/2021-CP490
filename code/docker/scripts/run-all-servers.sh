@@ -34,6 +34,7 @@ if [ $status -ne 0 ]; then
 fi
 
 coal_slackbot &
+coal_discord &
 
 while sleep 2; do
   ps aux |grep coal_public_api_server |grep -q -v grep
