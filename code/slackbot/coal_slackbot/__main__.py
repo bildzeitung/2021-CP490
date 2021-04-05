@@ -10,9 +10,12 @@
 """
 import json
 import os
-import requests
 from pathlib import Path
+
+import requests
+from dotenv import load_dotenv
 from slack_bolt import App
+
 
 SERVER = "http://localhost:8000/v1"
 CONFIG = Path("config.json")
@@ -110,7 +113,7 @@ def play(ack, say, command):
 
     # save out everything
     config[uid] = {"game": gid, "player": pid, "character": cid}
-    with CONFIG.open("w") as f:
+    with os.environ.get("CONFIG_FILEPATH", CONFIG).open("w") as f:
         json.dump(config, f)
 
     # Run an empty command for any first-turn things
@@ -131,8 +134,10 @@ def list_games(ack, say, command):
 
 
 def main():
+    load_dotenv()
+    SERVER = os.environ.get("COAL_API_SERVER", SERVER)
     try:
-        with CONFIG.open() as f:
+        with os.environ.get("CONFIG_FILEPATH", CONFIG).open() as f:
             try:
                 config = json.load(f)
             except json.JSONDecodeError:
