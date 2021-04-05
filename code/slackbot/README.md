@@ -21,25 +21,6 @@ The `CONFIG_FILEPATH` is where the player (user) cache is stored.
 Point `COAL_API_SERVER` to the COAL instance to use.
 
 
-## Running
-
-Use something like this:
-
-```
-#!/bin/bash -ex
-
-sudo docker run --rm \
-        -d \
-        --name coal \
-        -p 8000:8000 \
-        -p 3000:3000 \
-        -v $(pwd)/dbs:/data \
-        -u "$(id -u):$(id -g)" \
-        --env-file /home/opc/.env \
-        coal
-```
-
-
 ## Integration
 
 The following commands are listened for:
