@@ -16,12 +16,13 @@ def is_true(command, obj, name, key):
         o = get_item_by_title(command.game_id, name)
         return key in o["attributes"] and o["attributes"][key] == "true"
 
+
 def item_in_room(command, item_title):
     r = get_current_room(command.game_id, command.character_id)["id"]
     i = get_item_by_title(command.game_id, item_title)["id"]
     l: Location = Location.query.filter(
         Location.game_id == command.game_id,
         Location.item_id == i,
-        Location.room_id == r
-        ).one_or_none()
+        Location.room_id == r,
+    ).one_or_none()
     return l is not None

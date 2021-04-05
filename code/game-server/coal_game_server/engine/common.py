@@ -68,11 +68,17 @@ def get_item(item_id):
 
     return rv.json()
 
+
 def get_item_by_title(game_id, title):
     try:
-        rv = requests.get(f"{current_app.config['CONTENT_SERVER_URL']}/item", params={"title":title, "game_id": game_id})
+        rv = requests.get(
+            f"{current_app.config['CONTENT_SERVER_URL']}/item",
+            params={"title": title, "game_id": game_id},
+        )
         rv.raise_for_status()
-        rv = requests.get(f"{current_app.config['CONTENT_SERVER_URL']}/item/{rv.json()[0]['id']}")
+        rv = requests.get(
+            f"{current_app.config['CONTENT_SERVER_URL']}/item/{rv.json()[0]['id']}"
+        )
         rv.raise_for_status()
     except Exception as e:
         abort(500, f"Could not contact game server: {str(e)}")
