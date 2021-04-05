@@ -113,7 +113,7 @@ def play(ack, say, command):
 
     # save out everything
     config[uid] = {"game": gid, "player": pid, "character": cid}
-    with os.environ.get("CONFIG_FILEPATH", CONFIG).open("w") as f:
+    with open(os.environ.get("CONFIG_FILEPATH", CONFIG), "w") as f:
         json.dump(config, f)
 
     # Run an empty command for any first-turn things
@@ -134,10 +134,13 @@ def list_games(ack, say, command):
 
 
 def main():
+    global SERVER
+    global config
+
     load_dotenv()
     SERVER = os.environ.get("COAL_API_SERVER", SERVER)
     try:
-        with os.environ.get("CONFIG_FILEPATH", CONFIG).open() as f:
+        with open(os.environ.get("CONFIG_FILEPATH", CONFIG)) as f:
             try:
                 config = json.load(f)
             except json.JSONDecodeError:
