@@ -14,7 +14,8 @@ VOLUME /data
 COPY /publish/* .
 RUN    pip3 install --upgrade pip \
     && pip3 install connexion*.whl \
-    && pip3 install coal*whl
+    && pip3 install coal*whl \
+    && rm *whl
 
 COPY /docker/*conf /config/
 COPY /docker/scripts/run-all-servers.sh .
