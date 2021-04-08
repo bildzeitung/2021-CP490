@@ -973,14 +973,6 @@ If a team wants to propose changes to the public COAL API, then I will work with
 									title \\
 									value \\
 			}};
-				
-
-			\pic[right = 1.25cm of R] {entity={E}{Exits}{%
-							id \\
-							from\_room\_id \\
-							to\_room\_id \\
-							direction \\
-					}};
 	
 			% Draw the cardinalities
 			\draw[cfoneone] (I) -- (IA);
@@ -993,17 +985,12 @@ If a team wants to propose changes to the public COAL API, then I will work with
 			\draw[cfoneone] (I) -- (P);
 			\draw[cf0many] (P) -- (I);
 
-			\draw[cfoneone] (R) -- (E);
-			\draw[cf0many] (E) -- (R);
-			
 		\end{tikzpicture}
 	\caption{Content service data model}
 	\label{fig:content-db}
 	\end{figure}
 	
-	The Content service contains all of the game assets -- text, descriptions, and properties for rooms and items. Figure \ref{fig:content-db} is a basic data model. Items can have multiple properties and aliases. Rooms can have zero or more exits. The \texttt{Exits} table has two foreign key fields that reference the same table. That is, \texttt{from\_room\_id} and \texttt{to\_room\_id} are both \texttt{room\_id} fields referencing the \texttt{Rooms} table. 
-	
-	Implied in this schema is that room exits are not reciprocal. That is, just because a character can go \texttt{DOWN} a trapdoor into a room doesn't mean the character can go back \texttt{UP} to where they were.
+	The Content service contains all of the game assets -- text, descriptions, and properties for rooms and items. Figure \ref{fig:content-db} is a basic data model. Items can have multiple properties and aliases. An important attribute for rooms is their exits. The direction (for example, \texttt{NORTH}) would be the attribute \texttt{title} and the title of the destination room would be the \texttt{value}.
 \end{homeworkSubsection}
 
 \begin{homeworkSubsection}{Game Service}
