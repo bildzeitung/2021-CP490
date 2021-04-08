@@ -52,20 +52,11 @@ Room:
 RoomDetail:
   $ref: './RoomDetail.yaml'
 
-Exit:
-  $ref: './Exit.yaml'
-
-ExitSubmit:
-  $ref: './ExitSubmit.yaml'
-
 RoomSubmit:
   $ref: './RoomSubmit.yaml'
 
 ArrayOfRooms:
   $ref: './ArrayOfRooms.yaml'
-
-ArrayOfExits:
-  $ref: './ArrayOfExits.yaml'
 
 Item:
   $ref: './Item.yaml'

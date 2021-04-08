@@ -1,6 +1,6 @@
 from flask import make_response, abort
-from ...db import db
-from ...models import Room, RoomSchema, RoomDetailSchema, RoomSubmitSchema, RoomExit
+from ..db import db
+from ..models import Room, RoomSchema, RoomDetailSchema, RoomSubmitSchema
 
 
 def search(game_id=None, title=None):
@@ -34,16 +34,9 @@ def post(body):
     if existing is not None:
         abort(409, f"A room with this title: '{title}' already exists.")
 
-    exits = body.get("exits", [])
-    body["exits"] = []
-
     schema = RoomSubmitSchema()
     new = schema.load(body, session=db.session)
     db.session.add(new)
-    db.session.commit()
-
-    for e in exits:
-        new.exits.append(RoomExit(direction=e["direction"], to_room_id=e["to_room_id"]))
     db.session.commit()
 
     return schema.dump(new), 201

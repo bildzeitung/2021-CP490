@@ -10,14 +10,8 @@ RoomListResponse:
 RoomDetailResponse:
   $ref: "./RoomDetailResponse.yaml"
 
-RoomExitDetailResponse:
-  $ref: "./RoomExitDetailResponse.yaml"
-
 ItemDetailResponse:
   $ref: "./ItemDetailResponse.yaml"
-
-ExitListResponse:
-  $ref: "./ExitListResponse.yaml"
 
 ItemListResponse:
   $ref: "./ItemListResponse.yaml"

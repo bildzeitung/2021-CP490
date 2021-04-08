@@ -2,9 +2,19 @@
   {
     "title": "blackboard",
     "description": "There is an old wooden blackboard here. It appears as though someone wrote on it.",
-    "attributes": {
-      "takeable": "false"
-    },
     "location": "east-of-meadow"
+  },
+  {
+    "title": "chest",
+    "description": "An old wooden chest with brass fittings. The clasp is in the shape of a lion's head.",
+    "location": "forest"
+  },
+  {
+    "title": "mushroom",
+    "description": "A mushroom with a round, bulbous base and a pale cap about 10cm across. It smells strongly honey-sweet.",
+    "location": "west-of-meadow",
+    "attributes": {
+      "takeable": "true"
+    }
   }
 ]

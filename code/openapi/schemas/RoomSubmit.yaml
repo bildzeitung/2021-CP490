@@ -6,10 +6,6 @@ allOf:
         type: string
       description:
         type: string
-      exits:
-        type: array
-        items:
-          $ref: './ExitSubmit.yaml'
       attributes:
         type: object
         additionalProperties:

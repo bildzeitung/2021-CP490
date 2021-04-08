@@ -13,9 +13,6 @@ EventBody:
 RoomBody:
   $ref: './RoomBody.yaml'
 
-ExitBody:
-  $ref: './ExitBody.yaml'
-
 ItemBody:
   $ref: './ItemBody.yaml'
 

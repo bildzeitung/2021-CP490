@@ -8,7 +8,6 @@ from coal_public_api_client.api.player_api import PlayerApi
 from coal_public_api_client.api.character_api import CharacterApi
 from coal_public_api_client.api.turn_api import TurnApi
 from coal_public_api_client.api.room_api import RoomApi
-from coal_public_api_client.api.exit_api import ExitApi
 
 
 @attr.s
@@ -48,11 +47,6 @@ class Api:
     def room_api(self):
         with ApiClient(self.config) as api_client:
             yield RoomApi(api_client)
-
-    @contextmanager
-    def exit_api(self):
-        with ApiClient(self.config) as api_client:
-            yield ExitApi(api_client)
 
     @classmethod
     def from_config(cls, incoming_config):

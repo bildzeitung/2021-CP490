@@ -1,5 +1,0 @@
-description: Exit detail
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/Exit.yaml'

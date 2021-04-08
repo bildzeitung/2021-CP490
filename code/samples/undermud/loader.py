@@ -16,7 +16,6 @@ GAME_TITLE = ""
 GAME_FILE = Path(__file__).parent / "game.json"
 EVENT_FILE = Path(__file__).parent / "events.json"
 ROOMS_FILE = Path(__file__).parent / "rooms.json"
-EXITS_FILE = Path(__file__).parent / "exits.json"
 ATTRS_FILE = Path(__file__).parent / "attributes.json"
 ITEMS_FILE = Path(__file__).parent / "items.json"
 
@@ -60,21 +59,6 @@ def create_room(game_id, room):
     return rv.json()["id"]
 
 
-def load_exits(game_id, rooms):
-    with EXITS_FILE.open() as f:
-        exits = json.load(f)
-
-    for e in exits:
-        doc = {
-            "to_room_id": rooms[e["to"]],
-            "direction": e["direction"],
-        }
-        rv = requests.post(
-            f"{API_SERVER}/game/{game_id}/room/{rooms[e['from']]}/exit", json=doc
-        )
-        rv.raise_for_status()
-
-
 def create_attributes(game_id, rooms):
     with ATTRS_FILE.open() as f:
         attributes = json.load(f)
@@ -100,8 +84,11 @@ def load_events(game_id):
     """Add all of the events from the file into the game"""
     with EVENT_FILE.open() as f:
         events = json.load(f)
-        for e in events:
-            create_event(game_id, e)
+
+    clear_events(game_id)
+
+    for e in events:
+        create_event(game_id, e)
 
 
 def load_rooms(game_id):
@@ -167,7 +154,6 @@ def main(events_only, properties_only, config, profile):
 
     if events_only:
         game_id = get_game_id()
-        clear_events(game_id)
         load_events(game_id)
         return
 
@@ -182,7 +168,6 @@ def main(events_only, properties_only, config, profile):
 
     load_events(game_id)
     rooms = load_rooms(game_id)
-    load_exits(game_id, rooms)
     load_items(game_id, rooms)
 
     create_attributes(game_id, rooms)

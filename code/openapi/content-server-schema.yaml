@@ -8,16 +8,11 @@ servers:
 tags:
 - name: room
 - name: item
-- name: exit
 paths:
   /room:
     $ref: './resources/rooms.yaml'
   /room/{room_id}:
     $ref: './resources/room.yaml'
-  /room/{room_id}/exit:
-    $ref: './resources/room-exits.yaml'
-  /room/{room_id}/exit/{exit_id}:
-    $ref: './resources/room-exit.yaml'
   /item:
     $ref: './resources/items.yaml'
   /item/{item_id}:

@@ -38,22 +38,25 @@ A `value` text string may be a _variable reference_. That is, if a command has a
 ## Conditions
 Events use conditions to decide what to do. If the `object` is `game` or `character`, then it's in the context of the _current game_ and the _player character that is acting_. If the `object` is `item`, then _which_ item needs to be specified in a 3rd `title` argument.
 
-| Primitive   | Arguments               | Description                                      |
-|------------:|-------------------------|:-------------------------------------------------|
-| has-key     | object, key             | True if `key` is an attribute of `object`        |
-| is-true     | object, `[title]`, key  | True if `object`'s attribute `key` equals `true` |
-| item-in-room| title                   | True if `item[title]` is in the same room as the player character |
+| Primitive          | Arguments                 | Description                                                  |
+|-------------------:|---------------------------|:-------------------------------------------------------------|
+| is-equal           | object, title, key, value | True if `object[title][key]` == `value`                      |
+| is-gt              | object, title, key, value | True if `object[title][key]` & `object[title][key]` > `value`|
+| is-lt              | object, title, key, value | True if `object[title][key]` & `object[title][key]` < `value`|
+| obj-loc-is-equal   | object, title, value      | True if `object[title]` location == `value`                  |
+
 
 ## Actions
 Actions alter game state and send messages back to the player.
 
-| Primitive          | Arguments          | Description                      |
-|-------------------:|--------------------|:---------------------------------|
-| look               |                    | send room description to the user|
-| message            | object, key        | send `object[key]` to the user   |
-| go                 | object, key        | move the character to the room given by `object[key]` |
-| go-via-exit        | value              | move the character to `room.exit[value]`
-| set-key            | object, key, value | set `object[key] <- value`       |
-
-
-- message
+| Primitive          | Arguments                 | Description                                                  |
+|-------------------:|---------------------------|:-------------------------------------------------------------|
+| look               |                           | send room description to the user                            |
+| message            | object, title, key        | send text from `object[title][key]` to the user              |
+| go                 | object, title, key        | move character to `object[title][key]`                       |
+| set-key            | object, title, key, value | set `object[title][key] <- value`                            |
+| mv-item-to-char    | title                     | move `item[title]` to character's inventory                  |
+| mv-item-to-room    | title1, title2            | move `item[title2]` to `room[title1]`                        |
+| inventory          |                           | list items located with the character (and not in a room)    |
+| dec                | object, title, key        | `object[title][key]` <- `object[title][key]` - 1             |
+| inc                | object, title, key        | `object[title][key]` <- `object[title][key]` + 1             |

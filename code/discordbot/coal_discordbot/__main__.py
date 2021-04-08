@@ -9,7 +9,6 @@ import json
 import logging
 import os
 
-import discord
 from discord.ext import commands
 import requests
 from discord_slash import SlashCommand
@@ -24,7 +23,7 @@ CONFIG = os.environ.get("DISCORD_CONFIG_FILEPATH", "config.json")
 
 
 logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger('discord')
+logger = logging.getLogger("discord")
 
 
 try:
@@ -40,9 +39,7 @@ except FileNotFoundError:
 client = commands.Bot(command_prefix="?")
 
 
-slash = SlashCommand(
-    client, sync_commands=True
-)
+slash = SlashCommand(client, sync_commands=True)
 
 
 @client.event
@@ -55,7 +52,8 @@ async def on_command_error(ctx, error):
         gid = c["game"]
         cid = c["character"]
         rv = requests.post(
-            f"{SERVER}/game/{gid}/character/{cid}/turn", json={"command": ctx.message.content[1:]}
+            f"{SERVER}/game/{gid}/character/{cid}/turn",
+            json={"command": ctx.message.content[1:]},
         )
         rv.raise_for_status()
         msg = rv.json()["text"]

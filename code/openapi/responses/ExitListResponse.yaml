@@ -1,5 +1,0 @@
-description: List of exits
-content:
-  application/json:
-    schema:
-      $ref: '../schemas/ArrayOfExits.yaml'

@@ -19,3 +19,6 @@ content-server/coal_content_server/openapi
 game-server/coal_game_server/openapi
 player-server/coal_player_server/openapi
 public-schema-server/coal_public_api_server/openapi
+
+connexion
+build-number.txt

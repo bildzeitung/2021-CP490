@@ -16,9 +16,6 @@ eventId:
 roomId:
   $ref: './path/roomId.yaml'
 
-exitId:
-  $ref: './path/exitId.yaml'
-
 itemId:
   $ref: './path/itemId.yaml'
 

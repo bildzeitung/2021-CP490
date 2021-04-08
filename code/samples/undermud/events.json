@@ -2,14 +2,65 @@
   {
     "command": "",
     "conditions": [
-        {"primitive": "has-key", "arguments": ["character", "first-turn"]}
+        {"primitive": "is-equal", "arguments": ["character", "#", "first-turn", "true"]}
     ],
     "true_part": [],
     "false_part": [
-      {"primitive": "set-key",  "arguments": ["character", "first-turn", "true"]},
-      {"primitive": "message",  "arguments": ["game", "starting-message"]},
-      {"primitive": "go", "arguments": ["game", "starting-room"]}
+      {"primitive": "set-key",  "arguments": ["character", "#", "first-turn", "true"]},
+      {"primitive": "message",  "arguments": ["game", "#", "starting-message"]},
+      {"primitive": "go", "arguments": ["game", "#", "starting-room"]}
     ]
+  },
+  {
+    "command": "",
+    "conditions": [
+      {"primitive": "is-equal", "arguments": ["character", "#", "poisoned", "0"]}
+    ],
+    "true_part":[
+      {"primitive": "message", "arguments": ["game", "#", "died"]},
+      {"primitive": "go", "arguments": ["game", "#", "you-have-died-room"]},
+      {"primitive": "set-key", "arguments": ["character", "#", "poisoned", "-1"]},
+      {"primitive": "set-key", "arguments": ["character", "#", "dead", "2"]}
+    ],
+    "false_part":[]
+  },
+  {
+    "command": "",
+    "conditions": [
+      {"primitive": "is-gt", "arguments": ["character", "#", "poisoned", "0"]}
+    ],
+    "true_part": [
+      {"primitive": "message", "arguments": ["game", "#", "poisoned-more"]},
+      {"primitive": "dec", "arguments": ["character", "#", "poisoned"]}
+    ],
+    "false_part": []
+  },
+  {
+    "command": "",
+    "conditions": [
+      {"primitive": "is-equal", "arguments": ["character", "#", "dead", "0"] }
+    ],
+    "true_part": [
+      {"primitive": "message", "arguments": ["game", "#", "no-longer-dead"]},
+      {"primitive": "go", "arguments": ["game", "#", "recovered-from-dead-room"]},
+      {"primitive": "set-key", "arguments": ["character", "#", "dead", "-1"]}
+    ]
+  },
+  {
+    "command": "",
+    "conditions": [
+      {"primitive": "is-gt", "arguments": ["character", "#", "dead", "0"]}
+    ],
+    "true_part": [
+      {"primitive": "dec", "arguments": ["character", "#", "dead"]}
+    ],
+    "false_part": []
+  },
+  {
+    "command": "inventory",
+    "conditions": [],
+    "true_part": [{"primitive": "inventory", "arguments": []}],
+    "false_part": []
   },
   {
     "command": "look",
@@ -24,30 +75,61 @@
     "conditions": [
     ],
     "true_part": [
-      {"primitive": "go-via-exit", "arguments": ["!direction"]}
+      {"primitive": "go", "arguments": ["room", "#", "!direction"]}
     ],
     "false_part": []
   },
   {
     "command": "get !item",
     "conditions": [
-      {"primitive": "is-true", "arguments": ["item", "!item", "takeable"]}
+      {"primitive": "is-equal", "arguments": ["item", "!item", "takeable", "true"]},
+      {"primitive": "obj-loc-is-equal", "arguments": ["item", "!item", "#"]}
     ],
-    "true_part": [],
+    "true_part": [
+      {"primitive": "message", "arguments": ["game", "#", "took-item"]},
+      {"primitive": "mv-item-to-char", "arguments": ["!item"]}
+    ],
     "false_part": [
-      {"primitive": "message", "arguments": ["game", "cannot-take-that"]}
+      {"primitive": "message", "arguments": ["game", "#", "cannot-take-that"]}
+    ]
+  },
+  {
+    "command": "drop !item",
+    "conditions": [
+      {"primitive": "obj-loc-is-equal", "arguments": ["item", "!item", "character"]}
+    ],
+    "true_part": [
+      {"primitive": "message", "arguments": ["game", "#", "drop-item"]},
+      {"primitive": "mv-item-to-room", "arguments": ["#", "!item"]}
+    ],
+    "false_part": [
+      {"primitive": "message", "arguments": ["game", "#", "cannot-drop-that"]}
     ]
   },
   {
     "command": "read blackboard",
     "conditions": [
-      {"primitive": "item-in-room", "arguments": ["blackboard"]}
+      {"primitive": "obj-loc-is-equal", "arguments": ["item", "blackboard", "#"]}
     ],
     "true_part":[
-      {"primitive": "message", "arguments": ["game", "blackboard"]}
+      {"primitive": "message", "arguments": ["game", "#", "blackboard"]}
     ],
     "false_part":[
-      {"primitive": "message", "arguments": ["game", "item-not-here"]}
+      {"primitive": "message", "arguments": ["game", "#", "item-not-here"]}
+    ]
+  },
+  {
+    "command": "eat mushroom",
+    "conditions": [
+      {"primitive": "obj-loc-is-equal", "arguments": ["item", "mushroom", "character"]}
+    ],
+    "true_part": [
+      {"primitive": "set-key", "arguments": ["character", "#", "poisoned", "2"]},
+      {"primitive": "message", "arguments": ["game", "#", "poisoned"]},
+      {"primitive": "mv-item-to-room", "arguments": ["", "mushroom"]}
+    ],
+    "false_part": [
+      {"primitive": "message", "arguments": ["game", "#", "cannot-eat-mushroom"]}
     ]
   }
 ]

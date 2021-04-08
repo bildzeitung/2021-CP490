@@ -1,7 +1,7 @@
 import attr
 from tabulate import tabulate
 
-from coal_public_api_client.models import RoomSubmit, ExitSubmit
+from coal_public_api_client.models import RoomSubmit
 from coal_public_api_client.exceptions import ApiException, ServiceException
 
 
@@ -75,24 +75,6 @@ class ContentRunner:
                 print(tabulate([k, v] for k, v in rv.to_dict().items()))
             except ApiException as e:
                 print(f"Cannot get room details: {e.body}")
-
-    def _cmd_add_exit(self, *args):
-        if not args or len(args) < 4:
-            print("Need: <direction> <from> -> <to>")
-            return
-        d, from_room, _, to_room = args
-        from_rid = self._get_room_id_from_title(from_room)
-        to_rid = self._get_room_id_from_title(to_room)
-
-        with self.api.exit_api() as api:
-            try:
-                es = ExitSubmit(to_room_id=to_rid, direction=d)
-                rv = api.game_game_id_room_room_id_exit_post(
-                    self.state.game, from_rid, es
-                )
-                print(rv)
-            except ApiException as e:
-                print(f"Cannot add exit: {e.body}")
 
     def _cmd_rm_room(self, *args):
         if not args:

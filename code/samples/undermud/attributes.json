@@ -3,5 +3,15 @@
   "starting-room": "meadow",
   "cannot-take-that": "I\\'m sorry, but I can\\'t let you take that.",
   "blackboard": "Welcome to K Division!\\nA Haiku for you:\\n\\t   Some bears like honey\\n\\tThis software is incomplete\\n\\t    Dragons are cranky",
-  "item-not-here": "What you want isn\\'t here."
+  "item-not-here": "What you want isn\\'t here.",
+  "took-item": "You take it an put it in your pockets",
+  "cannot-drop-that": "I\\'m sorry, but you can\\'t drop that.",
+  "drop-item": "You drop it onto the ground.",
+  "cannot-eat-mushroom": "You don\\'t have a mushroom to eat.",
+  "poisoned": "Oh, ok. You eat the mushroom. That wasn\\'t a good idea. You feel sick.",
+  "poisoned-more": "Oh dear. You\\'re feeling worse.",
+  "died": "\\n\\nYou\\'ve died.  You hear a kind of cosmic headshaking and gradually wake up...\\n\\n",
+  "you-have-died-room": "airport-lounge",
+  "no-longer-dead": "\\n\\nOver the intercom, it sounds like someone has called your flight. You move without thinking, show a passport you didn\\'t know you had, ... and board ... ?\\n",
+  "recovered-from-dead-room": "meadow"
 }

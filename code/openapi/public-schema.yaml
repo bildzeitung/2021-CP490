@@ -10,7 +10,6 @@ tags:
   - name: room
   - name: turn
   - name: item
-  - name: exit
   - name: event
   - name: player
   - name: character
@@ -26,10 +25,6 @@ paths:
     $ref: './resources/game-rooms.yaml'
   /game/{game_id}/room/{room_id}:
     $ref: './resources/game-room.yaml'
-  /game/{game_id}/room/{room_id}/exit:
-    $ref: './resources/game-room-exits.yaml'
-  /game/{game_id}/room/{room_id}/exit/{exit_id}:
-    $ref: './resources/game-room-exit.yaml'
   /game/{game_id}/item:
     $ref: './resources/game-items.yaml'
   /game/{game_id}/item/{item_id}:

@@ -1,14 +1,38 @@
 [
   {
     "title": "meadow",
-    "description": "A green meadow under a blue sky. You can see trees to the north."
+    "description": "A green meadow under a blue sky. You can see trees to the north.",
+    "attributes": {
+      "north": "forest",
+      "east": "east-of-meadow",
+      "west": "west-of-meadow"
+    }
   },
   {
     "title": "forest",
-    "description": "You are in a forest. Towering trees blow gently in the breeze."
+    "description": "You are in a forest. Towering trees blow gently in the breeze.",
+    "attributes": {
+      "south": "meadow"
+    }
   },
   {
     "title": "east-of-meadow",
-    "description": "This part of the meadow looks odd like it's been setup to be a classroom."
+    "description": "This part of the meadow looks odd like it's been setup to be a classroom.",
+    "attributes": {
+      "west": "meadow"
+    }
+  },
+  {
+    "title": "west-of-meadow",
+    "description": "You can start to smell the sea from this part of the meadow. Huh -- isn't that odd. There's some mushrooms growing here, and they're in the shape of a ring.",
+    "attributes": {
+      "east": "meadow"
+    }
+  },
+  {
+    "title": "airport-lounge",
+    "description": "You appear to be in some kind of airport terminal lounge. Not the nice kind -- the kind with terrible seats that smells stale and artificial. People are milling about, paying no attention to you. Occasionally, a voice comes over the intercom and announces that a flight is leaving for someplace, but you can\\'t make out the gate number or the destination.",
+    "attributes": {
+    }
   }
 ]
