@@ -28,8 +28,8 @@ undermud: $(VENV)
 
 docker: wheels
 	docker build . -t bildzeitung/cp490:$$(cat master-version.txt build-number.txt | paste -sd.)
+	docker save bildzeitung/cp490:$$(cat master-version.txt build-number.txt | paste -sd.) | gzip > coal_docker_$$(cat master-version.txt build-number.txt | paste -sd.).tar.gz
 	docker tag bildzeitung/cp490:$$(cat master-version.txt build-number.txt | paste -sd.) coal:latest
-	docker save coal:latest | gzip > coal_docker_$$(cat master-version.txt build-number.txt | paste -sd.).tar.gz
 
 run:
 	mkdir -p dbs
