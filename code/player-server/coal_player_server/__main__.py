@@ -1,6 +1,6 @@
 from pathlib import Path
 import click
-from .config import create_app, DefaultConfig, load_config, DBNAME
+from .config import create_app, DefaultConfig, load_config, DBNAME, CONNEXION_ARGS
 
 
 @click.command()
@@ -21,5 +21,5 @@ def main(config, profile):
     server_config = load_config(config, profile)
     dbpath = "sqlite:///" + str(Path(server_config.DB_PATH) / DBNAME)
     connex_app = create_app(DefaultConfig(SQLALCHEMY_DATABASE_URI=dbpath))
-    connex_app.add_api("openapi.yaml", arguments={"title": "COAL Player Server"})
+    connex_app.add_api("openapi.yaml", arguments=CONNEXION_ARGS)
     connex_app.run(host="0.0.0.0", port=8300, debug=True)

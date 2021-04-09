@@ -5,6 +5,7 @@ from connexion.resolver import RestyResolver
 from .db import db
 
 
+CONNEXION_ARGS = {"title": "COAL Player Server"}
 DBNAME = "coal-player.db"
 
 

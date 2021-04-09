@@ -1,10 +1,11 @@
-from pathlib import Path
-
 import attr
 import connexion
 import toml
 from connexion.resolver import RestyResolver
 from .db import db
+
+
+CONNEXION_ARGS = {"title": "COAL Game Server"}
 
 
 @attr.s(auto_attribs=True)

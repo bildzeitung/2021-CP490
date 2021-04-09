@@ -20,14 +20,14 @@ if [ $status -ne 0 ]; then
   exit $status
 fi
 
-coal_game_server -c /config/coal-gameserver.conf &
+gunicorn --bind 0.0.0.0:8100 'coal_game_server.wsgi:main(config="/config/coal-gameserver.conf")' &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start API server: $status"
   exit $status
 fi
 
-coal_player_server -c /config/coal-playerserver.conf &
+gunicorn --bind 0.0.0.0:8300 'coal_player_server.wsgi:main(config="/config/coal-playerserver.conf")' &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start API server: $status"
@@ -50,10 +50,7 @@ while sleep 2; do
   ps aux |grep coal_player_server |grep -q -v grep
   PROCESS_4_STATUS=$?
 
-  ps aux |grep coal_player_server |grep -q -v grep
-  PROCESS_5_STATUS=$?
-
-  if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 -o $PROCESS_3_STATUS -ne 0 -o $PROCESS_4_STATUS -ne 0 -o $PROCESS_5_STATUS -ne 0 ]; then
+  if [ $PROCESS_1_STATUS -ne 0 -o $PROCESS_2_STATUS -ne 0 -o $PROCESS_3_STATUS -ne 0 -o $PROCESS_4_STATUS -ne 0 ]; then
     echo "Something died :("
     exit 1
   fi
