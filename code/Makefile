@@ -27,7 +27,8 @@ undermud: $(VENV)
 			&& ./samples/undermud/loader.py
 
 docker: wheels
-	docker build . -t coal
+	docker build . -t bildzeitung/cp490:$$(cat master-version.txt build-number.txt | paste -sd.)
+	docker tag bildzeitung/cp490:$$(cat master-version.txt build-number.txt | paste -sd.) coal:latest
 	docker save coal:latest | gzip > coal_docker_$$(cat master-version.txt build-number.txt | paste -sd.).tar.gz
 
 run:

@@ -1,24 +1,7 @@
 from pathlib import Path
 
-import attr
 import click
-import toml
-
-from .config import connex_app
-
-
-@attr.s(auto_attribs=True)
-class Config:
-    GAME_SERVER_URL: str
-    CONTENT_SERVER_URL: str
-    PLAYER_SERVER_URL: str
-
-
-def load_config(config_path, profile):
-    """Read TOML file from the given path; use the given profile"""
-    with open(config_path) as f:
-        config = toml.load(f)
-    return Config(**{k.upper(): v for k, v in config[profile].items()})
+from .config import connex_app, load_config
 
 
 @click.command()

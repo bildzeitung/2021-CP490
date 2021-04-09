@@ -2,7 +2,7 @@
 
 echo "Starting.."
 
-coal_public_api_server -c /config/coal-apiserver.conf &
+gunicorn --bind 0.0.0.0:8000 'coal_public_api_server.wsgi:main(config="/config/coal-apiserver.conf")' &
 status=$?
 if [ $status -ne 0 ]; then
   echo "Failed to start API server: $status"
