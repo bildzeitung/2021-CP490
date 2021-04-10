@@ -10,6 +10,7 @@
 """
 import json
 import os
+import sys
 from pathlib import Path
 
 import requests
@@ -19,6 +20,14 @@ from slack_bolt import App
 
 SERVER = "http://localhost:8000/v1"
 CONFIG = Path("config.json")
+
+load_dotenv()
+
+if not (os.environ.get("SLACK_BOT_TOKEN") and os.environ.get("SLACK_SIGNING_SECRET")):
+    print(
+        "Will not run Slack bot without SLACK_BOT_TOKEN and SLACK_SIGNING_SECRET env vars!"
+    )
+    sys.exit(1)
 
 # Initializes your app with your bot token and signing secret
 app = App(
@@ -137,7 +146,6 @@ def main():
     global SERVER
     global config
 
-    load_dotenv()
     SERVER = os.environ.get("COAL_API_SERVER", SERVER)
     try:
         with open(os.environ.get("CONFIG_FILEPATH", CONFIG)) as f:

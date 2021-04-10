@@ -31,17 +31,15 @@ sudo docker run --rm \
 The `.env` file contains all of the secrets for Slack and Discord integration.
 Fields are as follows:
 
-| Field | Description |
+| Field | Mandatory? | Description |
 |-------|-------------|
-| SLACK_SIGNING_SECRET | Signing secret for Slack App |
-| SLACK_BOT_TOKEN | e.g. xoxb-... token |
-| CONFIG_FILEPATH | /data/slackbot.cache (in the container filesystem) |
-| COAL_API_SERVER | http://localhost:8000/v1 (in the container; leave as -is |
-| DISCORD_TOKEN | Discord bot secret |
-| DISCORD_GUILD | Guild where bot is active (name) |
-| DISCORD_GUILD_ID | Guild ID where bot is active (number) |
-| DISCORD_APPID | Bot App ID |
-| DISCORD_CONFIG_FILEPATH | /data/discord.cache (in the container filesystem) |
+| SLACK_SIGNING_SECRET | Yes | Signing secret for Slack App |
+| SLACK_BOT_TOKEN | Yes | e.g. xoxb-... token |
+| CONFIG_FILEPATH | No | (default is `config.json`, in container filesystem. Recommend: `/data/slackbot.cache` |
+| COAL_API_SERVER | No | Default is: `http://localhost:8000/v1`, which is correct for the server in the container |
+| DISCORD_TOKEN | Yes | Discord bot secret |
+| DISCORD_GUILD_ID | Yes | Guild ID where bot is active (number) |
+| DISCORD_CONFIG_FILEPATH | No | /data/discord.cache (in the container filesystem) |
 
 The `CONFIG_FILEPATH` and `DISCORD_CONFIG_FILEPATH` are caches where player data is cache. When a users messages the Slackboth or talks to the Discord bot, the user ID from those systems creates a player account on COAL automatically.
 

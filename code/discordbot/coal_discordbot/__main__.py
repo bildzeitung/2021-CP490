@@ -8,6 +8,7 @@
 import json
 import logging
 import os
+import sys
 
 from discord.ext import commands
 import requests
@@ -16,6 +17,14 @@ from discord_slash.utils.manage_commands import create_option
 from dotenv import load_dotenv
 
 load_dotenv()
+
+
+if not (os.getenv("DISCORD_GUILD_ID") and os.getenv("DISCORD_TOKEN")):
+    print(
+        "Will not run Discord bot without DISCORD_GUILD_ID and DISCORD_TOKEN env vars!"
+    )
+    sys.exit(1)
+
 
 SERVER = os.environ.get("COAL_API_SERVER", "http://localhost:8000/v1")
 GUILD = [int(os.getenv("DISCORD_GUILD_ID"))]

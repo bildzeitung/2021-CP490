@@ -17,7 +17,6 @@ def load_config(config_path, profile):
     return Config(**{k.upper(): v for k, v in config[profile].items()})
 
 
-
 # Create the Connexion application instance
 options = {"swagger_ui": False}
 connex_app = connexion.App(

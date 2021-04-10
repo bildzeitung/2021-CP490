@@ -8,6 +8,7 @@ from .db import db
 DBNAME = "coal-content.db"
 CONNEXION_ARGS = {"title": "COAL Content Server"}
 
+
 @attr.s(auto_attribs=True)
 class ServerConfig:
     DB_PATH: str
